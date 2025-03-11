@@ -1,74 +1,76 @@
 package com.example.security;
 
+import com.example.business.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;  // Custom filter to validate JWT
+    private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    private UserDetailsService userService;  // To load user details for authentication
+    private UserService userService; // Implements UserDetailsService
 
-    // Define the Security Filter Chain for the application
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/h2-console/").permitAll() // Allow access to the H2 console
-                .requestMatchers("/auth/login/", "/auth/register/").permitAll() // Allow login and register without authentication
-                .anyRequest().authenticated() // Protect other requests
-            )
-            .formLogin((form) -> form
-                .loginPage("/auth/login/")  // Specify a custom login page (if needed)
-                .permitAll()  // Allow public access to the login page
-            )
-            .logout((logout) -> logout
-                .permitAll() // Allow public access to logout
-            )
-            .headers(headers -> headers
-                .frameOptions(frameOptions -> frameOptions
-                    .disable()  // Disable frame options (to allow H2 console in a frame)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/login", "/registration").permitAll() // Public pages
+                        .requestMatchers("/dashboard/school", "/dashboard/guardian").hasRole("SCHOOL_GUARDIAN")
+                        .requestMatchers("/dashboard/practitioner").hasRole("MEDICAL_PRACTITIONER")
+                        .anyRequest().authenticated() // Protect all other routes
                 )
-            )
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/h2-console/**")  // Disable CSRF for H2 console
-            );
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .successHandler((request, response, authentication) -> { 
+                            authentication.getAuthorities().forEach(grantedAuthority -> {
+                                try {
+                                    if (grantedAuthority.getAuthority().equals("ROLE_SCHOOL_GUARDIAN")) {
+                                        response.sendRedirect("/dashboard/school");
+                                    } else if (grantedAuthority.getAuthority().equals("ROLE_MEDICAL_PRACTITIONER")) {
+                                        response.sendRedirect("/dashboard/practitioner");
+                                    } else {
+                                        response.sendRedirect("/home");
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                        })
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                )
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for development
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.disable()) // Allow H2 Console
+                );
 
-        // Add JWT filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();  // Return the configured SecurityFilterChain
+        return http.build();
     }
 
-
-    // Define PasswordEncoder bean (used for password hashing)
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();  // Use BCrypt for password encoding
+        return new BCryptPasswordEncoder();
     }
 
-    // Define the AuthenticationManager bean
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                   .userDetailsService(userService)  // Set UserService for user details
-                   .passwordEncoder(passwordEncoder())  // Use BCryptPasswordEncoder
-                   .and()
-                   .build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
