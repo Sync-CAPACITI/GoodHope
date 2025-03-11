@@ -1,13 +1,15 @@
 
 import './App.css';
-import Calendar from './components/Calendar';
+
+import HealthCare from './pages/HealthCareAdmin';
 
 function App() {
   return (
     <div className="App">
       
       <div>
-        <Calendar />
+        
+        < HealthCare />
       </div>
     </div>
   );
