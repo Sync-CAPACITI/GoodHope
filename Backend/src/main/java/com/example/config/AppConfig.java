@@ -1,6 +1,6 @@
-package com.example.Config;
+package com.example.config;
 
-import com.example.Components.JwtRequestFilter;
+import com.example.security.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

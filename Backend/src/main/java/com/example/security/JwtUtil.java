@@ -1,5 +1,6 @@
-package com.example.Components;
+package com.example.security;
 
+import com.example.config.JwtConfig;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

@@ -1,13 +1,12 @@
-package com.example.service;
+package com.example.business.service;
 
 import com.example.dto.UserRegistrationDto;
 import com.example.model.User;
-import com.example.repository.UserRepository;
+import com.example.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder;
 
     // Save a user to the database
     public User saveUser(User user) {

@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.example.Components.JwtRequestFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,12 +29,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/h2-console/**").permitAll() // Allow access to the H2 console
-                .requestMatchers("/auth/login", "/auth/register").permitAll() // Allow login and register without authentication
+                .requestMatchers("/h2-console/").permitAll() // Allow access to the H2 console
+                .requestMatchers("/auth/login/", "/auth/register/").permitAll() // Allow login and register without authentication
                 .anyRequest().authenticated() // Protect other requests
             )
             .formLogin((form) -> form
-                .loginPage("/auth/login")  // Specify a custom login page (if needed)
+                .loginPage("/auth/login/")  // Specify a custom login page (if needed)
                 .permitAll()  // Allow public access to the login page
             )
             .logout((logout) -> logout

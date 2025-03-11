@@ -1,6 +1,7 @@
-package com.example.dto;
+package com.example.presentation;
 
-import com.example.service.UserService;
+import com.example.dto.UserRegistrationDto;
+import com.example.business.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
- 
+
 @Controller
 public class UserRegistrationController {
- 
+
     @Autowired
     private UserService userService;
 
@@ -38,6 +39,6 @@ public class UserRegistrationController {
         }
     }
 
-   
+
 }
 

@@ -1,39 +1,38 @@
-package com.example.model; 
-
-
-import java.util.HashSet;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package com.example.model;
+import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Set;
 
-@Entity
+import java.util.List;
+
+
+
 @Data
 @Table(name = "Users")
-public class User {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class User {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer userId;
 
-    @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
-    private String username;
+    private String name;
+    private String email;
+    private String phoneNumber;
+    private String address;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
-    private String password;
+    @Enumerated(EnumType.STRING)
+    private Role role;  // Enum for the role (Admin, Caregiver, Medical Practitioner, School, Guardian)
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Address addressDetails;
+
+    @OneToMany(mappedBy = "user")
+    private List<Payment> payments;
+
+    public enum Role {
+        ADMIN, CAREGIVER, MEDICAL_PRACTITIONER, SCHOOL, GUARDIAN
+    }
 
 }
