@@ -1,6 +1,7 @@
 
 import './App.css';
 import Calendar from './components/Calendar';
+import Footer from './components/common/footer/footer';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       
       <div>
         <Calendar />
+        <Footer/>
       </div>
     </div>
   );
