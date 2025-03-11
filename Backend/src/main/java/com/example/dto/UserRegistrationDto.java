@@ -1,41 +1,64 @@
 package com.example.dto;
-import javax.validation.constraints.NotEmpty;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class UserRegistrationDto {
-    @NotEmpty(message = "Username is required")
-    private String username;
 
-    @NotEmpty(message = "Password is required")
-    private String password;
+    @NotEmpty(message = "Name is required")
+    private String name;
 
-    @NotEmpty(message = "Roles are required")
-    private String roles;
+    @Email(message = "Email should be valid")
+    @NotEmpty(message = "Email is required")
+    private String email;
 
-    // Getters and Setters
-    public String getUsername() {
-        return username;
+    @NotEmpty(message = "Phone number is required")
+    private String phoneNumber;
+
+    @NotEmpty(message = "Address is required")
+    private String address;
+
+    private String role;  // Role is a string, you can convert it to an enum if needed
+
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getRoles() {
-        return roles;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+// Getters and Setters
 }
- 
- 

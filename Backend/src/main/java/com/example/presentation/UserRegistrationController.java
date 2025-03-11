@@ -18,27 +18,28 @@ public class UserRegistrationController {
     @Autowired
     private UserService userService;
 
+    // Display the registration form
     @GetMapping("/registration")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new UserRegistrationDto());
         return "registration";
     }
 
+    // Handle form submission (POST)
     @PostMapping("/registration")
     public String registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDto userDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "registration";
+            return "registration";  // If there are validation errors, return to the registration page
         }
 
         try {
+            // Call service to register the user
             userService.registerNewUserAccount(userDto);
-            return "redirect:/registration?success";
+            model.addAttribute("successMessage", "User successfully registered!");
+            return "registration";  // Show success message on the same page
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            return "registration";
+            return "registration";  // Show error message if registration fails
         }
     }
-
-
 }
-
