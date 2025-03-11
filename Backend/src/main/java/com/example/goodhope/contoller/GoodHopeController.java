@@ -2,8 +2,10 @@ package com.example.goodhope.controller;
 
 import com.example.goodhope.model.Child;
 import com.example.goodhope.model.School;
+import com.example.goodhope.model.Practitioner;
 import com.example.goodhope.service.ChildService;
 import com.example.goodhope.service.SchoolService;
+import com.example.goodhope.service.PractitionerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,9 @@ public class GoodHopeController {
 
     @Autowired
     private SchoolService schoolService;
+
+    @Autowired
+    private PractitionerService practitionerService;
 
     @PostMapping("/children")
     public Child addChild(@RequestBody Child child) {
@@ -42,5 +47,20 @@ public class GoodHopeController {
     @GetMapping("/schools/{id}")
     public School getSchool(@PathVariable Long id) {
         return schoolService.getSchoolById(id);
+    }
+
+    @PostMapping("/practitioners")
+    public Practitioner addPractitioner(@RequestBody Practitioner practitioner) {
+        return practitionerService.savePractitioner(practitioner);
+    }
+
+    @GetMapping("/practitioners")
+    public List<Practitioner> getAllPractitioners() {
+        return practitionerService.getAllPractitioners();
+    }
+
+    @GetMapping("/practitioners/{id}")
+    public Practitioner getPractitioner(@PathVariable Long id) {
+        return practitionerService.getPractitionerById(id);
     }
 }
