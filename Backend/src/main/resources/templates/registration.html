@@ -47,6 +47,18 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Number of Dependents</label>
             <input type="number" id="parentDependents" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required min="1" />
           </div>
+
+          <!-- Added Email and Password Fields for Registration -->
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <input type="email" id="registerEmail" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+            <input type="password" id="registerPassword" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+            <p id="passwordError" class="text-red-500 text-xs mt-1 hidden">Password must be at least 8 characters, include an uppercase letter, a number, and a special character.</p>
+          </div>
+
           <!-- Register Button for Parent Form -->
           <button type="submit" id="parentSubmit" class="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
         </div>
@@ -58,20 +70,21 @@
             <input type="text" id="schoolName" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
           </div>
           <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
-            <input type="text" id="schoolLocation" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number</label>
+            <input type="tel" id="schoolContact" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
           </div>
           <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-            <input type="email" id="schoolEmail" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
-          </div>
-          <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">School Type (Private/Public)</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">School Type</label>
             <select id="schoolType" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
               <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
           </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
+            <input type="text" id="schoolLocation" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+
           <!-- Register Button for School Form -->
           <button type="submit" id="schoolSubmit" class="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
         </div>
@@ -79,55 +92,33 @@
         <!-- Medical Form Fields -->
         <div id="medicalForm" class="formFields mb-3 hidden">
           <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Practitioner Name</label>
-            <input type="text" id="medicalName" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Medical Provider Name</label>
+            <input type="text" id="medicalProvider" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
           </div>
           <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Specialization</label>
-            <input type="text" id="medicalSpecialization" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number</label>
+            <input type="tel" id="medicalContact" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
           </div>
           <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">License Number</label>
-            <input type="text" id="medicalLicense" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Medical Insurance Number</label>
+            <input type="text" id="medicalInsurance" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
           </div>
-          <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Qualification Name</label>
-            <input type="text" id="medicalQualification" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
-          </div>
-          <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Years of Experience</label>
-            <input type="number" id="medicalExperience" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required min="1" />
-          </div>
-          <div class="text-left mb-3">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Independent or Work In</label>
-            <select id="medicalWork" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
-              <option value="independent">Independent</option>
-              <option value="work_in">Work In</option>
-            </select>
-          </div>
+
           <!-- Register Button for Medical Form -->
           <button type="submit" id="medicalSubmit" class="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
+        </div>
+
+        <!-- Add "Already registered?" prompt -->
+        <div class="mt-4 text-sm">
+          <p class="text-gray-700 dark:text-gray-300">
+            Already registered? <a href="login.html" class="text-blue-500">Login here</a>
+          </p>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // Form validation function
-    function validateForm(form) {
-      let valid = true;
-      const inputs = form.querySelectorAll("input[required], select[required]");
-      inputs.forEach(input => {
-        if (!input.value.trim()) {
-          input.classList.add('border-red-500');
-          valid = false;
-        } else {
-          input.classList.remove('border-red-500');
-        }
-      });
-      return valid;
-    }
-
     // Define the buttons and form fields
     const parentButton = document.getElementById('parentButton');
     const schoolButton = document.getElementById('schoolButton');
@@ -136,6 +127,12 @@
     const parentForm = document.getElementById('parentForm');
     const schoolForm = document.getElementById('schoolForm');
     const medicalForm = document.getElementById('medicalForm');
+    
+    // Password Strength Validation
+    function validatePassword(password) {
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return regex.test(password);
+    }
 
     // Function to show the correct form
     function toggleForm(formToShow) {
@@ -149,7 +146,6 @@
     // Event listeners for the buttons
     parentButton.addEventListener('click', () => {
       toggleForm(parentForm);
-      // Optional: Add button active class toggle
       parentButton.classList.add('bg-green-500', 'text-white');
       schoolButton.classList.remove('bg-green-500', 'text-white');
       medicalButton.classList.remove('bg-green-500', 'text-white');
@@ -157,7 +153,6 @@
 
     schoolButton.addEventListener('click', () => {
       toggleForm(schoolForm);
-      // Optional: Add button active class toggle
       schoolButton.classList.add('bg-green-500', 'text-white');
       parentButton.classList.remove('bg-green-500', 'text-white');
       medicalButton.classList.remove('bg-green-500', 'text-white');
@@ -165,37 +160,41 @@
 
     medicalButton.addEventListener('click', () => {
       toggleForm(medicalForm);
-      // Optional: Add button active class toggle
       medicalButton.classList.add('bg-green-500', 'text-white');
       parentButton.classList.remove('bg-green-500', 'text-white');
       schoolButton.classList.remove('bg-green-500', 'text-white');
     });
 
-    // Add submit event listener for each form
+    // Set default form to display
+    toggleForm(parentForm);  // Display the parent form by default
+    parentButton.classList.add('bg-green-500', 'text-white');  // Highlight the Parent button
+
+    // Handle registration form submission
     document.getElementById('parentSubmit').addEventListener('click', (e) => {
       e.preventDefault();
-      if (validateForm(parentForm)) {
-        alert('Parent Form submitted successfully!');
-      }
-    });
+      
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
 
-    document.getElementById('schoolSubmit').addEventListener('click', (e) => {
-      e.preventDefault();
-      if (validateForm(schoolForm)) {
-        alert('School Form submitted successfully!');
+      // Check password strength
+      if (!validatePassword(password)) {
+        document.getElementById('passwordError').classList.remove('hidden');
+        return;
+      } else {
+        document.getElementById('passwordError').classList.add('hidden');
       }
-    });
 
-    document.getElementById('medicalSubmit').addEventListener('click', (e) => {
-      e.preventDefault();
-      if (validateForm(medicalForm)) {
-        alert('Medical Form submitted successfully!');
+      // Check if required fields are filled
+      const fields = [email, password, document.getElementById('parentName').value, document.getElementById('parentAge').value, document.getElementById('parentContact').value, document.getElementById('parentRelation').value, document.getElementById('parentSchoolType').value, document.getElementById('parentDependents').value];
+      if (fields.includes('') || fields.includes(null)) {
+        alert('Please fill all required fields.');
+        return;
       }
-    });
 
-    // Set default form to display
-    toggleForm(parentForm);
-    parentButton.classList.add('bg-green-500', 'text-white');
+      // Show success message and redirect to login
+      alert('Registration Successful! Redirecting to login...');
+      window.location.href = 'login.html';  // Redirect to login page
+    });
   </script>
 
 </body>
