@@ -1,80 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Registration</title>
-<link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
- 
-    <!-- create navigation bar ( header) -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span> <span
-                        class="icon-bar"></span> <span class="icon-bar"></span> <span
-                        class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#" th:href="@{/}">Registration and
-                    Login Module</a>
-            </div>
+<body class="bg-gray-100 dark:bg-gray-900">
+
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="p-6 w-3/4 h-[70vh] mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg text-center">
+      <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Register</h2>
+      <div class="flex justify-center mb-4">
+        <button id="parentButton" class="mx-1 px-4 py-2 rounded-lg bg-green-500 text-white focus:outline-none focus:ring-2 focus:ring-green-500">Parent</button>
+        <button id="schoolButton" class="mx-1 px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500">School</button>
+        <button id="medicalButton" class="mx-1 px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500">Medical</button>
+      </div>
+
+      <div id="formContainer" class="border p-4 rounded-lg">
+        <!-- Parent Form Fields -->
+        <div id="parentForm" class="formFields mb-3 hidden">
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
+            <input type="text" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Child's Age</label>
+            <input type="number" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number</label>
+            <input type="tel" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
         </div>
-    </nav>
- 
-<br>
-<br>
-    <!-- Create HTML registration form -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
- 
-                <!-- success message -->
-                <div th:if="${param.success}">
-                    <div class="alert alert-info">You've successfully registered
-                        to our awesome app!</div>
-                </div>
- 
-                <h1>Registration</h1>
- 
-                <form th:action="@{/registration}" method="post" th:object="${user}">
-                    <div class="form-group">
-                        <label class="control-label" for="firstName"> First Name </label>
-                        <input id="firstName" class="form-control" th:field="*{firstName}"
-                            required autofocus="autofocus" />
-                    </div>
- 
-                    <div class="form-group">
-                        <label class="control-label" for="lastName"> Last Name </label> <input
-                            id="lastName" class="form-control" th:field="*{lastName}"
-                            required autofocus="autofocus" />
-                    </div>
- 
-                    <div class="form-group">
-                        <label class="control-label" for="email"> Email </label> <input
-                            id="email" class="form-control" th:field="*{email}" required
-                            autofocus="autofocus" />
-                    </div>
- 
-                    <div class="form-group">
-                        <label class="control-label" for="password"> Password </label> <input
-                            id="password" class="form-control" type="password"
-                            th:field="*{password}" required autofocus="autofocus" />
-                    </div>
- 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Register</button>
-                        <span>Already registered? <a href="/" th:href="@{/login}">Login
-                                here</a></span>
-                    </div>
-                </form>
-            </div>
+
+        <!-- School Form Fields -->
+        <div id="schoolForm" class="formFields mb-3 hidden">
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">School Name</label>
+            <input type="text" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
+            <input type="text" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <input type="email" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
         </div>
+
+        <!-- Medical Form Fields -->
+        <div id="medicalForm" class="formFields mb-3 hidden">
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Practitioner Name</label>
+            <input type="text" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Specialization</label>
+            <input type="text" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">License Number</label>
+            <input type="text" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <script>
+    // Define the buttons and form fields
+    const parentButton = document.getElementById('parentButton');
+    const schoolButton = document.getElementById('schoolButton');
+    const medicalButton = document.getElementById('medicalButton');
+    
+    const parentForm = document.getElementById('parentForm');
+    const schoolForm = document.getElementById('schoolForm');
+    const medicalForm = document.getElementById('medicalForm');
+
+    // Function to show the correct form
+    function toggleForm(formToShow) {
+      parentForm.classList.add('hidden');
+      schoolForm.classList.add('hidden');
+      medicalForm.classList.add('hidden');
+      
+      formToShow.classList.remove('hidden');
+    }
+
+    // Event listeners for the buttons
+    parentButton.addEventListener('click', () => {
+      toggleForm(parentForm);
+      // Optional: Add button active class toggle
+      parentButton.classList.add('bg-green-500', 'text-white');
+      schoolButton.classList.remove('bg-green-500', 'text-white');
+      medicalButton.classList.remove('bg-green-500', 'text-white');
+    });
+
+    schoolButton.addEventListener('click', () => {
+      toggleForm(schoolForm);
+      // Optional: Add button active class toggle
+      schoolButton.classList.add('bg-green-500', 'text-white');
+      parentButton.classList.remove('bg-green-500', 'text-white');
+      medicalButton.classList.remove('bg-green-500', 'text-white');
+    });
+
+    medicalButton.addEventListener('click', () => {
+      toggleForm(medicalForm);
+      // Optional: Add button active class toggle
+      medicalButton.classList.add('bg-green-500', 'text-white');
+      parentButton.classList.remove('bg-green-500', 'text-white');
+      schoolButton.classList.remove('bg-green-500', 'text-white');
+    });
+
+    // Set default form to display
+    toggleForm(parentForm);
+    parentButton.classList.add('bg-green-500', 'text-white');
+  </script>
+
 </body>
 </html>
