@@ -36,5 +36,6 @@ public class UserService implements UserDetailsService {  // Implement UserDetai
     }
 
     public void registerNewUserAccount(@Valid UserRegistrationDto userDto) {
+        
     }
 }

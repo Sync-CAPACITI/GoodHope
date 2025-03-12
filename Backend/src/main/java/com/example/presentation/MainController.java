@@ -4,50 +4,41 @@ import com.example.dto.UserRegistrationDto;
 import com.example.business.service.UserService;
 import com.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000") // Allow requests from React app
 public class MainController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        System.out.println("User object added to model: " + user);
-        return "login";
+    // Login endpoint
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        System.out.println("User attempting login: " + user.getEmail());
+        // Authentication logic here (e.g., checking username/password)
+        return ResponseEntity.ok("User logged in successfully!");
     }
-    
 
-    // Show the registration form
+    // Show registration form (not needed for React, but keeping it as an API)
     @GetMapping("/registration")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new UserRegistrationDto());
-        return "registration";
+    public ResponseEntity<?> getRegistrationForm() {
+        return ResponseEntity.ok("Send user data via POST to register.");
     }
 
     // Handle user registration
     @PostMapping("/registration")
-    public String registerUser(@ModelAttribute("user") @Valid UserRegistrationDto userDto, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "registration";
-        }
-
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegistrationDto userDto) {
         try {
             userService.registerNewUserAccount(userDto);
-            model.addAttribute("successMessage", "User successfully registered!");
+            return ResponseEntity.ok("User successfully registered!");
         } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
-        return "registration";
     }
 }
