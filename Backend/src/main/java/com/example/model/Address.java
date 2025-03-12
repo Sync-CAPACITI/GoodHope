@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 
 
 @Entity
+@Data
+
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

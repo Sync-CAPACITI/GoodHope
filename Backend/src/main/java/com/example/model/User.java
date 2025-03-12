@@ -1,13 +1,16 @@
 package com.example.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Setter;
+
+import lombok.*;
 
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
-@Table(name = "Users")
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
@@ -18,12 +21,20 @@ public class User {
     private Integer userId;
 
     @Setter
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String phoneNumber;
-    private String address;
+
+
+    @Column(nullable = false)
     private  String password;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;  // Enum for the role (Admin, Caregiver, Medical Practitioner, School, Guardian)
 
@@ -33,51 +44,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Payment> payments;
 
-    public String getPassword() {
-        return this.password;
-    }
-
-    public enum Role {
-        ADMIN, CAREGIVER, MEDICAL_PRACTITIONER, SCHOOL, GUARDIAN
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
+    public String getPassword() {
+        return password;
     }
 
     public Role getRole() {
         return role;
     }
 
-    public Address getAddressDetails() {
-        return addressDetails;
+    public enum Role {
+        ADMIN, CAREGIVER, MEDICAL_PRACTITIONER, SCHOOL, GUARDIAN
     }
 
-    public void setAddressDetails(Address addressDetails) {
-        this.addressDetails = addressDetails;
-    }
-
-    public List<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
-    }
 }

@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
+
 @Entity
 @DiscriminatorValue("GUARDIAN")// This will set the role of the Guardian when stored in the user table
 public class Guardian extends User {

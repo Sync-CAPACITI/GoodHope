@@ -3,42 +3,44 @@ package com.example.presentation;
 import com.example.dto.UserRegistrationDto;
 import com.example.business.service.UserService;
 import com.example.model.User;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000") // Allow requests from React app
 public class MainController {
 
     @Autowired
     private UserService userService;
 
-    // Login endpoint
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user) {
-        System.out.println("User attempting login: " + user.getEmail());
-        // Authentication logic here (e.g., checking username/password)
-        return ResponseEntity.ok("User logged in successfully!");
+        Optional<User> loggedInUser = userService.loginUser(user.getEmail(), user.getPassword());
+        if (loggedInUser.isPresent()) {
+            return ResponseEntity.ok("Login successful!");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 
-    // Show registration form (not needed for React, but keeping it as an API)
-    @GetMapping("/registration")
-    public ResponseEntity<?> getRegistrationForm() {
-        return ResponseEntity.ok("Send user data via POST to register.");
-    }
 
     // Handle user registration
-    @PostMapping("/registration")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegistrationDto userDto) {
         try {
+            System.out.println("Registering user: " + userDto.getEmail());  // Debugging log
             userService.registerNewUserAccount(userDto);
             return ResponseEntity.ok("User successfully registered!");
         } catch (Exception e) {
+            System.err.println("Error registering user: " + e.getMessage());  // Debugging log
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+    
 }

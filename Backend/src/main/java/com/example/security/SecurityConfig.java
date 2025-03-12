@@ -4,8 +4,10 @@ import com.example.business.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,47 +22,27 @@ public class SecurityConfig {
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    private UserService userService; // Implements UserDetailsService
+    @Lazy
+    private UserService userService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/registration").permitAll() // Public pages
-                        .requestMatchers("/dashboard/school", "/dashboard/guardian").hasRole("SCHOOL_GUARDIAN")
-                        .requestMatchers("/dashboard/practitioner").hasRole("MEDICAL_PRACTITIONER")
-                        .anyRequest().authenticated() // Protect all other routes
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .successHandler((request, response, authentication) -> { 
-                            authentication.getAuthorities().forEach(grantedAuthority -> {
-                                try {
-                                    if (grantedAuthority.getAuthority().equals("ROLE_SCHOOL_GUARDIAN")) {
-                                        response.sendRedirect("/dashboard/school");
-                                    } else if (grantedAuthority.getAuthority().equals("ROLE_MEDICAL_PRACTITIONER")) {
-                                        response.sendRedirect("/dashboard/practitioner");
-                                    } else {
-                                        response.sendRedirect("/home");
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        })
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                )
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for development
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.disable()) // Allow H2 Console
-                );
+            .cors()  // Enable CORS globally
+            .and()
+            .authorizeRequests()
+                .requestMatchers("/h2-console/**").permitAll()  // H2 console access
+                .requestMatchers("/api/login", "/api/register").permitAll()  // Allow access to login and register
+                .anyRequest().authenticated()  // Secure other requests
+            .and()
+            .csrf().disable()  // Disable CSRF protection for stateless API
+            .headers().frameOptions().sameOrigin()  // Allow H2 console to load
+            .and()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Stateless API
+            .and()
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);  // JWT filter
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
