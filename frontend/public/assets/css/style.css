@@ -23984,6 +23984,7 @@ button {
     font-size: 20px;
     font-weight: 500;
     color: #000;
+    text-align: left;
     text-transform: capitalize; }
     .card-title--large {
       font-size: 1.5rem; }
