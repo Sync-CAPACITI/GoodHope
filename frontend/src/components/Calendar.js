@@ -9,11 +9,13 @@ import {
 import { createEventsServicePlugin } from '@schedule-x/events-service';
 import '@schedule-x/theme-default/dist/index.css';
 import '../css/calendar.css';
+import { createEventModalPlugin } from '@schedule-x/event-modal'
+import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop'
 
 function Calendar() {
   const eventsService = useState(() => createEventsServicePlugin())[0];
-  // const eventsModal = useState(() => createEvenModalPlugin())[0];
-  // const eventsDragAnddrop = useState(() => createDragAndDropPlugin())[0];
+  const eventsModal = createEventModalPlugin()
+  const eventsDragAnddrop =createDragAndDropPlugin();
 
 
   const calendar = useCalendarApp({
@@ -22,15 +24,16 @@ function Calendar() {
       {
         id: '1',
         title: 'Event 1',
-        start: '2025-03-11 06:00',
-        end: '2025-03-11 18:00',
+        start: '2025-03-11 13:21',
+        end: '2025-03-11 14:00',
+        description: 'This event was booked by Mosh'
       },
     ],
     selectedDate:  '2025-11-03',
     plugins: [
       eventsService,
-      // eventsModal,
-      // eventsDragAnddrop
+      eventsModal,
+      eventsDragAnddrop
     ],
   });
 
