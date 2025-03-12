@@ -115,7 +115,8 @@ function Register() {
         <div className="form-container">
           {selectedRole === 'parent' && (
             <form onSubmit={handleSubmit}>
-              <div className="text-left mb-3">
+            <div className="form-row">
+              <div className="form-field">
                 <label className="input-label">Full Name</label>
                 <input
                   type="text"
@@ -126,8 +127,8 @@ function Register() {
                   required
                 />
               </div>
-
-              <div className="text-left mb-3">
+          
+              <div className="form-field">
                 <label className="input-label">Child's Age</label>
                 <input
                   type="number"
@@ -139,8 +140,10 @@ function Register() {
                   min="1"
                 />
               </div>
-
-              <div className="text-left mb-3">
+            </div>
+          
+            <div className="form-row">
+              <div className="form-field">
                 <label className="input-label">Contact Number</label>
                 <input
                   type="tel"
@@ -152,8 +155,8 @@ function Register() {
                   pattern="^[0-9]{10}$"
                 />
               </div>
-
-              <div className="text-left mb-3">
+          
+              <div className="form-field">
                 <label className="input-label">Relationship to the Child</label>
                 <input
                   type="text"
@@ -164,8 +167,10 @@ function Register() {
                   required
                 />
               </div>
-
-              <div className="text-left mb-3">
+            </div>
+          
+            <div className="form-row">
+              <div className="form-field">
                 <label className="input-label">Preferred Schools (Public/Private)</label>
                 <select
                   name="parentSchoolType"
@@ -177,8 +182,8 @@ function Register() {
                   <option value="private">Private</option>
                 </select>
               </div>
-
-              <div className="text-left mb-3">
+          
+              <div className="form-field">
                 <label className="input-label">Number of Dependents</label>
                 <input
                   type="number"
@@ -190,8 +195,10 @@ function Register() {
                   min="1"
                 />
               </div>
-
-              <div className="text-left mb-3">
+            </div>
+          
+            <div className="form-row">
+              <div className="form-field">
                 <label className="input-label">Email</label>
                 <input
                   type="email"
@@ -202,8 +209,8 @@ function Register() {
                   required
                 />
               </div>
-
-              <div className="text-left mb-3">
+          
+              <div className="form-field">
                 <label className="input-label">Password</label>
                 <input
                   type="password"
@@ -219,11 +226,19 @@ function Register() {
                   </p>
                 )}
               </div>
-
-              <button type="submit" className="submit-button">
-                Register
-              </button>
-            </form>
+            </div>
+          
+            <button type="submit" className="submit-button">
+              Register
+            </button>
+          
+            <div className="mt-4 text-sm">
+              <p className="text-gray-700 dark:text-gray-300">
+                Already registered? <a href="/login" className="text-blue-500">Login here</a>
+              </p>
+            </div>
+          </form>
+          
           )}
 
           {selectedRole === 'school' && (
@@ -280,6 +295,11 @@ function Register() {
               <button type="submit" className="submit-button">
                 Register
               </button>
+              <div className="mt-4 text-sm">
+          <p className="text-gray-700 dark:text-gray-300">
+            Already registered? <a href="/login" className="text-blue-500">Login here</a>
+          </p>
+        </div>
             </form>
           )}
 
@@ -324,6 +344,11 @@ function Register() {
               <button type="submit" className="submit-button">
                 Register
               </button>
+              <div className="mt-4 text-sm">
+          <p className="text-gray-700 dark:text-gray-300">
+            Already registered? <a href="/login" className="text-blue-500">Login here</a>
+          </p>
+        </div>
             </form>
           )}
         </div>

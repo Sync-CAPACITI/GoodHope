@@ -48,6 +48,11 @@ function Login() {
           <button type="submit" className="submit-button">
             Login
           </button>
+          <div className="mt-4 text-sm">
+          <p className="text-gray-700 dark:text-gray-300">
+            Don't have an account register here  <a href="/register" className="text-blue-500">Register here</a>
+          </p>
+        </div>
         </form>
       </div>
     </div>

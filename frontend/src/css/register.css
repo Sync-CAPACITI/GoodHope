@@ -14,7 +14,7 @@
   .register-card {
     padding: 24px;
     width: 75%;
-    height: 70vh;
+    height: 85vh;
     background-color: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -88,6 +88,7 @@
     font-size: 0.875rem;
     color: #2d3748;
     transition: border 0.2s;
+    margin-top: 5px;
   }
   
   .input-field:focus {
@@ -120,4 +121,17 @@
   .submit-button:active {
     background-color: #2c5282; /* Darker blue */
   }
+
+  .form-row {
+    display: flex;
+    gap: 20px; /* Add space between fields */
+    margin-bottom: 20px;
+  }
+  
+  .form-field {
+    flex: 1;
+    min-width: 200px; /* Set minimum width if fields are too small */
+  }
+  
+
   
