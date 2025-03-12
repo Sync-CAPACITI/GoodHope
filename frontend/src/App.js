@@ -6,7 +6,7 @@ import Register from './pages/Register';
 import ParentDashboard from './pages/ParentDashboard';
 import SchoolDashboard from './pages/SchoolDashboard'; 
 import Home from './pages/Home'
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 function App() {
   return (
     <div className="App">
