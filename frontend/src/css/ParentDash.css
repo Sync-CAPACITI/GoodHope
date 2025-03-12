@@ -1,0 +1,210 @@
+/* Dashboard Container */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  font-family: "Arial", sans-serif;
+  background: #e8eaec;
+  color: #333;
+  margin-left: 5%; /* Set left margin to 20% */
+  margin-right: 5%; /* Set right margin to 20% */
+}
+/* Sidebar Navigation */
+.sidebar {
+  margin: 10px 0 20px 10px;
+  width: 300px; /* Increased sidebar width */
+  color: #1f3e72;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: fixed;
+  height: 95%;
+  border-radius: 34px;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 10px #aaaaaa, -5px -5px 10px #ffffff;
+}
+
+.brand-logo {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1f3e72;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.sidebar nav ul li:hover {
+  background-color: #1f3e72;
+  color: #fff;
+}
+
+/* Main Content */
+.dashboard-main {
+    margin-left: 300px; /* Maintain margin for sidebar */
+    flex-grow: 1;
+    padding: 20px;
+    width: calc(100% - 300px); /* Take into account the sidebar width */
+  }
+
+/* Header Section */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f3d72bd;
+  padding: 15px;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 5px 5px 10px #aaaaaa, -5px -5px 10px #ffffff;
+}
+
+.user-profile {
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: 0.3s ease;
+  border-radius: 34px;
+  background: #536a91;
+  box-shadow: 5px 5px 9px #3f516e, -5px -5px 9px #6783b4;
+  transition: transform 0.3s ease;
+}
+
+.user-profile:hover {
+  background: #fff;
+  color: #1f3d72bd;
+  transform: scale(1.1);
+}
+
+/* Dashboard Overview Section */
+.dashboard-overview {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.overview-card {
+  padding: 15px;
+  border-radius: 34px;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 10px #aaaaaa, -5px -5px 10px #ffffff;
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.overview-card:hover {
+  transform: translateY(-5px);
+}
+
+.overview-card:last-child {
+  margin-right: 0;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+  display: flex;
+  gap: 20px;
+}
+
+/* Appointments & Reviews Section */
+.appointments,
+.reviews {
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1;
+  border-radius: 34px;
+  background: #e0e0e0;
+  box-shadow: 5px 5px 10px #aaaaaa, -5px -5px 10px #ffffff;
+  font-size: 18px;
+}
+
+.appointments h2,
+.reviews h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.appointments ul {
+  list-style: none;
+  padding: 0;
+}
+
+.appointments ul li {
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.appointments button {
+  background-color: #1f3e72;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.appointments button:hover {
+  transform: scale(1.1);
+}
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .sidebar {
+      width: 240px; /* Adjusted width for mobile */
+    }
+  
+    .dashboard-main {
+      margin-left: 240px; /* Updated mobile margin */
+      width: calc(100% - 240px); /* Calculate remaining width for mobile */
+    }
+  
+    .dashboard-overview {
+      flex-direction: column;
+    }
+  
+    .overview-card {
+      margin-bottom: 10px;
+      margin-right: 0;
+    }
+  
+    .dashboard-content {
+      flex-direction: column;
+    }
+  .sidebar {
+    width: 240px; /* Adjusted width for mobile */
+  }
+
+  .dashboard-main {
+    margin-left: 240px; /* Updated mobile margin */
+    width: calc(100% - 240px); /* Calculate remaining width for mobile */
+  }
+
+  .dashboard-overview {
+    flex-direction: column;
+  }
+
+  .overview-card {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+
+  .dashboard-content {
+    flex-direction: column;
+  }
+}

@@ -8,10 +8,6 @@
     "@schedule-x/events-service": "^2.21.1",
     "@schedule-x/react": "^2.21.2",
     "@schedule-x/theme-default": "^2.21.1",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^13.5.0",
     "@syncfusion/ej2": "^19.4.48",
     "@syncfusion/ej2-react-calendars": "^19.4.48",
     "@syncfusion/ej2-react-charts": "^19.4.50",
@@ -22,10 +18,16 @@
     "@syncfusion/ej2-react-popups": "^19.4.52",
     "@syncfusion/ej2-react-richtexteditor": "^19.4.50",
     "@syncfusion/ej2-react-schedule": "^19.4.50",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^13.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.3.0",
     "react-scripts": "5.0.1",
+    "styled-components": "^6.1.15",
     "swiper": "^11.2.5",
     "web-vitals": "^2.1.4"
   },
@@ -53,7 +55,6 @@
       "last 1 safari version"
     ]
   },
-  
   "devDependencies": {
     "autoprefixer": "^10.4.2",
     "eslint": "^8.9.0",

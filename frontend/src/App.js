@@ -1,13 +1,15 @@
 
 import './App.css';
-import Calendar from './components/Calendar';
+import HealthCare from './pages/HealthCareAdmin';
+import ParentDashboard from './pages/Parentlanding/ParentDashboard';
+import LandingPage from './pages/UniversalLanding';
 
 function App() {
   return (
     <div className="App">
       
       <div>
-        <Calendar />
+        <ParentDashboard/>
       </div>
     </div>
   );
