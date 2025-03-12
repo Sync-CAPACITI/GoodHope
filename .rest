@@ -1,0 +1,8 @@
+
+
+### Login
+POST http://localhost:8080/api/login 
+{
+  "email": "user@example.com",
+  "password": "password123"
+}

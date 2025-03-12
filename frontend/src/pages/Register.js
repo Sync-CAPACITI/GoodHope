@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/Register.css'; // Importing the CSS file
+import '../css/register.css'; // Importing the CSS file
 
 function Register() {
   const [selectedRole, setSelectedRole] = useState('parent');
@@ -47,25 +47,42 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { registerEmail, registerPassword } = formData;
-
-    // Password validation
+  
+    // Validate password format
     if (!validatePassword(registerPassword)) {
       setPasswordError(true);
       return;
     } else {
       setPasswordError(false);
     }
-
+  
+    // Check if any required fields are missing
     const fields = Object.values(formData);
     if (fields.includes('') || fields.includes(null)) {
       alert('Please fill all required fields.');
       return;
     }
-
-    const dataToSend = { ...formData };
+  
+    const dataToSend = { ...formData, role: selectedRole };
+    console.log('Data to send:', dataToSend);
 
     try {
-      const response = await fetch('/api/register', {
+
+      const requiredFields = {
+        parent: ["parentName", "parentAge", "parentContact", "parentRelation", "parentSchoolType", "registerEmail", "registerPassword"],
+        school: ["schoolName", "schoolContact", "schoolType", "schoolLocation", "registerEmail", "registerPassword"],
+        medical: ["medicalProvider", "medicalContact", "medicalInsurance", "registerEmail", "registerPassword"]
+      };
+      
+      for (const field of requiredFields[selectedRole]) {
+        if (!formData[field]) {
+          alert(`Please fill in ${field.replace(/([A-Z])/g, " $1")}.`);
+          return;
+        }
+      }
+      
+
+      const response = await fetch('http://localhost:8080/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,18 +216,6 @@ function Register() {
           
             <div className="form-row">
               <div className="form-field">
-                <label className="input-label">Email</label>
-                <input
-                  type="email"
-                  name="registerEmail"
-                  value={formData.registerEmail}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
-          
-              <div className="form-field">
                 <label className="input-label">Password</label>
                 <input
                   type="password"
@@ -220,11 +225,12 @@ function Register() {
                   className="input-field"
                   required
                 />
-                {passwordError && (
-                  <p className="input-error">
-                    Password must be at least 8 characters, include an uppercase letter, a number, and a special character.
-                  </p>
-                )}
+                      {passwordError && (
+                        <p className="input-error">
+                          Password must be at least 8 characters, include an uppercase letter, a number, and a special character.
+                        </p>
+                      )}
+
               </div>
             </div>
           
