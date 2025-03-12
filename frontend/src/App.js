@@ -11,16 +11,16 @@ function App() {
   return (
     <div className="App">
 
-<BrowserRouter>
-    <Routes>
-    <Route path="/" element={<Home />} />  {/* Assuming you have a Home component */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/parentDashboard" element={<ParentDashboard />} />
-          <Route path="/schoolDashboard" element={<SchoolDashboard />} />
-          <Route path="/healthCareDashboard" element={<HealthCare />} />
-    </Routes>
-  </BrowserRouter>
+  <BrowserRouter>
+      <Routes>
+      <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/parentDashboard" element={<ParentDashboard />} />
+            <Route path="/schoolDashboard" element={<SchoolDashboard />} />
+            <Route path="/healthCareDashboard" element={<HealthCare />} />
+      </Routes>
+    </BrowserRouter>
       
       
     </div>
