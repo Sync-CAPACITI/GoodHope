@@ -86,3 +86,17 @@
     background-color: #2c5282; /* Darker blue */
   }
   
+  .forgot-password {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .forgot-password a {
+    color: #007bff; /* You can change this to your preferred blue */
+    text-decoration: none;
+  }
+  
+  .forgot-password a:hover {
+    text-decoration: underline;
+  }
+  

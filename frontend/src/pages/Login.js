@@ -42,12 +42,19 @@ function Login() {
               required
             />
           </div>
+        
 
           {error && <p className="input-error">{error}</p>}
 
           <button type="submit" className="submit-button">
             Login
           </button>
+                {/* Forgot Password Link */}
+        <div className="forgot-password">
+          <p className="text-sm">
+            <a href="/forgot-password" className="text-blue-500">Forgot Password?</a>
+          </p>
+        </div>
           <div className="mt-4 text-sm">
           <p className="text-gray-700 dark:text-gray-300">
             Don't have an account register here  <a href="/register" className="text-blue-500">Register here</a>
