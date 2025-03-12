@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../css/Register.css'; // Importing the CSS file
 
 function Register() {
   const [selectedRole, setSelectedRole] = useState('parent');
@@ -22,13 +23,13 @@ function Register() {
 
   const [passwordError, setPasswordError] = useState(false);
 
-  // Password validation function
+  // Function to validate password
   const validatePassword = (password) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return regex.test(password);
   };
 
-  // Handle form field changes
+  // Handle input changes and update the state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -47,7 +48,7 @@ function Register() {
     e.preventDefault();
     const { registerEmail, registerPassword } = formData;
 
-    // Check password validity
+    // Password validation
     if (!validatePassword(registerPassword)) {
       setPasswordError(true);
       return;
@@ -55,160 +56,272 @@ function Register() {
       setPasswordError(false);
     }
 
-    // Check if all required fields are filled
     const fields = Object.values(formData);
     if (fields.includes('') || fields.includes(null)) {
       alert('Please fill all required fields.');
       return;
     }
 
-    // Create an object with the data to send to the backend
     const dataToSend = { ...formData };
 
     try {
-      // Replace with your actual backend endpoint
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataToSend), // Send form data as JSON
+        body: JSON.stringify(dataToSend),
       });
 
       if (response.ok) {
-        // Handle successful registration
-        const result = await response.json(); // Parse the response (if any)
+        const result = await response.json();
         alert('Registration Successful! Redirecting to login...');
-        window.location.href = '/login'; // Redirect to login page after success
+        window.location.href = '/login';
       } else {
-        // Handle errors from the backend
         const errorData = await response.json();
         alert(`Error: ${errorData.message || 'Something went wrong'}`);
       }
     } catch (error) {
-      // Handle network or other errors
       alert(`Error: ${error.message}`);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="p-6 w-3/4 h-[70vh] mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg text-center">
-        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Register</h2>
-        <div className="flex justify-center mb-4">
+    <div className="register-container">
+      <div className="register-card">
+        <h2 className="register-title">Register</h2>
+
+        <div className="role-selection">
           <button
             onClick={() => handleRoleSelection('parent')}
-            className={`mx-1 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 ${selectedRole === 'parent' ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'}`}
+            className={`role-button ${selectedRole === 'parent' ? 'selected' : 'unselected'}`}
           >
             Parent
           </button>
           <button
             onClick={() => handleRoleSelection('school')}
-            className={`mx-1 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 ${selectedRole === 'school' ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'}`}
+            className={`role-button ${selectedRole === 'school' ? 'selected' : 'unselected'}`}
           >
             School
           </button>
           <button
             onClick={() => handleRoleSelection('medical')}
-            className={`mx-1 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 ${selectedRole === 'medical' ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'}`}
+            className={`role-button ${selectedRole === 'medical' ? 'selected' : 'unselected'}`}
           >
             Medical
           </button>
         </div>
 
-        <div className="border p-4 rounded-lg">
-          {/* Parent Form */}
+        <div className="form-container">
           {selectedRole === 'parent' && (
             <form onSubmit={handleSubmit}>
               <div className="text-left mb-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
+                <label className="input-label">Full Name</label>
                 <input
                   type="text"
                   name="parentName"
                   value={formData.parentName}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                  className="input-field"
                   required
                 />
               </div>
 
-              {/* Other Parent fields go here */}
-
-              {/* Email and Password */}
               <div className="text-left mb-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                <label className="input-label">Child's Age</label>
+                <input
+                  type="number"
+                  name="parentAge"
+                  value={formData.parentAge}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                  min="1"
+                />
+              </div>
+
+              <div className="text-left mb-3">
+                <label className="input-label">Contact Number</label>
+                <input
+                  type="tel"
+                  name="parentContact"
+                  value={formData.parentContact}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                  pattern="^[0-9]{10}$"
+                />
+              </div>
+
+              <div className="text-left mb-3">
+                <label className="input-label">Relationship to the Child</label>
+                <input
+                  type="text"
+                  name="parentRelation"
+                  value={formData.parentRelation}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                />
+              </div>
+
+              <div className="text-left mb-3">
+                <label className="input-label">Preferred Schools (Public/Private)</label>
+                <select
+                  name="parentSchoolType"
+                  value={formData.parentSchoolType}
+                  onChange={handleChange}
+                  className="input-field"
+                >
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+
+              <div className="text-left mb-3">
+                <label className="input-label">Number of Dependents</label>
+                <input
+                  type="number"
+                  name="parentDependents"
+                  value={formData.parentDependents}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                  min="1"
+                />
+              </div>
+
+              <div className="text-left mb-3">
+                <label className="input-label">Email</label>
                 <input
                   type="email"
                   name="registerEmail"
                   value={formData.registerEmail}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                  className="input-field"
                   required
                 />
               </div>
 
               <div className="text-left mb-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                <label className="input-label">Password</label>
                 <input
                   type="password"
                   name="registerPassword"
                   value={formData.registerPassword}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                  className="input-field"
                   required
                 />
                 {passwordError && (
-                  <p className="text-red-500 text-xs mt-1">Password must be at least 8 characters, include an uppercase letter, a number, and a special character.</p>
+                  <p className="input-error">
+                    Password must be at least 8 characters, include an uppercase letter, a number, and a special character.
+                  </p>
                 )}
               </div>
 
-              <button type="submit" className="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button type="submit" className="submit-button">
                 Register
               </button>
             </form>
           )}
 
-          {/* School Form */}
           {selectedRole === 'school' && (
             <form onSubmit={handleSubmit}>
               <div className="text-left mb-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">School Name</label>
+                <label className="input-label">School Name</label>
                 <input
                   type="text"
                   name="schoolName"
                   value={formData.schoolName}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                  className="input-field"
                   required
                 />
               </div>
 
-              {/* Other School fields go here */}
+              <div className="text-left mb-3">
+                <label className="input-label">Contact Number</label>
+                <input
+                  type="tel"
+                  name="schoolContact"
+                  value={formData.schoolContact}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                />
+              </div>
 
-              <button type="submit" className="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <div className="text-left mb-3">
+                <label className="input-label">School Type</label>
+                <select
+                  name="schoolType"
+                  value={formData.schoolType}
+                  onChange={handleChange}
+                  className="input-field"
+                >
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+
+              <div className="text-left mb-3">
+                <label className="input-label">Location</label>
+                <input
+                  type="text"
+                  name="schoolLocation"
+                  value={formData.schoolLocation}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                />
+              </div>
+
+              <button type="submit" className="submit-button">
                 Register
               </button>
             </form>
           )}
 
-          {/* Medical Form */}
           {selectedRole === 'medical' && (
             <form onSubmit={handleSubmit}>
               <div className="text-left mb-3">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Medical Provider</label>
+                <label className="input-label">Medical Provider Name</label>
                 <input
                   type="text"
                   name="medicalProvider"
                   value={formData.medicalProvider}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                  className="input-field"
                   required
                 />
               </div>
 
-              {/* Other Medical fields go here */}
+              <div className="text-left mb-3">
+                <label className="input-label">Contact Number</label>
+                <input
+                  type="tel"
+                  name="medicalContact"
+                  value={formData.medicalContact}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                />
+              </div>
 
-              <button type="submit" className="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <div className="text-left mb-3">
+                <label className="input-label">Medical Insurance Number</label>
+                <input
+                  type="text"
+                  name="medicalInsurance"
+                  value={formData.medicalInsurance}
+                  onChange={handleChange}
+                  className="input-field"
+                  required
+                />
+              </div>
+
+              <button type="submit" className="submit-button">
                 Register
               </button>
             </form>
