@@ -1,6 +1,78 @@
 import Calendar from '../components/Calendar';
+import React, { useEffect } from 'react';
 
 function HealthCare(){
+    useEffect(() => {
+    // Dynamically add CSS files
+    const linkNiceSelect = document.createElement('link');
+    linkNiceSelect.rel = 'stylesheet';
+    linkNiceSelect.href = '/assets/vendor/jquery-nice-select/css/nice-select.css';
+    document.head.appendChild(linkNiceSelect);
+
+    const linkNoUiSlider = document.createElement('link');
+    linkNoUiSlider.rel = 'stylesheet';
+    linkNoUiSlider.href = '/assets/vendor/nouislider/nouislider.min.css';
+    document.head.appendChild(linkNoUiSlider);
+
+    const linkStyle = document.createElement('link');
+    linkStyle.rel = 'stylesheet';
+    linkStyle.href = '/assets/css/style.css';
+    document.head.appendChild(linkStyle);
+
+    // Dynamically add JavaScript files
+    const scriptGlobal = document.createElement('script');
+    scriptGlobal.src = '/assets/vendor/global/global.min.js';
+    document.body.appendChild(scriptGlobal);
+
+    const scriptChart = document.createElement('script');
+    scriptChart.src = '/assets/vendor/chart.js/Chart.bundle.min.js';
+    document.body.appendChild(scriptChart);
+
+    const scriptNiceSelect = document.createElement('script');
+    scriptNiceSelect.src = '/assets/vendor/jquery-nice-select/js/jquery.nice-select.min.js';
+    document.body.appendChild(scriptNiceSelect);
+
+    const scriptApexChart = document.createElement('script');
+    scriptApexChart.src = '/assets/vendor/apexchart/apexchart.js';
+    document.body.appendChild(scriptApexChart);
+
+    const scriptNoUiSlider = document.createElement('script');
+    scriptNoUiSlider.src = '/assets/vendor/nouislider/nouislider.min.js';
+    document.body.appendChild(scriptNoUiSlider);
+
+    const scriptDlabNavInit = document.createElement('script');
+    scriptDlabNavInit.src = '/assets/js/dlabnav-init.js';
+    document.body.appendChild(scriptDlabNavInit);
+
+    const scriptDemo = document.createElement('script');
+    scriptDemo.src = '/assets/js/demo.js';
+    document.body.appendChild(scriptDemo);
+
+    const scriptStyleSwitcher = document.createElement('script');
+    scriptStyleSwitcher.src = '/assets/js/styleSwitcher.js';
+    document.body.appendChild(scriptStyleSwitcher);
+
+    const scriptCustom = document.createElement('script');
+    scriptCustom.src = '/assets/js/custom.min.js';
+    document.body.appendChild(scriptCustom);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(linkNiceSelect);
+      document.head.removeChild(linkNoUiSlider);
+      document.head.removeChild(linkStyle);
+
+      document.body.removeChild(scriptGlobal);
+      document.body.removeChild(scriptChart);
+      document.body.removeChild(scriptNiceSelect);
+      document.body.removeChild(scriptApexChart);
+      document.body.removeChild(scriptNoUiSlider);
+      document.body.removeChild(scriptDlabNavInit);
+      document.body.removeChild(scriptDemo);
+      document.body.removeChild(scriptStyleSwitcher);
+      document.body.removeChild(scriptCustom);
+    };
+  }, []);
     return (
         <div classNameName='HealthCare'>
 
