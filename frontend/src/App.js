@@ -4,6 +4,7 @@ import Calendar from './components/Calendar';
 import Footer from './components/common/footer/footer';
 import Header from './components/common/header/Header';
 import Hero from './components/common/hero/Hero';
+import TopRated from './components/topRated/TopRated';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <Hero/>
         <Calendar />
         <Footer/>
+        <TopRated/>
+
       </div>
     </div>
   );
