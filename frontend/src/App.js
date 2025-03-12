@@ -1,23 +1,11 @@
-
-import './App.css';
-import Calendar from './components/Calendar';
-import Footer from './components/common/footer/footer';
-import Header from './components/common/header/Header';
-import Hero from './components/common/hero/Hero';
-import TopRated from './components/topRated/TopRated';
+import "./App.css";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <div className="App">
+      <LandingPage />
       
-      <div>
-        <Header/>
-        <Hero/>
-        <Calendar />
-        <Footer/>
-        <TopRated/>
-
-      </div>
     </div>
   );
 }
