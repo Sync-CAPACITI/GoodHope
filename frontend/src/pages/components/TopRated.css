@@ -1,0 +1,41 @@
+/* src/TopRatedSchools.css */
+.top-rated-schools {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff; /* background of the section */
+  border-radius: 10px;
+  box-shadow: 10px 10px 20px #c8c8c8,
+              -10px -10px 20px #ffffff; /* Neumorphic style */
+}
+
+.top-rated-schools h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between cards */
+}
+
+.school-card {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px #c8c8c8,
+              -5px -5px 10px #ffffff; /* Neumorphic style */
+  transition: transform 0.3s ease;
+}
+
+.school-card:hover {
+  transform: translateY(-3px); /* Lift effect on hover */
+}
+
+.school-card h3 {
+  margin: 0;
+  font-weight: normal;
+  color: #555;
+}
