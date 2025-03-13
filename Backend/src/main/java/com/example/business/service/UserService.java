@@ -1,7 +1,11 @@
 package com.example.business.service;
 
 import com.example.data.repository.UserRepository;
+import com.example.data.repository.SchoolRepository;
+import com.example.dto.RegisterSchoolDto;
 import com.example.dto.UserRegistrationDto;
+import com.example.model.Address;
+import com.example.model.School;
 import com.example.model.User;
 
 import lombok.Data;
@@ -21,6 +25,9 @@ public class UserService implements UserDetailsService {  // Implement UserDetai
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private SchoolRepository schoolRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -52,6 +59,22 @@ public class UserService implements UserDetailsService {  // Implement UserDetai
     }
 
     public void registerNewUserAccount(@Valid UserRegistrationDto userDto) {
-        // Implementation for registration
+
+    }
+
+    public void registerNewSchoolAccount(@Valid RegisterSchoolDto userDto) {
+    School school = new School();
+
+    school.setEmail(userDto.getSchoolEmail());
+    school.setPassword(userDto.getSchoolPassword());
+    school.setRole(User.Role.SCHOOL);
+    school.setName(userDto.getSchoolName());
+    school.setContactNumber(userDto.getContactNumber());
+    school.setSchoolType(userDto.getSchoolType());
+    school.setAddressDetails(userDto.getAddress());
+
+    schoolRepository.save(school);
+
     }
 }
+

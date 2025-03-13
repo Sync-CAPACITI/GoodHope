@@ -1,8 +1,6 @@
 package com.example.model;
 import jakarta.persistence.*;
-import lombok.Data;
 
-@Data
 @Entity
 @DiscriminatorValue("MEDICAL_PRACTITIONER")
 public class MedicalPractitioner extends User {

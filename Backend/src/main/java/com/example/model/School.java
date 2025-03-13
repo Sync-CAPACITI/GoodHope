@@ -21,12 +21,8 @@ public class School extends User {
     @Column(nullable = false)
     private String schoolType;  // Public / Private
 
-    @Column(nullable = false)
-    private String location;
-
-
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MedicalPractitioner> affiliatedMedicalPractitioners;
     
-    // Getters and Setters
+
 }
