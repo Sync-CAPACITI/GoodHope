@@ -9,7 +9,8 @@ function App() {
     <div className="App">
       
       <div>
-        <ParentDashboard/>
+        {/* <ParentDashboard/> */}
+        <LandingPage/>
       </div>
     </div>
   );
