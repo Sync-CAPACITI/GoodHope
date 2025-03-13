@@ -9,8 +9,8 @@ function App() {
     <div className="App">
       
       <div>
-        {/* <ParentDashboard/> */}
-        <LandingPage/>
+        <ParentDashboard/>
+        {/* <LandingPage/> */}
       </div>
     </div>
   );

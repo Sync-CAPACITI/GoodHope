@@ -3,6 +3,7 @@ import "../../css/ParentDash.css";
 import SpecialNeedsForm from "./AddChild";
 import AppointmentForm from "../components/common/hero/Appointments";
 import SearchSchool from "./SearchSchool";
+import ControlledCarousel, { CarouseReviews } from "./Reviews";
 
 
 function ParentDashboard() {
@@ -57,6 +58,7 @@ function ParentDashboard() {
         {/* <SpecialNeedsForm/> */}
         {/* <AppointmentForm/> */}
         <SearchSchool/>
+        <CarouseReviews/>
       </main>
     </div>
   );
