@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/StudentInfo.css'; // Importing a CSS file for styling
+import '../css/School/StudentInfo.css'; // Importing a CSS file for styling
 
 // Sample data for illustration
 const studentData = {
@@ -85,7 +85,7 @@ function StudentInfo() {
 
         {showEnrollmentStatus && (
           <section>
-            <h3>Student Enrollment Status</h3>
+            <h3>Student Enrollment</h3>
             <p>Grade 1: {studentData.enrollmentStatus.grade1} students</p>
             <p>Grade 2: {studentData.enrollmentStatus.grade2} students</p>
             <p>Grade 3: {studentData.enrollmentStatus.grade3} students</p>
@@ -113,7 +113,7 @@ function StudentInfo() {
 
         {showBehavior && (
           <section>
-            <h3>Student Behavior</h3>
+            <h3>Overall Student Behavior</h3>
             <ul>
               {studentData.behaviorLogs.map((log, index) => (
                 <li key={index}>

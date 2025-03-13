@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
+import Home from './Home';  // Import Home Component
 import StudentInfo from './StudentInfo';
 import Reports from './Reports';
 import ContactDetails from './ContactDetails';
@@ -8,7 +9,7 @@ import ParentDetails from './ParentDetails';
 import Events from './Events';
 
 function Dashboard() {
-  const [activeTab, setActiveTab] = useState('student-info');
+  const [activeTab, setActiveTab] = useState('home'); // Default to home tab
 
   return (
     <div className="dashboard">
@@ -40,13 +41,13 @@ function Dashboard() {
           <Nav.Link eventKey="parent-details">Guardians</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="events">Events</Nav.Link>
+          <Nav.Link eventKey="events">Announcements & Events</Nav.Link>
         </Nav.Item>
       </Nav>
 
       {/* Conditionally render the active tab content */}
       <div className="tab-content">
-        {activeTab === 'home' && <div>Welcome to the Dashboard! This is the home section.</div>}
+        {activeTab === 'home' && <Home />} {/* Home tab with Notifications */}
         {activeTab === 'student-info' && <StudentInfo />}
         {activeTab === 'reports' && <Reports />}
         {activeTab === 'contact-details' && <ContactDetails />}
