@@ -63,18 +63,19 @@ public class UserService implements UserDetailsService {  // Implement UserDetai
     }
 
     public void registerNewSchoolAccount(@Valid RegisterSchoolDto userDto) {
-    School school = new School();
-
-    school.setEmail(userDto.getSchoolEmail());
-    school.setPassword(userDto.getSchoolPassword());
-    school.setRole(User.Role.SCHOOL);
-    school.setName(userDto.getSchoolName());
-    school.setContactNumber(userDto.getContactNumber());
-    school.setSchoolType(userDto.getSchoolType());
-    school.setAddressDetails(userDto.getAddress());
-
-    schoolRepository.save(school);
-
+        School school = new School();
+    
+        school.setEmail(userDto.getSchoolEmail());
+        school.setPassword(passwordEncoder.encode(userDto.getSchoolPassword())); // Ensure password is encoded
+        school.setRole(User.Role.SCHOOL); // If you have different roles for different types of users
+        school.setSchoolName(userDto.getSchoolName());
+        school.setContactNumber(userDto.getContactNumber());
+        school.setSchoolType(userDto.getSchoolType());
+        school.setAddressDetails(userDto.getAddress()); // Make sure the Address is handled correctly
+    
+        schoolRepository.save(school);
     }
+    
+
 }
 

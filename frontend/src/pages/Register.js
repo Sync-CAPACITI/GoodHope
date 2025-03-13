@@ -75,42 +75,39 @@ function Register() {
     setError(''); // Reset error state
 
     const schoolData = {
-      schoolName,
-      schoolContact,
-      schoolEmail,
-      schoolType,
-      schoolPassword,
-      schoolLocation
+        schoolName,
+        schoolContact,
+        schoolEmail,
+        schoolType,
+        schoolPassword,
+        schoolLocation
     };
-
 
     try {
 
-      // const response = await fetch('http://localhost:8080/api/register/school', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ schoolName, schoolContact, schoolEmail,schoolType, schoolPassword, schoolLocation }),
-      // });
-      const token = localStorage.getItem("token");
-      const response = await axios.post('http://localhost:8080/api/register/school', schoolData,
-        {
-          headers: { 'Authorization': `Bearer ${token}` },
+
+        const response = await fetch('http://localhost:8080/api/register/school', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                
+            },
+            body: JSON.stringify(schoolData), // Use schoolData here instead of creating a new object
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("School registered successfully:", data);
+        } else {
+            const errorData = await response.json();
+            setError(errorData.message || "Error registering school.");
         }
-      );
-
-      if (response.status === 200) {
-        // Successfully registered
-        console.log('Registration successful:', response.data);
-      }
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Register failed');
 
     } catch (error) {
-      setError(error.message);
-  
+        setError(error.message);
     }
-  };
+};
+
 
     // Handle form submission
     const handleGuardianSubmit = async (e) => {

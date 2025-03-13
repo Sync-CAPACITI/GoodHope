@@ -14,73 +14,35 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-// @Configuration
-// public class SecurityConfig {
- 
-//     @Bean
-//     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//             .csrf(csrf -> csrf.disable())
-//             .authorizeHttpRequests(auth -> auth
-//             .requestMatchers("/h2-console/**").permitAll()
-//             .requestMatchers("/api/register/school","/api/register/guardian","/api/register/parent", "/api/auth/login").permitAll() // Public
-//             .anyRequest().authenticated()
-            
-//             )
-//             .httpBasic();
-//         return http.build();
-//     }
-   
-//     @Bean
-//     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//         return authenticationConfiguration.getAuthenticationManager();
-//     }
- 
-//     @Bean
-//     public PasswordEncoder passwordEncoder() {
-//         return new BCryptPasswordEncoder();
-//     }
- 
-//     @Bean
-//     public CorsConfigurationSource corsConfigurationSource() {
-//         CorsConfiguration configuration = new CorsConfiguration();
-//         configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Allow frontend origin
-//         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-//         configuration.setAllowCredentials(true);
- 
-//         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//         source.registerCorsConfiguration("/**", configuration);
-//         return source;
-//     }
-// }
-
 @Configuration
 public class SecurityConfig {
- 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/h2-console/**").permitAll()
-            .requestMatchers("/api/register/school","/api/register/guardian","/api/register/parent", "/api/auth/login").permitAll() 
-                .anyRequest().authenticated()
+        http.csrf().disable()  // Disable CSRF for now (you can refine this later)
+            .authorizeHttpRequests(authorizeRequests ->
+                authorizeRequests
+                    .requestMatchers("/api/register/**").permitAll()  // Allow registration endpoints
+                    .requestMatchers("/h2-console/**").permitAll()  // Allow H2 console access
+                   // .requestMatchers("/api/register/school", "/api/register/guardian", "/api/register/parent", "/api/auth/login").permitAll()  // Allow public access
+                    .anyRequest().authenticated()  // Authenticate other requests
             )
-            .httpBasic();
+            .formLogin().disable()  // Disable form login completely (no login page required)
+            .httpBasic().disable(); // Disable HTTP Basic authentication completely
+
         return http.build();
     }
-   
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
- 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
- 
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -88,7 +50,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
- 
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
