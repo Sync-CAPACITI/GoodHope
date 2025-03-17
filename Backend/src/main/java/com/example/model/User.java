@@ -29,13 +29,14 @@ public abstract class User {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Column(nullable = true)
+    private String username; 
 
     @Column(nullable = false)
     private  String password;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;  // Enum for the role (Admin, Caregiver, Medical Practitioner, School, Guardian)
+    private String role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Address addressDetails;
@@ -44,8 +45,5 @@ public abstract class User {
     private List<Payment> payments;
 
 
-    public enum Role {
-        ADMIN, CAREGIVER, MEDICAL_PRACTITIONER, SCHOOL, GUARDIAN
-    }
 
 }

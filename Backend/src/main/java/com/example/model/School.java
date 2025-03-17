@@ -1,8 +1,8 @@
 package com.example.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.util.List;
+import lombok.*;
 
 @Getter
 @Setter
@@ -12,11 +12,11 @@ import java.util.List;
 @DiscriminatorValue("SCHOOL")
 public class School extends User {
 
-    @Column(nullable = false)
-    private String schoolName;
+    // @Column(nullable = false)
+    // private String schoolName;
 
-    @Column(nullable = false)
-    private String contactNumber;
+    // @Column(nullable = false)
+    // private String contactNumber;
 
     @Column(nullable = false)
     private String schoolType;  // Public / Private

@@ -1,14 +1,11 @@
 package com.example.business.service;
 
-import com.example.data.repository.UserRepository;
 import com.example.data.repository.SchoolRepository;
+import com.example.data.repository.UserRepository;
 import com.example.dto.RegisterSchoolDto;
-import com.example.dto.UserRegistrationDto;
-import com.example.model.Address;
 import com.example.model.School;
 import com.example.model.User;
-
-import lombok.Data;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,12 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
-import java.util.Optional;
 
-@Data
 @Service
-public class UserService implements UserDetailsService {  // Implement UserDetailsService
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -31,7 +25,6 @@ public class UserService implements UserDetailsService {  // Implement UserDetai
 
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public UserService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
@@ -44,9 +37,9 @@ public class UserService implements UserDetailsService {  // Implement UserDetai
         }
 
         return org.springframework.security.core.userdetails.User.builder()
-                .username(user.get().getEmail()) // Set email as username
-                .password(user.get().getPassword()) // Password should be encoded
-                .roles(user.get().getRole().name()) // Use stored role
+                .username(user.get().getEmail())
+                .password(user.get().getPassword())
+                .roles(user.get().getRole())
                 .build();
     }
 
@@ -57,25 +50,18 @@ public class UserService implements UserDetailsService {  // Implement UserDetai
         }
         return Optional.empty();
     }
-
-    public void registerNewUserAccount(@Valid UserRegistrationDto userDto) {
-
-    }
-
-    public void registerNewSchoolAccount(@Valid RegisterSchoolDto userDto) {
+    
+    public void registerNewSchoolAccount(RegisterSchoolDto userDto) {
         School school = new School();
-    
         school.setEmail(userDto.getSchoolEmail());
-        school.setPassword(passwordEncoder.encode(userDto.getSchoolPassword())); // Ensure password is encoded
-        school.setRole(User.Role.SCHOOL); // If you have different roles for different types of users
-        school.setSchoolName(userDto.getSchoolName());
-        school.setContactNumber(userDto.getContactNumber());
+        school.setPassword(passwordEncoder.encode(userDto.getSchoolPassword()));
+        school.setRole("School");
+        school.setName(userDto.getSchoolName());
+        school.setPhoneNumber(userDto.getContactNumber());
         school.setSchoolType(userDto.getSchoolType());
-        school.setAddressDetails(userDto.getAddress()); // Make sure the Address is handled correctly
-    
+        school.setAddressDetails(userDto.getSchoolAddress());
         schoolRepository.save(school);
     }
-    
-
 }
+
 

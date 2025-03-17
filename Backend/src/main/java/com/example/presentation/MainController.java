@@ -1,19 +1,16 @@
 package com.example.presentation;
 
-import com.example.business.service.SchoolService;
-import com.example.dto.RegisterSchoolDto;
-import com.example.dto.UserRegistrationDto;
-import com.example.model.School;
-import com.example.model.User;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.business.service.SchoolService;
+import com.example.dto.RegisterSchoolDto;
+import com.example.model.School;
 
 
 
@@ -28,14 +25,17 @@ public class MainController {
     @PostMapping("/school")
     public ResponseEntity<String> registerSchool(@RequestBody @Validated RegisterSchoolDto registerSchoolDto) {
         try {
+            
             // Convert the DTO to the School entity
             School school = new School();
-            school.setSchoolName(registerSchoolDto.getSchoolName());
-            school.setContactNumber(registerSchoolDto.getContactNumber());
+            school.setName(registerSchoolDto.getSchoolName());
+            school.setPhoneNumber(registerSchoolDto.getContactNumber());
             school.setEmail(registerSchoolDto.getSchoolEmail());
+            school.setRole("School");
+            
             school.setSchoolType(registerSchoolDto.getSchoolType());
             school.setPassword(registerSchoolDto.getSchoolPassword());
-            school.setAddressDetails(registerSchoolDto.getAddress()); // Assuming the DTO has an address
+            school.setAddressDetails(registerSchoolDto.getSchoolAddress()); // Assuming the DTO has an address
 
             // Save the school using the service
             schoolService.registerSchool(school);

@@ -29,6 +29,6 @@ public class RegisterSchoolDto {
     private String schoolPassword;
 
     @NotEmpty(message = "Address is required")
-    private Address address;
+    private Address schoolAddress;
 
 }

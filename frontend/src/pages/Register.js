@@ -16,7 +16,7 @@ function Register() {
     schoolName: '',
     schoolContact: '',
     schoolType: 'public',
-    schoolLocation: '',
+    schoolAddress: '',
     medicalProvider: '',
     medicalContact: '',
     medicalInsurance: ''
@@ -25,11 +25,20 @@ function Register() {
   const [passwordError, setPasswordError] = useState(false);
 
   const [schoolName, setSchoolName] = useState('');
-  const [schoolContact, setSchoolContact] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
   const [schoolType, setSchoolType] = useState('');
-  const [schoolLocation, setSchoolLocation] = useState('');
+  const [schoolAddress, setSchoolAddress] = useState('');
   const [schoolEmail, setSchoolEmail] = useState('');
   const [schoolPassword, setSchoolPassword] = useState('');
+  const [addressPopupVisible, setAddressPopupVisible] = useState(false);
+  const [address, setAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+  });
+
 
   // Medical
   const [medicalName, setMedicalName] = useState('');
@@ -45,7 +54,7 @@ function Register() {
   const [prefferedSchool, setPrefferedSchool] = useState('');
   const [numberOfDependents, setNumberOfdependants] = useState('');
   const [password, setPassword] = useState('');
-  
+  const schoolOptions = ['Private', 'Public'];
   const [error, setError] = useState('');
   // const navigate = useNavigate(); // Navigation hook
 
@@ -69,69 +78,93 @@ function Register() {
     setSelectedRole(role);
   };
 
-  // Handle form submission
+  //   const getCsrfToken = () => {
+  //     // Extract the CSRF token from the browser cookies
+  //     const csrfToken = document.cookie.split(';')
+  //         .find(cookie => cookie.trim().startsWith('XSRF-TOKEN='))
+  //         ?.split('=')[1];  // Get the CSRF token value
+  //     return csrfToken;
+  // };
+
+//
+const handleAddressChange = (e) => {
+  const { name, value } = e.target;
+  setAddress((prevState) => ({ ...prevState, [name]: value }));
+};
+
+const handleAddressSubmit = () => {
+  setSchoolAddress(`${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`);
+  setAddressPopupVisible(false);
+};
+
+
+  // Handle form submission school
   const handleSchoolSubmit = async (e) => {
     e.preventDefault();
     setError(''); // Reset error state
 
     const schoolData = {
-        schoolName,
-        schoolContact,
-        schoolEmail,
-        schoolType,
-        schoolPassword,
-        schoolLocation
+      schoolName,
+      contactNumber,
+      schoolEmail,
+      schoolType,
+      schoolPassword,
+      schoolAddress: {
+        street: address.street,
+        city: address.city,
+        state: address.state,
+        postalCode: address.postalCode,
+        country: address.country,
+      },
     };
+
+
+    try {
+      // Make the POST request to the backend
+      const response = await axios.post('http://localhost:8080/api/register/school', schoolData, {
+        headers: {
+          'Content-Type': 'application/json',
+          // 'X-XSRF-TOKEN': csrfToken, // If you're using CSRF protection
+        }
+        // withCredentials: true  // Uncomment if you need credentials sent with the request
+      });
+  
+      // If the request is successful, handle the response data
+      console.log("School registered successfully:", response.data);
+      // You can perform any additional actions like redirecting or showing a success message
+  
+    } catch (error) {
+      // Catch any error from the request and set the error state
+      // axios automatically throws an error for non-2xx status codes
+      const errorMessage = error.response ? error.response.data.message || error.message : error.message;
+      setError(errorMessage);
+      console.error("Error registering school:", errorMessage);
+    }
+  };
+
+  // Handle form submission
+  const handleGuardianSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); // Reset error state
+
 
     try {
 
+      const response = await fetch('http://localhost:8080/api/register/guardian', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, age, contact, relationship, prefferedSchool, numberOfDependents, password }),
 
-        const response = await fetch('http://localhost:8080/api/register/school', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                
-            },
-            body: JSON.stringify(schoolData), // Use schoolData here instead of creating a new object
-        });
+      });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log("School registered successfully:", data);
-        } else {
-            const errorData = await response.json();
-            setError(errorData.message || "Error registering school.");
-        }
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Register failed');
 
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
+
     }
-};
-
-
-    // Handle form submission
-    const handleGuardianSubmit = async (e) => {
-      e.preventDefault();
-      setError(''); // Reset error state
-  
-  
-      try {
-  
-        const response = await fetch('http://localhost:8080/api/register/guardian', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name,age,contact,relationship,prefferedSchool,numberOfDependents,password}),
-          
-        });
-  
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message || 'Register failed');
-  
-      } catch (error) {
-        setError(error.message);
-    
-      }
-    };
+  };
 
   // Handle form submission
   const handleMedicalSubmit = async (e) => {
@@ -144,7 +177,7 @@ function Register() {
       const response = await fetch('http://localhost:8080/api/register/medical', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ medicalName, medicalContact,medicalInsurance,medicalEmail,medicalPassword }),
+        body: JSON.stringify({ medicalName, medicalContact, medicalInsurance, medicalEmail, medicalPassword }),
       });
 
       const data = await response.json();
@@ -152,7 +185,7 @@ function Register() {
 
     } catch (error) {
       setError(error.message);
-  
+
     }
   };
 
@@ -160,7 +193,6 @@ function Register() {
     <div className="register-container">
       <div className="register-card">
         <h2 className="register-title">Register</h2>
-
         <div className="role-selection">
           <button
             onClick={() => handleRoleSelection('parent')}
@@ -181,7 +213,6 @@ function Register() {
             Medical
           </button>
         </div>
-
 
         <div className="form-container">
           {/* --------------------------------------PARENT---------------------------------------------------- */}
@@ -328,9 +359,9 @@ function Register() {
                 <label className="input-label">Contact Number</label>
                 <input
                   type="tel"
-                  name="schoolContact"
-                  value={schoolContact}
-                  onChange={(e) => setSchoolContact(e.target.value)}
+                  name="contactNumber"
+                  value={contactNumber}
+                  onChange={(e) => setContactNumber(e.target.value)}
                   className="input-field"
                   required
                 />
@@ -359,8 +390,10 @@ function Register() {
 
                   className="input-field"
                 >
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
+                  <option value="">Select school type</option>
+                  {schoolOptions.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
                 </select>
               </div>
 
@@ -368,7 +401,7 @@ function Register() {
                 <label className="input-label">School Password</label>
                 <input
                   type="password"
-                  name="schoolPasword"
+                  name="schoolPassword"
                   value={schoolPassword}
 
                   onChange={(e) => setSchoolPassword(e.target.value)}
@@ -380,17 +413,94 @@ function Register() {
               </div>
 
               <div className="text-left mb-3">
-                <label className="input-label">Location</label>
+                <label className="input-label">Address</label>
                 <input
                   type="text"
-                  name="schoolLocation"
-                  value={schoolLocation}
-                  onChange={(e) => setSchoolLocation(e.target.value)}
-
+                  name="schoolAddress"
+                  value={schoolAddress}
+                  onClick={() => setAddressPopupVisible(true)}
                   className="input-field"
                   required
                 />
               </div>
+
+              {/* Address Popup */}
+              {addressPopupVisible && (
+                <div className="popup">
+                  <div className="popup-content">
+                    <h3>Enter Address</h3>
+                    <div className="mb-3">
+                      <label className="input-label">Street</label>
+                      <input
+                        type="text"
+                        name="street"
+                        value={address.street}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="input-label">City</label>
+                      <input
+                        type="text"
+                        name="city"
+                        value={address.city}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="input-label">State</label>
+                      <input
+                        type="text"
+                        name="state"
+                        value={address.state}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="input-label">Postal Code</label>
+                      <input
+                        type="text"
+                        name="postalCode"
+                        value={address.postalCode}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="input-label">Country</label>
+                      <input
+                        type="text"
+                        name="country"
+                        value={address.country}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      className="submit-button"
+                      onClick={handleAddressSubmit}
+                    >
+                      Save Address
+                    </button>
+                    <button
+                      type="button"
+                      className="close-button"
+                      onClick={() => setAddressPopupVisible(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {error && <p className="input-error">{error}</p>}
 
