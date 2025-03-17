@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../css/School/StudentInfo.css'; // Importing a CSS file for styling
+import '../css/School/StudentInfo.css';
 
 // Sample data for illustration
 const studentData = {

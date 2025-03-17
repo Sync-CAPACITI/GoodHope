@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import '../css/School/Home.css'; // Make sure to import the CSS for styles
+import '../css/School/Home.css'; // Import the CSS for styles
 import { Bar, Pie, Line } from 'react-chartjs-2'; // For charts
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, LineElement, PointElement } from 'chart.js'; // Added PointElement import
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesome
-import { faBell } from '@fortawesome/free-solid-svg-icons'; // Notification bell icon
 
 // Register the required components for Chart.js v3+
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    ArcElement, // for pie charts
-    LineElement, // for line charts
-    PointElement // for points (to fix the "point is not registered" error)
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement, // for pie charts
+  LineElement, // for line charts
+  PointElement // for points (to fix the "point is not registered" error)
 );
 
 // Dummy data for analytics
 const analyticsData = {
   totalReports: 120,
   totalStudents: 800,
+  totalMaleStudents: 450,  // Number of male students
+  totalFemaleStudents: 350, // Number of female students
   totalTeachers: 50,
   totalHealthcareSpecialists: 5,
   enrollmentRequests: 30,
@@ -64,34 +64,49 @@ const enrollmentStatusData = {
   ],
 };
 
-function Home() {
-  const [showNotifications, setShowNotifications] = useState(false);
+// Data for Total Students Pie Chart with Male and Female breakdown
+const totalStudentsData = {
+  labels: ['Male Students', 'Female Students'],
+  datasets: [
+    {
+      data: [analyticsData.totalMaleStudents, analyticsData.totalFemaleStudents], // Data for male and female students
+      backgroundColor: ['#3498db', '#e74c3c'], // Blue for male, Red for female
+    },
+  ],
+};
 
-  // Toggle notification dropdown
-  const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
+function Home() {
+  const options = {
+    responsive: true,
+    plugins: {
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          label: function (tooltipItem) {
+            // Display value or percentage on hover
+            const value = tooltipItem.raw;
+            if (tooltipItem.datasetIndex === 0 && tooltipItem.chart.data.labels) {
+              const label = tooltipItem.chart.data.labels[tooltipItem.dataIndex];
+              return `${label}: ${value}`;
+            }
+            return value;
+          },
+        },
+      },
+    },
   };
 
   return (
     <div className="home">
+      {/* Content Container */}
       <div className="content-container">
-        {/* Left Section - Analytics */}
-        <div className="analytics">
-          <h3>Analytics Overview</h3>
-
+        {/* Left Section - Analytics: Total Reports and Enrollment Status */}
+        <div className="analytics-left">
           <div className="analytics-item">
             <h4>Total Reports</h4>
             <div className="bar-graph">
               {/* Bar Chart for Total Reports */}
-              <Bar data={totalReportsData} options={{ responsive: true }} />
-            </div>
-          </div>
-
-          <div className="analytics-item">
-            <h4>Student Performance Over Time</h4>
-            <div className="line-graph">
-              {/* Line Chart for Student Performance */}
-              <Line data={studentPerformanceData} options={{ responsive: true }} />
+              <Bar data={totalReportsData} options={options} />
             </div>
           </div>
 
@@ -99,59 +114,27 @@ function Home() {
             <h4>Enrollment Status</h4>
             <div className="pie-chart">
               {/* Pie Chart for Enrollment Status */}
-              <Pie data={enrollmentStatusData} options={{ responsive: true }} />
-            </div>
-          </div>
-
-          <div className="analytics-item">
-            <h4>Total Students</h4>
-            <div className="pie-chart">
-              <div className="circle">
-                <span>{analyticsData.totalStudents}</span>
-              </div>
+              <Pie data={enrollmentStatusData} options={options} />
             </div>
           </div>
         </div>
 
-        {/* Right Section - Notifications & Alerts */}
-        <div className="notifications-alerts">
-          <h3>Notifications & Alerts</h3>
+        {/* Right Section - Analytics: Student Performance and Total Students (Gender Breakdown) */}
+        <div className="analytics-right">
+          <div className="analytics-item">
+            <h4>Student Performance Over Time</h4>
+            <div className="line-graph">
+              {/* Line Chart for Student Performance */}
+              <Line data={studentPerformanceData} options={options} />
+            </div>
+          </div>
 
-          {/* Notification Bell Icon */}
-          <div className="notification-bell">
-            <FontAwesomeIcon
-              icon={faBell}
-              size="2x"
-              onClick={toggleNotifications}
-              style={{ cursor: 'pointer', marginRight: '15px' }}
-            />
-            {showNotifications && (
-              <div className="notifications-dropdown">
-                <div className="important-alerts">
-                  <h4>Important Alerts:</h4>
-                  <ul>
-                    <li>Upcoming deadline for event registration: March 25th.</li>
-                    <li>Enrollment for the new semester ends on April 10th.</li>
-                  </ul>
-                </div>
-
-                <div className="system-alerts">
-                  <h4>System Alerts:</h4>
-                  <ul>
-                    <li>Missing student records for grades 5 and 6.</li>
-                    <li>Report generation system maintenance scheduled for March 22nd.</li>
-                  </ul>
-                </div>
-
-                <div className="event-reminders">
-                  <h4>Event Reminders:</h4>
-                  <ul>
-                    <li>Reminder: Parent-Teacher Conference on March 20th.</li>
-                    <li>Reminder: School Play on April 5th.</li>
-                  </ul>
-                </div>
-              </div>
-            )}
+          <div className="analytics-item">
+            <h4>Total Students (Gender Breakdown)</h4>
+            <div className="pie-chart">
+              {/* Pie Chart for Total Students Gender Breakdown */}
+              <Pie data={totalStudentsData} options={options} />
+            </div>
           </div>
         </div>
       </div>

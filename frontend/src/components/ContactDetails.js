@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/School/Contacts.css'; // Importing a CSS file for styling
 
 // Sample contact data (this can be replaced with real data)
@@ -58,14 +58,19 @@ function ContactDetails() {
     'Emergency Contact': true,
   });
 
-  // Handle search input
+  // Handle search input and filter contacts
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+    const term = event.target.value;
+    setSearchTerm(term);
+
+    // Filter contacts based on the search term (matching by name, email, or phone)
     const filtered = initialContacts.filter((contact) =>
-      contact.name.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      contact.email.toLowerCase().includes(event.target.value.toLowerCase()) ||
-      contact.phone.includes(event.target.value)
+      contact.name.toLowerCase().includes(term.toLowerCase()) ||
+      contact.email.toLowerCase().includes(term.toLowerCase()) ||
+      contact.phone.includes(term)
     );
+    
+    // Update the filtered contacts state
     setFilteredContacts(filtered);
   };
 
@@ -84,125 +89,122 @@ function ContactDetails() {
 
   // Handle click on student's name
   const handleStudentClick = (studentId) => {
-    // In a real-world scenario, this would probably redirect to a student details page.
     console.log(`Redirecting to student details for student ID: ${studentId}`);
-    // You could use something like React Router's `history.push` here to redirect:
-    // history.push(`/students/${studentId}`);
   };
 
   return (
-    <div className="contact-details">
-      <h2>Contact Details</h2>
+    <div className="contact-details-container">
+      {/* Left Tab: Sidebar */}
+      <div className="sidebar">
+        {/* Search Bar */}
+        <input
+          type="text"
+          placeholder="Search Contacts..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="search-bar"
+        />
+      </div>
 
-      {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Search Contacts..."
-        value={searchTerm}
-        onChange={handleSearch}
-        className="search-bar"
-      />
+      {/* Right Tab: Content */}
+      <div className="content">
+        <h2>Contact Details</h2>
 
-      {/* Show the total number of contacts */}
-      <p>Total Contacts: {filteredContacts.length}</p>
+        {/* Show the total number of contacts */}
+        <p>Total Contacts: {filteredContacts.length}</p>
 
-      {/* Teacher and Staff Directory */}
-      <section>
-        <h3 onClick={() => toggleCollapse('Teacher')}>
-          School Staff ({groupByType('Teacher').length})
-        </h3>
+        {/* Teacher and Staff Directory */}
         {!collapsedSections.Teacher && (
-          <table className="contact-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Email</th>
-                <th>Phone</th>
-              </tr>
-            </thead>
-            <tbody>
-              {groupByType('Teacher').map((contact, index) => (
-                <tr key={index}>
-                  <td>{contact.name}</td>
-                  <td>{contact.position}</td>
-                  <td>{contact.email}</td>
-                  <td>{contact.phone}</td>
+          <section>
+            <h3>School Staff ({groupByType('Teacher').length})</h3>
+            <table className="contact-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Email</th>
+                  <th>Phone</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {groupByType('Teacher').map((contact, index) => (
+                  <tr key={index}>
+                    <td>{contact.name}</td>
+                    <td>{contact.position}</td>
+                    <td>{contact.email}</td>
+                    <td>{contact.phone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
         )}
-      </section>
 
-      {/* Parent and Guardian Contact Information */}
-      <section>
-        <h3 onClick={() => toggleCollapse('Parent')}>
-          Parent/Guardian ({groupByType('Parent').length})
-        </h3>
+        {/* Parent and Guardian Contact Information */}
         {!collapsedSections.Parent && (
-          <table className="contact-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Student</th> {/* New clickable column */}
-              </tr>
-            </thead>
-            <tbody>
-              {groupByType('Parent').map((contact, index) => (
-                <tr key={index}>
-                  <td>{contact.name}</td>
-                  <td>{contact.email}</td>
-                  <td>{contact.phone}</td>
-                  <td>
-                    {contact.student ? (
-                      <button
-                        className="student-link"
-                        onClick={() => handleStudentClick(contact.studentId)}
-                      >
-                        {contact.student}
-                      </button>
-                    ) : (
-                      'No associated student'
-                    )}
-                  </td>
+          <section>
+            <h3>Parent/Guardian ({groupByType('Parent').length})</h3>
+            <table className="contact-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Student</th> {/* New clickable column */}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {groupByType('Parent').map((contact, index) => (
+                  <tr key={index}>
+                    <td>{contact.name}</td>
+                    <td>{contact.email}</td>
+                    <td>{contact.phone}</td>
+                    <td>
+                      {contact.student ? (
+                        <button
+                          className="student-link"
+                          onClick={() => handleStudentClick(contact.studentId)}
+                        >
+                          {contact.student}
+                        </button>
+                      ) : (
+                        'No associated student'
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
         )}
-      </section>
 
-      {/* Emergency Contact Information */}
-      <section>
-        <h3 onClick={() => toggleCollapse('Emergency Contact')}>
-          Healthcare Specialists ({groupByType('Emergency Contact').length})
-        </h3>
+        {/* Emergency Contact Information */}
         {!collapsedSections['Emergency Contact'] && (
-          <table className="contact-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Email</th>
-                <th>Phone</th>
-              </tr>
-            </thead>
-            <tbody>
-              {groupByType('Emergency Contact').map((contact, index) => (
-                <tr key={index}>
-                  <td>{contact.name}</td>
-                  <td>{contact.position}</td>
-                  <td>{contact.email}</td>
-                  <td>{contact.phone}</td>
+          <section>
+            <h3>Healthcare Specialists ({groupByType('Emergency Contact').length})</h3>
+            <table className="contact-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Email</th>
+                  <th>Phone</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {groupByType('Emergency Contact').map((contact, index) => (
+                  <tr key={index}>
+                    <td>{contact.name}</td>
+                    <td>{contact.position}</td>
+                    <td>{contact.email}</td>
+                    <td>{contact.phone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
         )}
-      </section>
+      </div>
     </div>
   );
 }

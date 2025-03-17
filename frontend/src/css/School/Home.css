@@ -1,108 +1,107 @@
 .home {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between; /* Align content to the left and right */
-    flex-wrap: wrap;
-  }
-  
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  color: #2c3e50;
+  font-size: 24px;
+  margin: 0;
+}
+
+.content-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px; /* Adds space between the columns */
+}
+
+.analytics-left,
+.analytics-right {
+  width: 48%; /* Adjusts the width of each section to fit two graphs side by side */
+  margin-bottom: 20px;
+}
+
+.analytics-left,
+.analytics-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.analytics-item h4 {
+  color: #34495e;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.bar-graph,
+.line-graph,
+.pie-chart {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ecf0f1;
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.bar-graph {
+  height: 300px; /* Resize bar graph to fit the layout */
+}
+
+.line-graph {
+  height: 300px; /* Resize line graph to fit the layout */
+}
+
+.pie-chart {
+  height: 300px; /* Set height of pie chart to match the size of bar and line graphs */
+  width: 100%; /* Ensure pie chart is responsive and doesn't overflow */
+}
+
+.pie-chart canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain; /* Ensures that the pie chart will scale without distortion */
+}
+
+.pie-chart .circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #34495e;
+  font-size: 16px;
+}
+
+/* Responsiveness for smaller screens */
+@media screen and (max-width: 768px) {
   .content-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    flex-wrap: wrap;
+    flex-direction: column; /* Stack the sections on smaller screens */
+    align-items: center; /* Center content */
   }
-  
-  .analytics, .notifications-alerts {
-    width: 48%; /* Adjusts the width of each section */
-    margin-bottom: 20px;
+
+  .analytics-left,
+  .analytics-right {
+    width: 100%; /* Full width for each section on smaller screens */
   }
-  
-  .analytics h3 {
-    color: #2c3e50;
-    text-align: left;
+
+  .bar-graph,
+  .line-graph,
+  .pie-chart {
+    height: 250px; /* Slightly smaller height for smaller screens */
   }
-  
-  .analytics-item {
-    margin-bottom: 20px;
-  }
-  
-  .analytics-item h4 {
-    color: #34495e;
-  }
-  
-  .bar-graph, .line-graph, .pie-chart {
-    width: 100%;
-    height: 300px; /* Adjust the height of the graph */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .pie-chart .circle {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: #f1f1f1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #34495e;
-    font-size: 16px;
-  }
-  
-  .notifications-alerts {
-    text-align: right;
-  }
-  
-  .notifications-alerts h3 {
-    color: #2c3e50;
-    text-align: right;
-  }
-  
-  .notifications-alerts h4 {
-    color: #34495e;
-    text-align: right;
-  }
-  
-  .notifications-alerts ul {
-    list-style-type: none;
-    padding-left: 0;
-    text-align: right;
-  }
-  
-  .notifications-alerts ul li {
-    padding: 5px;
-  }
-  
-  .notifications-alerts div {
-    margin-bottom: 15px;
-  }
-  
-  .notification-bell {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-  
-  .notifications-dropdown {
-    position: absolute;
-    right: 0;
-    top: 30px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 250px;
-    padding: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .notifications-dropdown h4 {
-    color: #34495e;
-  }
-  
-  .notifications-dropdown ul {
-    margin-top: 10px;
-    padding-left: 0;
-    list-style-type: none;
-  }
-  
+}

@@ -1,89 +1,124 @@
-.contact-details {
-    margin: 20px;
-    font-family: Arial, sans-serif;
+.contact-details-container {
+  display: flex;
+  padding: 20px;
+}
+
+.sidebar {
+  width: 250px; /* Width of the sidebar */
+  padding-right: 20px; /* Space between the two columns */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: sticky;
+  top: 20px;
+}
+
+.search-bar {
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 20px; /* Add space after search bar */
+}
+
+.sidebar button {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: left;
+  color: #007bff;
+}
+
+.sidebar button:hover {
+  background-color: #ddd;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  border-left: 1px solid #ccc; /* Border between the two columns */
+}
+
+.contact-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.contact-table th,
+.contact-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.contact-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.contact-table td {
+  max-width: 300px; /* Adjust max width for text-heavy columns */
+}
+
+/* Style the button/link in the "Student" column */
+.student-link {
+  background: none;
+  color: #007bff;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.student-link:hover {
+  color: #0056b3;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+h3 {
+  cursor: pointer;
+  color: #007bff;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+h3:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%; /* Make sidebar full width on small screens */
+    margin-bottom: 20px;
   }
-  
-  .search-bar {
+
+  .content {
     padding: 10px;
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
   }
-  
-  .contact-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
-  
+
   .contact-table th,
   .contact-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-    word-wrap: break-word;
+    padding: 8px;
+    font-size: 14px;
   }
-  
-  .contact-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+
+  .search-bar {
+    width: 100%;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .contact-table th,
   .contact-table td {
-    max-width: 300px; /* Adjust max width for text-heavy columns */
+    padding: 6px;
+    font-size: 12px;
   }
-  
-  /* Style the button/link in the "Student" column */
-  .student-link {
-    background: none;
-    color: #007bff;
-    border: none;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  
-  .student-link:hover {
-    color: #0056b3;
-  }
-  
-  section {
-    margin-bottom: 20px;
-  }
-  
-  h3 {
-    cursor: pointer;
-    color: #007bff;
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-  
-  h3:hover {
-    text-decoration: underline;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .contact-table th,
-    .contact-table td {
-      padding: 8px;
-      font-size: 14px;
-    }
-  
-    .search-bar {
-      width: 100%;
-    }
-  
-    .contact-table {
-      font-size: 14px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .contact-table th,
-    .contact-table td {
-      padding: 6px;
-      font-size: 12px;
-    }
-  }
-  
+}
