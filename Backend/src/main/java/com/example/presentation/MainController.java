@@ -22,29 +22,7 @@ public class MainController {
     private SchoolService schoolService;
 
         
-    @PostMapping("/school")
-    public ResponseEntity<String> registerSchool(@RequestBody @Validated RegisterSchoolDto registerSchoolDto) {
-        try {
-            
-            // Convert the DTO to the School entity
-            School school = new School();
-            school.setName(registerSchoolDto.getSchoolName());
-            school.setPhoneNumber(registerSchoolDto.getContactNumber());
-            school.setEmail(registerSchoolDto.getSchoolEmail());
-            school.setRole("School");
-            
-            school.setSchoolType(registerSchoolDto.getSchoolType());
-            school.setPassword(registerSchoolDto.getSchoolPassword());
-            school.setAddressDetails(registerSchoolDto.getSchoolAddress()); // Assuming the DTO has an address
-
-            // Save the school using the service
-            schoolService.registerSchool(school);
-
-            return ResponseEntity.ok("School registered successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
-    }
+    
     
 
 

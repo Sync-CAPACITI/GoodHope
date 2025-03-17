@@ -54,6 +54,7 @@ function Register() {
   const [prefferedSchool, setPrefferedSchool] = useState('');
   const [numberOfDependents, setNumberOfdependants] = useState('');
   const [password, setPassword] = useState('');
+  const [parentEmail, setParentEmail] = useState('');
   const schoolOptions = ['Private', 'Public'];
   const [error, setError] = useState('');
   // const navigate = useNavigate(); // Navigation hook
@@ -78,24 +79,15 @@ function Register() {
     setSelectedRole(role);
   };
 
-  //   const getCsrfToken = () => {
-  //     // Extract the CSRF token from the browser cookies
-  //     const csrfToken = document.cookie.split(';')
-  //         .find(cookie => cookie.trim().startsWith('XSRF-TOKEN='))
-  //         ?.split('=')[1];  // Get the CSRF token value
-  //     return csrfToken;
-  // };
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setAddress((prevState) => ({ ...prevState, [name]: value }));
+  };
 
-//
-const handleAddressChange = (e) => {
-  const { name, value } = e.target;
-  setAddress((prevState) => ({ ...prevState, [name]: value }));
-};
-
-const handleAddressSubmit = () => {
-  setSchoolAddress(`${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`);
-  setAddressPopupVisible(false);
-};
+  const handleAddressSubmit = () => {
+    setSchoolAddress(`${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`);
+    setAddressPopupVisible(false);
+  };
 
 
   // Handle form submission school
@@ -124,15 +116,15 @@ const handleAddressSubmit = () => {
       const response = await axios.post('http://localhost:8080/api/register/school', schoolData, {
         headers: {
           'Content-Type': 'application/json',
-          // 'X-XSRF-TOKEN': csrfToken, // If you're using CSRF protection
+
         }
-        // withCredentials: true  // Uncomment if you need credentials sent with the request
+
       });
-  
+
       // If the request is successful, handle the response data
       console.log("School registered successfully:", response.data);
       // You can perform any additional actions like redirecting or showing a success message
-  
+
     } catch (error) {
       // Catch any error from the request and set the error state
       // axios automatically throws an error for non-2xx status codes
@@ -219,8 +211,8 @@ const handleAddressSubmit = () => {
 
           {selectedRole === 'parent' && (
             <form onSubmit={handleGuardianSubmit}>
-              <div className="form-row">
-                <div className="form-field">
+              <div className="input-container">
+                <div className="input-group">
                   <label className="input-label">Full Name</label>
                   <input
                     type="text"
@@ -232,7 +224,7 @@ const handleAddressSubmit = () => {
                   />
                 </div>
 
-                <div className="form-field">
+                <div className="input-group">
                   <label className="input-label">Child's Age</label>
                   <input
                     type="number"
@@ -246,8 +238,8 @@ const handleAddressSubmit = () => {
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-field">
+              <div className="input-container">
+                <div className="input-group">
                   <label className="input-label">Contact Number</label>
                   <input
                     type="tel"
@@ -260,7 +252,7 @@ const handleAddressSubmit = () => {
                   />
                 </div>
 
-                <div className="form-field">
+                <div className="input-group">
                   <label className="input-label">Relationship to the Child</label>
                   <input
                     type="text"
@@ -273,21 +265,23 @@ const handleAddressSubmit = () => {
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-field">
-                  <label className="input-label">Preferred Schools (Public/Private)</label>
+              <div className="input-container">
+                <div className="input-group">
+                  <label className="input-label">Preferred School Type</label>
                   <select
                     name="parentSchoolType"
                     value={prefferedSchool}
                     onChange={(e) => setPrefferedSchool(e.target.value)}
                     className="input-field"
                   >
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
+                     <option value="">Select school type</option>
+                    {schoolOptions.map(option => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
                   </select>
                 </div>
 
-                <div className="form-field">
+                <div className="input-group">
                   <label className="input-label">Number of Dependents</label>
                   <input
                     type="number"
@@ -301,8 +295,20 @@ const handleAddressSubmit = () => {
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-field">
+              <div className="input-container">
+              <div className="input-group">
+                  <label className="input-label">Email</label>
+                  <input
+                    type="email"
+                    name="parentEmail"
+                    value={parentEmail}
+                    onChange={(e) => setParentEmail(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+
+                <div className="input-group">
                   <label className="input-label">Password</label>
                   <input
                     type="password"
@@ -340,88 +346,85 @@ const handleAddressSubmit = () => {
 
           {selectedRole === 'school' && (
             <form onSubmit={handleSchoolSubmit}>
-              <div className="text-left mb-3">
-                <label className="input-label">School Name</label>
-                <input
-                  type="text"
-                  name="schoolName"
-                  value={schoolName}
+              <div className="input-container">
+                <div className="input-group">
+                  <label className="input-label">School Name</label>
+                  <input
+                    type="text"
+                    name="schoolName"
+                    value={schoolName}
+                    onChange={(e) => setSchoolName(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
 
-                  onChange={(e) => setSchoolName(e.target.value)}
-
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
+                <div className="input-group">
+                  <label className="input-label">Contact Number</label>
+                  <input
+                    type="tel"
+                    name="contactNumber"
+                    value={contactNumber}
+                    onChange={(e) => setContactNumber(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">Contact Number</label>
-                <input
-                  type="tel"
-                  name="contactNumber"
-                  value={contactNumber}
-                  onChange={(e) => setContactNumber(e.target.value)}
-                  className="input-field"
-                  required
-                />
-              </div>
-              <div className="text-left mb-3">
-                <label className="input-label">School Email</label>
-                <input
-                  type="email"
-                  name="schoolEmail"
-                  value={schoolEmail}
+              <div className="input-container">
+                <div className="input-group">
+                  <label className="input-label">School Email</label>
+                  <input
+                    type="email"
+                    name="schoolEmail"
+                    value={schoolEmail}
+                    onChange={(e) => setSchoolEmail(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
 
-                  onChange={(e) => setSchoolEmail(e.target.value)}
-
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
-
-              <div className="text-left mb-3">
-                <label className="input-label">School Type</label>
-                <select
-                  name="schoolType"
-                  value={schoolType}
-                  onChange={(e) => setSchoolType(e.target.value)}
-
-                  className="input-field"
-                >
-                  <option value="">Select school type</option>
-                  {schoolOptions.map(option => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
+                <div className="input-group">
+                  <label className="input-label">School Type</label>
+                  <select
+                    name="schoolType"
+                    value={schoolType}
+                    onChange={(e) => setSchoolType(e.target.value)}
+                    className="input-field"
+                  >
+                    <option value="">Select school type</option>
+                    {schoolOptions.map(option => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">School Password</label>
-                <input
-                  type="password"
-                  name="schoolPassword"
-                  value={schoolPassword}
+              <div className="input-container">
+                <div className="input-group">
+                  <label className="input-label">School Password</label>
+                  <input
+                    type="password"
+                    name="schoolPassword"
+                    value={schoolPassword}
+                    onChange={(e) => setSchoolPassword(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
 
-                  onChange={(e) => setSchoolPassword(e.target.value)}
-
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
-
-              <div className="text-left mb-3">
-                <label className="input-label">Address</label>
-                <input
-                  type="text"
-                  name="schoolAddress"
-                  value={schoolAddress}
-                  onClick={() => setAddressPopupVisible(true)}
-                  className="input-field"
-                  required
-                />
+                <div className="input-group">
+                  <label className="input-label">Address</label>
+                  <input
+                    type="text"
+                    name="schoolAddress"
+                    value={schoolAddress}
+                    onClick={() => setAddressPopupVisible(true)}
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
 
               {/* Address Popup */}
@@ -429,60 +432,70 @@ const handleAddressSubmit = () => {
                 <div className="popup">
                   <div className="popup-content">
                     <h3>Enter Address</h3>
-                    <div className="mb-3">
-                      <label className="input-label">Street</label>
-                      <input
-                        type="text"
-                        name="street"
-                        value={address.street}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">Street</label>
+                        <input
+                          type="text"
+                          name="street"
+                          value={address.street}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">City</label>
+                        <input
+                          type="text"
+                          name="city"
+                          value={address.city}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+
                     </div>
-                    <div className="mb-3">
-                      <label className="input-label">City</label>
-                      <input
-                        type="text"
-                        name="city"
-                        value={address.city}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
+
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">State</label>
+                        <input
+                          type="text"
+                          name="state"
+                          value={address.state}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">Postal Code</label>
+                        <input
+                          type="text"
+                          name="postalCode"
+                          value={address.postalCode}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+
                     </div>
-                    <div className="mb-3">
-                      <label className="input-label">State</label>
-                      <input
-                        type="text"
-                        name="state"
-                        value={address.state}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="input-label">Postal Code</label>
-                      <input
-                        type="text"
-                        name="postalCode"
-                        value={address.postalCode}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="input-label">Country</label>
-                      <input
-                        type="text"
-                        name="country"
-                        value={address.country}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
+
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">Country</label>
+                        <input
+                          type="text"
+                          name="country"
+                          value={address.country}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
                     </div>
                     <button
                       type="button"
@@ -513,63 +526,69 @@ const handleAddressSubmit = () => {
                 </p>
               </div>
             </form>
+
           )}
 
 
           {/* --------------------------------------MEDICAL---------------------------------------------------- */}
           {selectedRole === 'medical' && (
             <form onSubmit={handleMedicalSubmit}>
-              <div className="text-left mb-3">
-                <label className="input-label">Medical Provider Name</label>
-                <input
-                  type="text"
-                  name="medicalName"
-                  value={medicalName}
-                  onChange={(e) => setMedicalName(e.target.value)}
-                  className="input-field"
-                  required
-                />
+              <div className="input-container">
+                <div className="text-left mb-3">
+                  <label className="input-label">Medical Provider Name</label>
+                  <input
+                    type="text"
+                    name="medicalName"
+                    value={medicalName}
+                    onChange={(e) => setMedicalName(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+
+                <div className="text-left mb-3">
+                  <label className="input-label">Email</label>
+                  <input
+                    type="email"
+                    name="medicalEmail"
+                    value={medicalEmail}
+
+                    onChange={(e) => setMedicalEmail(e.target.value)}
+
+                    // onChange={handleChange}
+                    className="input-field"
+                    required
+                  />
+                </div>
+
               </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">Email</label>
-                <input
-                  type="email"
-                  name="medicalEmail"
-                  value={medicalEmail}
+              <div className="input-container">
+                <div className="text-left mb-3">
+                  <label className="input-label">Contact Number</label>
+                  <input
+                    type="tel"
+                    name="medicalContact"
+                    value={medicalContact}
+                    onChange={(e) => setMedicalContact(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+                <div className="text-left mb-3">
+                  <label className="input-label">Password</label>
+                  <input
+                    type="password"
+                    name="medicalPassword"
+                    value={medicalPassword}
 
-                  onChange={(e) => setMedicalEmail(e.target.value)}
+                    onChange={(e) => setMedicalPassword(e.target.value)}
 
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
-
-              <div className="text-left mb-3">
-                <label className="input-label">Contact Number</label>
-                <input
-                  type="tel"
-                  name="medicalContact"
-                  value={medicalContact}
-                  onChange={(e) => setMedicalContact(e.target.value)}
-                  className="input-field"
-                  required
-                />
-              </div>
-              <div className="text-left mb-3">
-                <label className="input-label">Password</label>
-                <input
-                  type="password"
-                  name="medicalPassword"
-                  value={medicalPassword}
-
-                  onChange={(e) => setMedicalPassword(e.target.value)}
-
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
+                    // onChange={handleChange}
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
 
               <div className="text-left mb-3">
