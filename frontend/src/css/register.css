@@ -77,7 +77,6 @@
     font-weight: 500;
     color: #4a5568; /* Dark gray */
     margin-bottom: 8px;
-    display: block;
   }
   
   .input-field {
@@ -133,68 +132,6 @@
     flex: 1;
     min-width: 200px; /* Set minimum width if fields are too small */
   }
-
-  /* Modal Background */
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Make sure it appears on top of other elements */
-}
-
-/* Popup Content */
-.popup-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1001; /* Content is above the background */
-}
-
-/* Close Button */
-.close-button {
-  margin-top: 20px;
-  background-color: red;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-/* Other form button styles (if needed) */
-.submit-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.submit-button:hover {
-  background-color: #45a049;
-}
-
-
-.input-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px; /* Adds space between the input fields */
-  margin-bottom: 15px;
-}
-
-.input-group {
-  flex: 1; /* Allow each group to take equal space */
-}
   
 
   
