@@ -1,0 +1,79 @@
+.parent-details-container {
+    display: flex;
+    padding: 20px;
+  }
+  
+  .left-tab {
+    width: 250px; /* Set width for the left tab */
+    padding-right: 20px; /* Add space between the two columns */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-bar {
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 20px; /* Add some space after the search bar */
+  }
+  
+  .additional-links button {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: left;
+    color: #007bff;
+  }
+  
+  .additional-links button:hover {
+    background-color: #ddd;
+  }
+  
+  .right-tab {
+    flex-grow: 1;
+    padding: 20px;
+    border-left: 1px solid #ccc; /* Border between the two sections */
+  }
+  
+  h2, h3, h4 {
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  h3:hover, h4:hover {
+    text-decoration: underline;
+  }
+  
+  ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  
+  ul li {
+    margin-bottom: 10px;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .parent-details-container {
+      flex-direction: column; /* Stack columns on small screens */
+    }
+  
+    .left-tab {
+      width: 100%;
+      padding-right: 0;
+    }
+  
+    .search-bar {
+      width: 100%;
+    }
+  
+    .right-tab {
+      padding: 10px;
+    }
+  }
+  

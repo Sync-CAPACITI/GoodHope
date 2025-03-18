@@ -1,0 +1,78 @@
+/* Container for the whole layout */
+.student-info-container {
+    display: flex;
+    margin: 20px;
+  }
+  
+  /* Sidebar with the toggle buttons */
+  .sidebar {
+    width: 200px;
+    padding: 20px;
+    border-right: 2px solid #1b8ae6;
+  }
+  
+  .sidebar h2 {
+    margin-bottom: 20px;
+  }
+  
+  .sidebar button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #1b8ae6;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Main content area */
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Content sections styling */
+  section {
+    margin-bottom: 20px;
+  }
+  
+  h3 {
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  p, ul {
+    font-size: 1em;
+    color: #555;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  ul li {
+    margin: 5px 0;
+  }
+  
+  /* Make the layout responsive */
+  @media (max-width: 768px) {
+    .student-info-container {
+      flex-direction: column;
+    }
+  
+    .sidebar {
+      width: 100%;
+      border-right: none;
+    }
+  
+    .content {
+      width: 100%;
+    }
+  }
+  
