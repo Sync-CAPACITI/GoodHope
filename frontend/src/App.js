@@ -4,7 +4,7 @@ import HealthCare from './pages/HealthCareAdmin';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ParentDashboard from './pages/Parentlanding/ParentDashboard';
-import SchoolDashboard from './pages/SchoolDashboard'; 
+import SchoolDashboard from './components/Dashboard'; 
 import Home from './pages/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 function App() {
