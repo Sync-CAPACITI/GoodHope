@@ -1,0 +1,83 @@
+.h-wrapper {
+  margin-top: 1rem;
+  background: #e8eaec;
+  color: #002b57;
+  width: 90%;
+
+  /* Centering */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+
+  border-radius: 10px;
+  box-shadow: 10px 10px 20px #c8c8c8, -10px -10px 20px #ffffff;
+}
+
+.h-container {
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+
+}
+
+.h-menu {
+  gap: 2rem;
+  color: black;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* .h-menu a{
+  color: #002b57;
+  text-decoration: none;
+  transition: transform all 0.3s ease-in;
+}
+
+.h-menu a:hover{
+  transform: scale(1.1);
+  color: #fff;
+  background: #002b57;
+} */
+
+
+a {
+  text-decoration: none;
+  color: #4a90e2; 
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+
+   
+
+
+a:hover {
+  color: #de4e00; 
+  transform: scale(1.1);
+}
+
+
+.h-menu > * :hover {
+  cursor: pointer;
+
+}
+
+/* 
+.logo {
+  font-size: 2rem; 
+  font-weight: bold; 
+  color: #f601c9; 
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+  transition: all 0.3s ease-in-out; 
+}
+
+Hover Effect 
+.logo:hover {
+  color: #ff6600; 
+  transform: scale(1.1); 
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+} */

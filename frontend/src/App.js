@@ -3,7 +3,7 @@ import './App.css';
 import HealthCare from './pages/HealthCareAdmin';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import ParentDashboard from './pages/ParentDashboard';
+import ParentDashboard from './pages/Parentlanding/ParentDashboard';
 import SchoolDashboard from './pages/SchoolDashboard'; 
 import Home from './pages/Home'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -22,11 +22,7 @@ function App() {
       </Routes>
     </BrowserRouter>
       
-      
-      <div>
-        <ParentDashboard/>
-        {/* <LandingPage/> */}
-      </div>
+
     </div>
   );
 }
