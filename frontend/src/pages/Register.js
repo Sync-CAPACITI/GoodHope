@@ -1,26 +1,13 @@
 import React, { useState } from 'react';
 import '../css/register.css';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const [selectedRole, setSelectedRole] = useState('parent');
-  const [formData, setFormData] = useState({
-    parentName: '',
-    parentAge: '',
-    parentContact: '',
-    parentRelation: '',
-    parentSchoolType: 'public',
-    parentDependents: '',
-    registerEmail: '',
-    registerPassword: '',
-    schoolName: '',
-    schoolContact: '',
-    schoolType: 'public',
-    schoolAddress: '',
-    medicalProvider: '',
-    medicalContact: '',
-    medicalInsurance: ''
-  });
+  const navigate = useNavigate();
 
   const [passwordError, setPasswordError] = useState(false);
 
@@ -43,9 +30,21 @@ function Register() {
   // Medical
   const [medicalName, setMedicalName] = useState('');
   const [medicalContact, setMedicalContact] = useState('');
-  const [medicalInsurance, setMedicalInsurance] = useState('');
   const [medicalEmail, setMedicalEmail] = useState('');
   const [medicalPassword, setMedicalPassword] = useState('');
+  const [medicalSpecialization, setMedicalSpecialization] = useState('');
+  const [medicalYearsOfEx, setMedicalYearsOfEx] = useState('');
+  const [medicalQualification, setMedicalQualifications] = useState('');
+  const [medicalAddressPopupVisible, setMedicalAddressPopupVisible] = useState(false);
+  const [medicalFormAddress, setMedicalFormAddress] = useState('');
+  const [medicalAddress, setMedicalAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+  });
+
   // Parent
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -64,38 +63,32 @@ function Register() {
     return regex.test(password);
   };
 
-  // Handle input changes and update the state
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
 
   // Handle role selection
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
   };
 
-  //   const getCsrfToken = () => {
-  //     // Extract the CSRF token from the browser cookies
-  //     const csrfToken = document.cookie.split(';')
-  //         .find(cookie => cookie.trim().startsWith('XSRF-TOKEN='))
-  //         ?.split('=')[1];  // Get the CSRF token value
-  //     return csrfToken;
-  // };
 
-//
-const handleAddressChange = (e) => {
-  const { name, value } = e.target;
-  setAddress((prevState) => ({ ...prevState, [name]: value }));
-};
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setAddress((prevState) => ({ ...prevState, [name]: value }));
+  };
 
-const handleAddressSubmit = () => {
-  setSchoolAddress(`${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`);
-  setAddressPopupVisible(false);
-};
+  const handleAddressSubmit = () => {
+    setSchoolAddress(`${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`);
+    setAddressPopupVisible(false);
+  };
+
+  const handleMedicalAddressChange = (e) => {
+    const { name, value } = e.target;
+    setMedicalAddress((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleMedicalAddressSubmit = () => {
+    setMedicalFormAddress(`${medicalAddress.street}, ${medicalAddress.city}, ${medicalAddress.state}, ${medicalAddress.postalCode}, ${medicalAddress.country}`);
+    setMedicalAddressPopupVisible(false);
+  };
 
 
   // Handle form submission school
@@ -124,21 +117,25 @@ const handleAddressSubmit = () => {
       const response = await axios.post('http://localhost:8080/api/register/school', schoolData, {
         headers: {
           'Content-Type': 'application/json',
-          // 'X-XSRF-TOKEN': csrfToken, // If you're using CSRF protection
         }
-        // withCredentials: true  // Uncomment if you need credentials sent with the request
+
       });
-  
+
       // If the request is successful, handle the response data
       console.log("School registered successfully:", response.data);
       // You can perform any additional actions like redirecting or showing a success message
-  
+      toast.success("School registered successfully!");
+      setTimeout(() => {
+        navigate('/login');
+      }, 6000);
+
     } catch (error) {
       // Catch any error from the request and set the error state
       // axios automatically throws an error for non-2xx status codes
       const errorMessage = error.response ? error.response.data.message || error.message : error.message;
       setError(errorMessage);
       console.error("Error registering school:", errorMessage);
+      toast.error(`Error Registering School: ${errorMessage}`);
     }
   };
 
@@ -171,20 +168,45 @@ const handleAddressSubmit = () => {
     e.preventDefault();
     setError(''); // Reset error state
 
+    const medicalData = {
+      medicalName,
+      medicalContact,
+      medicalEmail,
+      medicalPassword,
+      medicalSpecialization,
+      medicalYearsOfEx,
+      medicalQualification,
+      medicalAddress: {
+        street: medicalAddress.street,
+        city: medicalAddress.city,
+        state: medicalAddress.state,
+        postalCode: medicalAddress.postalCode,
+        country: medicalAddress.country,
+      },
+    }
 
     try {
 
-      const response = await fetch('http://localhost:8080/api/register/medical', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ medicalName, medicalContact, medicalInsurance, medicalEmail, medicalPassword }),
+      const response = await axios.post('http://localhost:8080/api/register/medical', medicalData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
       });
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Register failed');
+      // If the request is successful, handle the response data
+      console.log("Medical registered successfully:", response.data);
+      // You can perform any additional actions like redirecting or showing a success message
+      toast.success("Medical Practitioner registered successfully!");
+      setTimeout(() => {
+        navigate('/login');
+      }, 6000);
+
 
     } catch (error) {
-      setError(error.message);
+      const errorMessage = error.response ? error.response.data.message || error.message : error.message;
+      setError(errorMessage);
+      console.error("Error registering Medical Practitioner:", errorMessage);
+      toast.error(`Error Registering Medical Practitioner: ${errorMessage}`);
 
     }
   };
@@ -340,88 +362,85 @@ const handleAddressSubmit = () => {
 
           {selectedRole === 'school' && (
             <form onSubmit={handleSchoolSubmit}>
-              <div className="text-left mb-3">
-                <label className="input-label">School Name</label>
-                <input
-                  type="text"
-                  name="schoolName"
-                  value={schoolName}
+              <div className="input-container">
+                <div className="input-group">
+                  <label className="input-label">School Name</label>
+                  <input
+                    type="text"
+                    name="schoolName"
+                    value={schoolName}
+                    onChange={(e) => setSchoolName(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
 
-                  onChange={(e) => setSchoolName(e.target.value)}
-
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
+                <div className="input-group">
+                  <label className="input-label">Contact Number</label>
+                  <input
+                    type="tel"
+                    name="contactNumber"
+                    value={contactNumber}
+                    onChange={(e) => setContactNumber(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">Contact Number</label>
-                <input
-                  type="tel"
-                  name="contactNumber"
-                  value={contactNumber}
-                  onChange={(e) => setContactNumber(e.target.value)}
-                  className="input-field"
-                  required
-                />
-              </div>
-              <div className="text-left mb-3">
-                <label className="input-label">School Email</label>
-                <input
-                  type="email"
-                  name="schoolEmail"
-                  value={schoolEmail}
+              <div className="input-container">
+                <div className="input-group">
+                  <label className="input-label">School Email</label>
+                  <input
+                    type="email"
+                    name="schoolEmail"
+                    value={schoolEmail}
+                    onChange={(e) => setSchoolEmail(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
 
-                  onChange={(e) => setSchoolEmail(e.target.value)}
-
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
-
-              <div className="text-left mb-3">
-                <label className="input-label">School Type</label>
-                <select
-                  name="schoolType"
-                  value={schoolType}
-                  onChange={(e) => setSchoolType(e.target.value)}
-
-                  className="input-field"
-                >
-                  <option value="">Select school type</option>
-                  {schoolOptions.map(option => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
+                <div className="input-group">
+                  <label className="input-label">School Type</label>
+                  <select
+                    name="schoolType"
+                    value={schoolType}
+                    onChange={(e) => setSchoolType(e.target.value)}
+                    className="input-field"
+                  >
+                    <option value="">Select school type</option>
+                    {schoolOptions.map(option => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">School Password</label>
-                <input
-                  type="password"
-                  name="schoolPassword"
-                  value={schoolPassword}
+              <div className="input-container">
+                <div className="input-group">
+                  <label className="input-label">School Password</label>
+                  <input
+                    type="password"
+                    name="schoolPassword"
+                    value={schoolPassword}
+                    onChange={(e) => setSchoolPassword(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
 
-                  onChange={(e) => setSchoolPassword(e.target.value)}
-
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
-
-              <div className="text-left mb-3">
-                <label className="input-label">Address</label>
-                <input
-                  type="text"
-                  name="schoolAddress"
-                  value={schoolAddress}
-                  onClick={() => setAddressPopupVisible(true)}
-                  className="input-field"
-                  required
-                />
+                <div className="input-group">
+                  <label className="input-label">Address</label>
+                  <input
+                    type="text"
+                    name="schoolAddress"
+                    value={schoolAddress}
+                    onClick={() => setAddressPopupVisible(true)}
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
 
               {/* Address Popup */}
@@ -429,60 +448,70 @@ const handleAddressSubmit = () => {
                 <div className="popup">
                   <div className="popup-content">
                     <h3>Enter Address</h3>
-                    <div className="mb-3">
-                      <label className="input-label">Street</label>
-                      <input
-                        type="text"
-                        name="street"
-                        value={address.street}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">Street</label>
+                        <input
+                          type="text"
+                          name="street"
+                          value={address.street}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">City</label>
+                        <input
+                          type="text"
+                          name="city"
+                          value={address.city}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+
                     </div>
-                    <div className="mb-3">
-                      <label className="input-label">City</label>
-                      <input
-                        type="text"
-                        name="city"
-                        value={address.city}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
+
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">State</label>
+                        <input
+                          type="text"
+                          name="state"
+                          value={address.state}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">Postal Code</label>
+                        <input
+                          type="text"
+                          name="postalCode"
+                          value={address.postalCode}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+
                     </div>
-                    <div className="mb-3">
-                      <label className="input-label">State</label>
-                      <input
-                        type="text"
-                        name="state"
-                        value={address.state}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="input-label">Postal Code</label>
-                      <input
-                        type="text"
-                        name="postalCode"
-                        value={address.postalCode}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label className="input-label">Country</label>
-                      <input
-                        type="text"
-                        name="country"
-                        value={address.country}
-                        onChange={handleAddressChange}
-                        className="input-field"
-                        required
-                      />
+
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">Country</label>
+                        <input
+                          type="text"
+                          name="country"
+                          value={address.country}
+                          onChange={handleAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
                     </div>
                     <button
                       type="button"
@@ -513,76 +542,211 @@ const handleAddressSubmit = () => {
                 </p>
               </div>
             </form>
+
           )}
 
 
           {/* --------------------------------------MEDICAL---------------------------------------------------- */}
           {selectedRole === 'medical' && (
             <form onSubmit={handleMedicalSubmit}>
-              <div className="text-left mb-3">
-                <label className="input-label">Medical Provider Name</label>
-                <input
-                  type="text"
-                  name="medicalName"
-                  value={medicalName}
-                  onChange={(e) => setMedicalName(e.target.value)}
-                  className="input-field"
-                  required
-                />
+              <div className="input-container">
+                <div className="text-left mb-3">
+                  <label className="input-label">Medical Provider Name</label>
+                  <input
+                    type="text"
+                    name="medicalName"
+                    value={medicalName}
+                    onChange={(e) => setMedicalName(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+
+                <div className="text-left mb-3">
+                  <label className="input-label">Email</label>
+                  <input
+                    type="email"
+                    name="medicalEmail"
+                    value={medicalEmail}
+
+                    onChange={(e) => setMedicalEmail(e.target.value)}
+
+                    // onChange={handleChange}
+                    className="input-field"
+                    required
+                  />
+                </div>
+
               </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">Email</label>
-                <input
-                  type="email"
-                  name="medicalEmail"
-                  value={medicalEmail}
+              <div className="input-container">
+                <div className="text-left mb-3">
+                  <label className="input-label">Contact Number</label>
+                  <input
+                    type="tel"
+                    name="medicalContact"
+                    value={medicalContact}
+                    onChange={(e) => setMedicalContact(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+                <div className="text-left mb-3">
+                  <label className="input-label">Password</label>
+                  <input
+                    type="password"
+                    name="medicalPassword"
+                    value={medicalPassword}
 
-                  onChange={(e) => setMedicalEmail(e.target.value)}
+                    onChange={(e) => setMedicalPassword(e.target.value)}
 
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
+                    // onChange={handleChange}
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">Contact Number</label>
-                <input
-                  type="tel"
-                  name="medicalContact"
-                  value={medicalContact}
-                  onChange={(e) => setMedicalContact(e.target.value)}
-                  className="input-field"
-                  required
-                />
-              </div>
-              <div className="text-left mb-3">
-                <label className="input-label">Password</label>
-                <input
-                  type="password"
-                  name="medicalPassword"
-                  value={medicalPassword}
+              <div className="input-container">
+                <div className="text-left mb-3">
+                  <label className="input-label">Specialization</label>
+                  <input
+                    type="text"
+                    name="medicalSpecialization"
+                    value={medicalSpecialization}
+                    onChange={(e) => setMedicalSpecialization(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+                <div className="text-left mb-3">
+                  <label className="input-label">Years Of Experience</label>
+                  <input
+                    type="number"
+                    name="medicalYearsOfEx"
+                    value={medicalYearsOfEx}
 
-                  onChange={(e) => setMedicalPassword(e.target.value)}
-
-                  // onChange={handleChange}
-                  className="input-field"
-                  required
-                />
+                    onChange={(e) => setMedicalYearsOfEx(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">Medical Insurance Number</label>
-                <input
-                  type="text"
-                  name="medicalInsurance"
-                  value={medicalInsurance}
-                  onChange={(e) => setMedicalInsurance(e.target.value)}
-                  className="input-field"
-                  required
-                />
+              <div className="input-container">
+                <div className="text-left mb-3">
+                  <label className="input-label">Qualifications</label>
+                  <input
+                    type="text"
+                    name="medicalQualification"
+                    value={medicalQualification}
+                    onChange={(e) => setMedicalQualifications(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+                <div className="text-left mb-3">
+                  <label className="input-label">Address</label>
+                  <input
+                    type="text"
+                    name="medicalFormAddress"
+                    value={medicalFormAddress}
+                    onClick={() => setMedicalAddressPopupVisible(true)}
+                    className="input-field"
+                    required
+                  />
+                </div>
               </div>
+
+                {/* Address Popup */}
+                {medicalAddressPopupVisible && (
+                <div className="popup">
+                  <div className="popup-content">
+                    <h3>Enter Address</h3>
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">Street</label>
+                        <input
+                          type="text"
+                          name="street"
+                          value={medicalAddress.street}
+                          onChange={handleMedicalAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">City</label>
+                        <input
+                          type="text"
+                          name="city"
+                          value={medicalAddress.city}
+                          onChange={handleMedicalAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+
+                    </div>
+
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">State</label>
+                        <input
+                          type="text"
+                          name="state"
+                          value={medicalAddress.state}
+                          onChange={handleMedicalAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+                      <div className="input-group">
+                        <label className="input-label">Postal Code</label>
+                        <input
+                          type="text"
+                          name="postalCode"
+                          value={medicalAddress.postalCode}
+                          onChange={handleMedicalAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+
+                    </div>
+
+                    <div className="input-container">
+                      <div className="input-group">
+                        <label className="input-label">Country</label>
+                        <input
+                          type="text"
+                          name="country"
+                          value={medicalAddress.country}
+                          onChange={handleMedicalAddressChange}
+                          className="input-field"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="submit-button"
+                      onClick={handleMedicalAddressSubmit}
+                    >
+                      Save Address
+                    </button>
+                    <button
+                      type="button"
+                      className="close-button"
+                      onClick={() => setMedicalAddressPopupVisible(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
+
+
               {error && <p className="input-error">{error}</p>}
 
               <button type="submit" className="submit-button">
@@ -597,6 +761,7 @@ const handleAddressSubmit = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

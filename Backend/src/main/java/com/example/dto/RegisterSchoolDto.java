@@ -10,7 +10,6 @@ import lombok.Data;
 
 @Data
 public class RegisterSchoolDto {
-
     @NotEmpty(message = "School Name is required")
     private String schoolName;
 

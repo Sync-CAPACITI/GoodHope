@@ -12,13 +12,6 @@ import lombok.*;
 @DiscriminatorValue("SCHOOL")
 public class School extends User {
 
-    // @Column(nullable = false)
-    // private String schoolName;
-
-    // @Column(nullable = false)
-    // private String contactNumber;
-
-    @Column(nullable = false)
     private String schoolType;  // Public / Private
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
