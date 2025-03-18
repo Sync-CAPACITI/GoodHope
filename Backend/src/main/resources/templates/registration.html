@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="p-6 w-3/4 h-[70vh] mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg text-center">
+      <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Register</h2>
+      <div class="flex justify-center mb-4">
+        <button id="parentButton" class="mx-1 px-4 py-2 rounded-lg bg-green-500 text-white focus:outline-none focus:ring-2 focus:ring-green-500">Parent</button>
+        <button id="schoolButton" class="mx-1 px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500">School</button>
+        <button id="medicalButton" class="mx-1 px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500">Medical</button>
+      </div>
+
+      <div id="formContainer" class="border p-4 rounded-lg">
+        <!-- Parent Form Fields -->
+        <div id="parentForm" class="formFields mb-3 hidden">
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
+            <input type="text" id="parentName" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Child's Age</label>
+            <input type="number" id="parentAge" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required min="1" />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number</label>
+            <input type="tel" id="parentContact" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required pattern="^[0-9]{10}$" />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Relationship to the Child</label>
+            <input type="text" id="parentRelation" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Preferred Schools (Public/Private)</label>
+            <select id="parentSchoolType" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Number of Dependents</label>
+            <input type="number" id="parentDependents" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required min="1" />
+          </div>
+
+          <!-- Added Email and Password Fields for Registration -->
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <input type="email" id="registerEmail" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+            <input type="password" id="registerPassword" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+            <p id="passwordError" class="text-red-500 text-xs mt-1 hidden">Password must be at least 8 characters, include an uppercase letter, a number, and a special character.</p>
+          </div>
+
+          <!-- Register Button for Parent Form -->
+          <button type="submit" id="parentSubmit" class="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
+        </div>
+
+        <!-- School Form Fields -->
+        <div id="schoolForm" class="formFields mb-3 hidden">
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">School Name</label>
+            <input type="text" id="schoolName" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number</label>
+            <input type="tel" id="schoolContact" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">School Type</label>
+            <select id="schoolType" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
+            <input type="text" id="schoolLocation" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+
+          <!-- Register Button for School Form -->
+          <button type="submit" id="schoolSubmit" class="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
+        </div>
+
+        <!-- Medical Form Fields -->
+        <div id="medicalForm" class="formFields mb-3 hidden">
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Medical Provider Name</label>
+            <input type="text" id="medicalProvider" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number</label>
+            <input type="tel" id="medicalContact" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+          <div class="text-left mb-3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Medical Insurance Number</label>
+            <input type="text" id="medicalInsurance" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+          </div>
+
+          <!-- Register Button for Medical Form -->
+          <button type="submit" id="medicalSubmit" class="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
+        </div>
+
+        <!-- Add "Already registered?" prompt -->
+        <div class="mt-4 text-sm">
+          <p class="text-gray-700 dark:text-gray-300">
+            Already registered? <a href="login.html" class="text-blue-500">Login here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Define the buttons and form fields
+    const parentButton = document.getElementById('parentButton');
+    const schoolButton = document.getElementById('schoolButton');
+    const medicalButton = document.getElementById('medicalButton');
+    
+    const parentForm = document.getElementById('parentForm');
+    const schoolForm = document.getElementById('schoolForm');
+    const medicalForm = document.getElementById('medicalForm');
+    
+    // Password Strength Validation
+    function validatePassword(password) {
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      return regex.test(password);
+    }
+
+    // Function to show the correct form
+    function toggleForm(formToShow) {
+      parentForm.classList.add('hidden');
+      schoolForm.classList.add('hidden');
+      medicalForm.classList.add('hidden');
+      
+      formToShow.classList.remove('hidden');
+    }
+
+    // Event listeners for the buttons
+    parentButton.addEventListener('click', () => {
+      toggleForm(parentForm);
+      parentButton.classList.add('bg-green-500', 'text-white');
+      schoolButton.classList.remove('bg-green-500', 'text-white');
+      medicalButton.classList.remove('bg-green-500', 'text-white');
+    });
+
+    schoolButton.addEventListener('click', () => {
+      toggleForm(schoolForm);
+      schoolButton.classList.add('bg-green-500', 'text-white');
+      parentButton.classList.remove('bg-green-500', 'text-white');
+      medicalButton.classList.remove('bg-green-500', 'text-white');
+    });
+
+    medicalButton.addEventListener('click', () => {
+      toggleForm(medicalForm);
+      medicalButton.classList.add('bg-green-500', 'text-white');
+      parentButton.classList.remove('bg-green-500', 'text-white');
+      schoolButton.classList.remove('bg-green-500', 'text-white');
+    });
+
+    // Set default form to display
+    toggleForm(parentForm);  // Display the parent form by default
+    parentButton.classList.add('bg-green-500', 'text-white');  // Highlight the Parent button
+
+    // Handle registration form submission
+    document.getElementById('parentSubmit').addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+
+      // Check password strength
+      if (!validatePassword(password)) {
+        document.getElementById('passwordError').classList.remove('hidden');
+        return;
+      } else {
+        document.getElementById('passwordError').classList.add('hidden');
+      }
+
+      // Check if required fields are filled
+      const fields = [email, password, document.getElementById('parentName').value, document.getElementById('parentAge').value, document.getElementById('parentContact').value, document.getElementById('parentRelation').value, document.getElementById('parentSchoolType').value, document.getElementById('parentDependents').value];
+      if (fields.includes('') || fields.includes(null)) {
+        alert('Please fill all required fields.');
+        return;
+      }
+
+      // Show success message and redirect to login
+      alert('Registration Successful! Redirecting to login...');
+      window.location.href = 'login.html';  // Redirect to login page
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="p-6 w-96 bg-white dark:bg-gray-800 shadow-lg rounded-lg text-center">
+      <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">Login</h2>
+
+      <form id="loginForm">
+        <div class="text-left mb-3">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+          <input type="email" id="loginEmail" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+        </div>
+        <div class="text-left mb-3">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+          <input type="password" id="loginPassword" class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" required />
+        </div>
+
+        <button type="submit" class="mt-4 w-full px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Login form submission
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+
+      if (email && password) {
+        alert('Logged in successfully!');
+      } else {
+        alert('Please fill in both fields');
+      }
+    });
+  </script>
+
+</body>
+</html>
