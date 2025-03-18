@@ -1,39 +1,49 @@
-package com.example.model; 
+package com.example.model;
+
+import jakarta.persistence.*;
+
+import lombok.*;
+
+import java.util.List;
 
 
-import java.util.HashSet;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
-import java.util.Set;
-
-@Entity
 @Data
-@Table(name = "Users")
-public class User {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@Table( name = "Users")
+public abstract class User {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer userId;
 
-    @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
-    private String username;
+    @Setter
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
-    private String password;
+    @Column(nullable = false)
+    private String email;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @Column(nullable = true)
+    private String username; 
+
+    @Column(nullable = false)
+    private  String password;
+
+    @Column(nullable = false)
+    private String role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Address addressDetails;
+
+    @OneToMany(mappedBy = "user")
+    private List<Payment> payments;
+
+
 
 }
