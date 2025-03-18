@@ -1,16 +1,20 @@
 package com.example.model;
 import jakarta.persistence.*;
+import lombok.Data;
 
 
-
+@Data
 @Entity
 @DiscriminatorValue("GUARDIAN")// This will set the role of the Guardian when stored in the user table
 public class Guardian extends User {
 
-    // You can add any Guardian-specific fields here, if needed
-    private String relationshipToChild;  // For example: Parent, Uncle, Aunt, etc.
+    @Column(nullable = false)
+    private int age;
 
-    private String occupation;  // Occupation of the Guardian (optional)
+    @Column(nullable = false)
+    private String relationship;
 
+    @Column(nullable = false)
+    private String schoolType;
     // Getters and Setters
 }
