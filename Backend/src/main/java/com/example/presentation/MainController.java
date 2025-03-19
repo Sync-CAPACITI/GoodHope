@@ -82,23 +82,33 @@ public class MainController {
     @PostMapping("/medical")
     public ResponseEntity<?> registerMedicalPractictioner(@RequestBody @Valid MedicalRegistrationDto medicalDto) {
         try {
+            // Create a new MedicalPractitioner entity
             MedicalPractitioner medical = new MedicalPractitioner();
+            
+            // Map DTO fields to entity fields
             medical.setName(medicalDto.getMedicalName());
             medical.setEmail(medicalDto.getMedicalEmail());
             medical.setPhoneNumber(medicalDto.getMedicalContact());
             medical.setRole("Medical");
-            medical.setPassword(passwordEncoder.encode(medicalDto.getMedicalPassword()));
+    
+            // Here, map medicalPassword from DTO to password in entity
+            medical.setPassword(passwordEncoder.encode(medicalDto.getMedicalPassword()));  // Encrypt password
+    
             medical.setSpecialization(medicalDto.getMedicalSpecialization());
             medical.setQualification(medicalDto.getMedicalQualification());
             medical.setYearsOfExperience(medicalDto.getMedicalYearsOfEx());
-            medical.setAddressDetails(medicalDto.getMedicalAddress());
+            medical.setAddressDetails(medicalDto.getMedicalAddress());  // Assuming you have an address object
+            
+            // Save the medical practitioner (assuming you have a service layer)
             medicalService.registerMedicalPractictioner(medical);
-            return ResponseEntity.ok("Medical Practictioner successfully registered!");
+    
+            return ResponseEntity.ok("Medical Practitioner successfully registered!");
         } catch (Exception e) {
-            System.err.println("Error registering user: " + e.getMessage()); // Debugging log
+            System.err.println("Error registering user: " + e.getMessage());  // Debugging log
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+    
 
     @PostMapping("/guardian")
     public ResponseEntity<?> registerUser(@RequestBody @Valid GuardianDTO guardianDTO) {
@@ -111,15 +121,5 @@ public class MainController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
-
-
-
-
-
-    //------------------
-
-    
- //-------------
-
 
 }

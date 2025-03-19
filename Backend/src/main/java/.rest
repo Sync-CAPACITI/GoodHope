@@ -39,15 +39,14 @@ POST http://localhost:8080/api/register/medical
 Content-Type: application/json
 
 {
-  "firstName": "Dr. Alice",
-  "lastName": "Smith",
-  "businessName": "Health Clinic", 
-  "specialisation": "Pediatrics",
-  "contactNumber": "0987654321",
-  "email": "dr.alice@healthclinic.com",
-  "password": "securepassword",
-  "confirmPassword": "securepassword",
-  "address": {
+  "medicalName": "Dr. Alice Smith",
+  "medicalEmail": "dr.alice@healthclinic.com",
+  "medicalContact": "0987654321",
+  "medicalPassword": "securepassword",
+  "medicalSpecialization": "Pediatrics",
+  "medicalQualification": "MD, Pediatrics",  // Add a qualification if required
+  "medicalYearsOfEx": 10,  // You need to provide the years of experience
+  "medicalAddress": {
     "street": "456 Clinic Ave",
     "city": "Health City",
     "state": "Medical State",
