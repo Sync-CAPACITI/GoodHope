@@ -8,21 +8,19 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Child {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    
-    private String name;
-    private String surname;
-    private int age;
-    private int grade;
+@Table(name = "Children")
+public class Child extends Guardian{
+
+
+    private String childName;
+    private String childSurname;
+    private int childAge;
+    private int childGrade;
     private String specialNeedsCategory;
-    private String otherNeeds;
+    private String otherCategory;
     private String medicalHistory;
-    
+
     @ManyToOne
-    @JoinColumn(name = "guardian_id")
+    @JoinColumn(name = "guardian_id", referencedColumnName = "userId") // Use userId from Guardian
     private Guardian guardian;
 }

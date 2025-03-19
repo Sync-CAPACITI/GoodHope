@@ -5,38 +5,57 @@ import com.example.model.Child;
 import com.example.model.Guardian;
 import com.example.data.repository.ChildRepository;
 import com.example.data.repository.GuardianRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+
+
 @Service
+@RequiredArgsConstructor
 public class ChildService {
 
     private final ChildRepository childRepository;
     private final GuardianRepository guardianRepository;
 
-    @Autowired
-    public ChildService(ChildRepository childRepository, GuardianRepository guardianRepository) {
-        this.childRepository = childRepository;
-        this.guardianRepository = guardianRepository;
-    }
-
-    public Child addChild(ChildDTO childDTO) {
-        // Fetch the Guardian object from the repository using the Integer ID
+    public ChildDTO addChild(ChildDTO childDTO) {
         Guardian guardian = guardianRepository.findById(childDTO.getGuardianId())
-            .orElseThrow(() -> new IllegalArgumentException("Guardian not found"));
-
-        // Create a new Child entity and map values from the DTO
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Guardian not found"));
+    
         Child child = new Child();
-        child.setName(childDTO.getChildName());
-        child.setSurname(childDTO.getChildSurname());
-        child.setAge(childDTO.getChildAge());
-        child.setGrade(childDTO.getChildGrade());
+        child.setChildName(childDTO.getChildName());
+        child.setChildSurname(childDTO.getChildSurname());
+        child.setChildAge(childDTO.getChildAge());
+        child.setChildGrade(childDTO.getChildGrade());
         child.setSpecialNeedsCategory(childDTO.getSpecialNeedsCategory());
-        child.setOtherNeeds(childDTO.getOtherCategory()); // Use 'otherCategory' when specialNeedsCategory is 'Other'
+        child.setOtherCategory(childDTO.getOtherCategory());
         child.setMedicalHistory(childDTO.getMedicalHistory());
         child.setGuardian(guardian);
-
-        // Save the child in the repository and return it
-        return childRepository.save(child);
+    
+        Child savedChild = childRepository.save(child);
+    
+        childDTO.setGuardianId(savedChild.getGuardian().getUserId()); // Set guardian ID
+        return childDTO;
+        
+    }
+    
+    public List<ChildDTO> getChildrenByGuardian(Integer guardianId) {
+        Optional<Child> children = childRepository.findById(guardianId);
+        return children.stream().map(child -> {
+            ChildDTO dto = new ChildDTO();
+            dto.setChildName(child.getChildName());
+            dto.setChildSurname(child.getChildSurname());
+            dto.setChildAge(child.getChildAge());
+            dto.setChildGrade(child.getChildGrade());
+            dto.setSpecialNeedsCategory(child.getSpecialNeedsCategory());
+            dto.setOtherCategory(child.getOtherCategory());
+            dto.setMedicalHistory(child.getMedicalHistory());
+            dto.setGuardianId(child.getGuardian().getUserId());
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

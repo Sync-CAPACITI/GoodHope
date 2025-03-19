@@ -1,3 +1,0 @@
-2025-03-19 14:52:42.764115+02:00 jdbc[13]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]MEDICAL_PRACTITIONERS"; expected "MERGE"; SQL statement:
-MEDICAL_PRACTITIONERS [42001-224]

@@ -1,15 +1,17 @@
 package com.example.model;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import java.util.List;
 
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "Guardian")
-@PrimaryKeyJoinColumn(name = "user_id")
+@PrimaryKeyJoinColumn(name = "user_id") // Inherits userId as primary key
 public class Guardian extends User {
 
+    
 
     private int age;
     private String relationship;

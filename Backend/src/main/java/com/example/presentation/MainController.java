@@ -1,10 +1,14 @@
 package com.example.presentation;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +22,6 @@ import com.example.dto.ChildDTO;
 import com.example.dto.GuardianDTO;
 import com.example.dto.MedicalPractitionerDTO;
 import com.example.dto.SchoolDTO;
-import com.example.model.Child;
 import com.example.model.MedicalPractitioner;
 
 @RestController
@@ -73,14 +76,15 @@ public class MainController {
         }
     }
 
-    // Register child
-    @PostMapping("/child")
-    public ResponseEntity<Child> addChild(@RequestBody ChildDTO childDTO) {
-        try {
-            Child createdChild = childService.addChild(childDTO);
-            return new ResponseEntity<>(createdChild, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
+    @PostMapping("/add")
+    public ResponseEntity<ChildDTO> addChild(@RequestBody ChildDTO childDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(childService.addChild(childDTO));
     }
+
+    // @GetMapping("/guardian/{guardianId}")
+    // public ResponseEntity<List<ChildDTO>> getChildrenByGuardian(@PathVariable Integer guardianId) {
+    //     List<ChildDTO> children = childService.getChildrenByGuardian(guardianId);
+    //     return children.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(children);
+    // }
 }

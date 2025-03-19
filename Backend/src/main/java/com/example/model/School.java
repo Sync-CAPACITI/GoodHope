@@ -3,7 +3,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "Schools")
 @PrimaryKeyJoinColumn(name = "user_id")

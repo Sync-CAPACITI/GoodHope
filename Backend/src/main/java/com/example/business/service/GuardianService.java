@@ -1,14 +1,20 @@
 package com.example.business.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.example.data.repository.AddressRepository;
-import com.example.data.repository.GuardianRepository;
+import com.example.dto.AddressDTO;
 import com.example.dto.GuardianDTO;
 import com.example.model.Address;
+import com.example.model.Child;
 import com.example.model.Guardian;
-import com.example.model.School;
+import com.example.data.repository.ChildRepository;
+import com.example.data.repository.GuardianRepository;
+import com.example.data.repository.AddressRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GuardianService {
@@ -17,43 +23,89 @@ public class GuardianService {
     private GuardianRepository guardianRepository;
 
     @Autowired
+    private ChildRepository childRepository;
+
+    @Autowired
     private AddressRepository addressRepository;
 
-     // This will save the guardian entity to the database
-    public Guardian registerGuardian(GuardianDTO guardianDTO) {
-           
-       
-        Guardian guardian = new Guardian(); // new enetity to save 
-        guardian.setName(guardianDTO.getName());
-        guardian.setAge(guardianDTO.getAge());
-        guardian.setPhoneNumber(guardianDTO.getPhoneNumber());
-        guardian.setRelationship(guardianDTO.getRelationship());
-       // guardian.setSchoolType(guardianDTO.getPrefferedSchool());
-        guardian.setEmail(guardianDTO.getEmail());
-        guardian.setPassword(guardianDTO.getPassword());
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // Register a new guardian
+    @Transactional
+    public Guardian registerGuardian(GuardianDTO dto) {
+        // Map DTO to Guardian entity
+        Guardian guardian = new Guardian();
+        guardian.setName(dto.getName());
+        guardian.setEmail(dto.getEmail());
+        guardian.setPhoneNumber(dto.getPhoneNumber());
+        guardian.setPassword(passwordEncoder.encode(dto.getPassword()));
+        guardian.setAge(dto.getAge());
+        guardian.setRelationship(dto.getRelationship());
+        guardian.setSchoolType(dto.getSchoolType());
         guardian.setRole("GUARDIAN");
 
-        // Save Guardian first
-        Guardian savedGuardian = guardianRepository.save(guardian);
+        // Save guardian first to generate ID
+        guardian = guardianRepository.save(guardian);
 
-
+        // Link children to guardian
+        if (dto.getChildIds() != null) {
+            List<Child> children = childRepository.findAllById(dto.getChildIds());
+            for (Child child : children) {
+                child.setGuardian(guardian); // Set the guardian for each child
+            }
+            guardian.setChildren(children);
+        }
+        // Handle address
+        AddressDTO addressDTO = dto.getAddress();
         Address address = new Address();
-        address.setStreet(guardianDTO.getAddress().getStreet());
-        address.setCity(guardianDTO.getAddress().getCity());
-        address.setState(guardianDTO.getAddress().getState());
-        address.setPostalCode(guardianDTO.getAddress().getPostalCode());
-        address.setCountry(guardianDTO.getAddress().getCountry());
-        address.setUser(savedGuardian);
+        address.setUser(guardian); // Associate address with the guardian
+        address.setStreet(addressDTO.getStreet());
+        address.setCity(addressDTO.getCity());
+        address.setState(addressDTO.getState());
+        address.setPostalCode(addressDTO.getPostalCode());
+        address.setCountry(addressDTO.getCountry());
 
+        // Save the address
         addressRepository.save(address);
 
-        return savedGuardian;
+        return guardian;
     }
 
-    public Guardian findByEmail(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
-    }
+    // // Fetch guardian details
+    // public GuardianDTO getGuardianById(Integer id) {
+    //     Guardian guardian = guardianRepository.findById(id)
+    //             .orElseThrow(() -> new RuntimeException("Guardian not found"));
 
-    
+    //     // Map Guardian entity to DTO
+    //     GuardianDTO dto = new GuardianDTO();
+    //     dto.setName(guardian.getName());
+    //     dto.setEmail(guardian.getEmail());
+    //     dto.setPhoneNumber(guardian.getPhoneNumber());
+    //     dto.setAge(guardian.getAge());
+    //     dto.setRelationship(guardian.getRelationship());
+    //     dto.setSchoolType(guardian.getSchoolType());
+
+    //     // Map Address entity to AddressDTO
+    //     if (guardian.getAddressDetails() != null) {
+    //         Address address = guardian.getAddressDetails();
+    //         AddressDTO addressDTO = new AddressDTO();
+    //         addressDTO.setStreet(address.getStreet());
+    //         addressDTO.setCity(address.getCity());
+    //         addressDTO.setState(address.getState());
+    //         addressDTO.setPostalCode(address.getPostalCode());
+    //         addressDTO.setCountry(address.getCountry());
+    //         dto.setAddress(addressDTO);
+    //     }
+
+    //     if (guardian.getChildren() != null) {
+    //         dto.setChildIds(
+    //             guardian.getChildren().stream()
+    //                 .map(Child::getChildId)
+    //                 .collect(Collectors.toList())
+    //         );
+    //     }
+
+    //     return dto;
+    // }
 }
