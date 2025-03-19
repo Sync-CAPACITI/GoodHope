@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/Register.css'; // Importing the CSS file
+import '../css/register.css'; // Importing the CSS file
 
 function Register() {
   const [selectedRole, setSelectedRole] = useState('parent');

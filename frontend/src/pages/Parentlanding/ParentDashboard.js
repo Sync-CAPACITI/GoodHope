@@ -59,6 +59,7 @@ function ParentDashboard() {
         {/* <AppointmentForm/> */}
         <SearchSchool/>
         <CarouseReviews/>
+        <SpecialNeedsForm/>
       </main>
     </div>
   );

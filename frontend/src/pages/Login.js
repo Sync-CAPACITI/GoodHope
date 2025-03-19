@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/Login.css'; // Importing the CSS file
+import '../css/login.css'; // Importing the CSS file
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -42,7 +42,6 @@ function Login() {
               required
             />
           </div>
-        
 
           {error && <p className="input-error">{error}</p>}
 
