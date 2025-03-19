@@ -3,6 +3,42 @@ POST http://localhost:8080/api/register/school
 Content-Type: application/json
 
 {
+  "schoolName": "ASABC School",
+  "contactNumber": "8234567890",
+  "schoolEmail": "sircontact@abcschool.com",
+  "schoolType": "Public",
+  "schoolPassword": "securepassword",
+  "address": {
+    "street": "123 School St",
+    "city": "CityName",
+    "state": "StateName",
+    "postalCode": "12345",
+    "country": "CountryName"
+  }
+}
+
+
+
+
+### Register a Guardian
+POST http://localhost:8080/api/register/guardian
+Content-Type: application/json
+
+{
+  "name": "John",
+  "lastName": "Doe",
+  "phoneNumber": "1234567790",
+  "email": "johndoe@example.com",
+  "schoolType": "Public",
+  "password": "securepassword"
+}
+
+
+### Register a School
+POST http://localhost:8080/api/register/school
+Content-Type: application/json
+
+{
   "schoolName": "ABC School",
   "contactNumber": "1234567890",
   "schoolEmail": "contact@abcschool.com",
@@ -20,11 +56,82 @@ Content-Type: application/json
 
 
 
-### Login User
-POST http://localhost:8080/api/login
+### Register a Medical Practitioner
+POST http://localhost:8080/api/register/medical
 Content-Type: application/json
 
 {
-  "email": "johndoe@example.com",
-  "password": "password123"
+  "medicalName": "Dr. Alice Smith",
+  "medicalEmail": "dr.alice@healthclinic.com",
+  "medicalContact": "0987654321",
+  "medicalPassword": "securepassword",
+  "medicalSpecialization": "Pediatrics",
+  "medicalQualification": "MD, Pediatrics",  // Add a qualification if required
+  "medicalYearsOfEx": 10,  // You need to provide the years of experience
+  "medicalAddress": {
+    "street": "456 Clinic Ave",
+    "city": "Health City",
+    "state": "Medical State",
+    "postalCode": "67890",
+    "country": "CountryName"
+  }
 }
+
+
+
+
+
+### Create a Booking for Special Needs Support
+POST http://localhost:8080/api/bookings
+Content-Type: application/json
+
+{
+  "childId": 123,                       // ID of the registered child
+  "parentId": 456,                      // ID of the parent making the booking
+  "schoolId": 789,                      // ID of the school chosen
+  "practitionerId": 321,                // ID of the healthcare practitioner (optional)
+  "preferredDate": "2025-03-25",        // Preferred date for the booking
+  "preferredTime": "14:00",             // Preferred time for the booking
+  "purpose": "IEP Meeting",             // Purpose of the booking
+  "notes": "Child requires wheelchair accessibility."
+}
+
+
+### Create a Booking for Special Needs Support
+POST http://localhost:8080/api/bookings
+Content-Type: application/json
+
+
+{
+  "childId": 123,
+  "bookingDate": "2025-03-25",
+  "bookingTime": "14:00",
+  "purpose": "Parent-Teacher Meeting",
+  "notes": "Discuss academic progress."
+}
+
+
+
+
+
+### Register User
+POST http://localhost:8080/api/register/school
+Content-Type: application/json
+
+{
+  "schoolName": "ABC School",
+  "contactNumber": "1234567890",
+  "schoolEmail": "contact@abcschool.com",
+  "schoolType": "Public",
+  "schoolPassword": "securepassword",
+  "address": {
+    "street": "123 School St",
+    "city": "CityName",
+    "state": "StateName",
+    "postalCode": "12345",
+    "country": "CountryName"
+  }
+}
+
+
+

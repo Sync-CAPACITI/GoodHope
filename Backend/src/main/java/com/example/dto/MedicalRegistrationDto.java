@@ -3,7 +3,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import com.example.model.Address;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
@@ -33,7 +33,7 @@ public class MedicalRegistrationDto {
     @NotEmpty(message = "Years Of Experience Number is required")
     private Integer medicalYearsOfEx;
 
-    @NotEmpty(message = "Address is required")
-    private Address medicalAddress;
+    @JsonProperty("medAddress")
+    private AddressDTO medAddress;
 
 }

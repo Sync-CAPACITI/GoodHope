@@ -1,14 +1,14 @@
 package com.example.model;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-
-@Data
+@Getter
+@Setter
 @Entity
 @DiscriminatorValue("GUARDIAN")// This will set the role of the Guardian when stored in the user table
 public class Guardian extends User {
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private int age;
 
     @Column(nullable = false)
