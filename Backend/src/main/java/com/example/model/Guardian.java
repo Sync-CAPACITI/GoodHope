@@ -1,20 +1,20 @@
 package com.example.model;
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 
 @Data
 @Entity
-@DiscriminatorValue("GUARDIAN")// This will set the role of the Guardian when stored in the user table
+@Table(name = "Guardian")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class Guardian extends User {
 
-    @Column(nullable = false)
+
     private int age;
-
-    @Column(nullable = false)
     private String relationship;
-
-    @Column(nullable = false)
     private String schoolType;
-    // Getters and Setters
+
+    @OneToMany(mappedBy = "guardian", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Child> children;
 }

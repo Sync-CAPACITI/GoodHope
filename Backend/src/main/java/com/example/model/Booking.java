@@ -1,37 +1,39 @@
 package com.example.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import java.util.Date;
+import lombok.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Optional;
 
-@Data
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "Booking")
 public class Booking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bookingId;
 
     @ManyToOne
-    @JoinColumn(name = "caregiver_id")
-    private User caregiver; // Assuming Caregiver is a type of User
+    @JoinColumn(name = "child_id", nullable = false)
+    private Child child;
 
     @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
+    @JoinColumn(name = "guardian_id", nullable = false)
+    private Guardian guardian;
 
-    @ManyToOne
-    @JoinColumn(name = "practitioner_id")
-    private MedicalPractitioner practitioner;
+    @Column(nullable = false)
+    private LocalDate bookingDate;
 
-    private Date bookingDate;
+    @Column(nullable = false)
+    private LocalTime bookingTime;
 
-    @Enumerated(EnumType.STRING)
-    private Status status; // Enum for status (Pending, Confirmed, Cancelled)
+    @Column(nullable = false)
+    private String purpose;
 
-    // Getters and Setters
-
-    public enum Status {
-        PENDING, CONFIRMED, CANCELLED
-    }
+    private String notes;
 }

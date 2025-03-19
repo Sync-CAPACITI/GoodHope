@@ -1,21 +1,17 @@
 package com.example.model;
-
 import jakarta.persistence.*;
-import java.util.List;
 import lombok.*;
+import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Entity
-@DiscriminatorValue("SCHOOL")
+@Table(name = "Schools")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class School extends User {
 
-    private String schoolType;  // Public / Private
+    @Column(nullable = false)
+    private String schoolType; // Public / Private
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MedicalPractitioner> affiliatedMedicalPractitioners;
-    
-
 }

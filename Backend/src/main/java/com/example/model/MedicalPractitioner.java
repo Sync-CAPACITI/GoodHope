@@ -3,16 +3,19 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-@DiscriminatorValue("MEDICAL_PRACTITIONER")
+@Entity
+@Table(name = "MedicalPractitioners")
+@PrimaryKeyJoinColumn(name = "user_id")
 public class MedicalPractitioner extends User {
 
     private String specialization; // Therapist, Psychologist, Speech Therapist
     
  
     private String qualification;
+    @Column(nullable = true)
+    private String businessName; // Optional
     
  
     private Integer yearsOfExperience;

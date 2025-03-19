@@ -6,6 +6,6 @@ import com.example.model.User;
 import java.util.Optional; // Make sure Optional is imported
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
-    User findByUsername(String username);
+    // Optional<User> findByEmail(String email);
+    // User findByUsername(String username);
 }

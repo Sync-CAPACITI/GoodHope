@@ -6,22 +6,22 @@ import jakarta.persistence.*;
 
 
 
-@Entity
 @Data
-
+@Entity
+@Table(name = "Address")
 public class Address {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
-    
+
     private String street;
     private String city;
     private String state;
     private String postalCode;
     private String country;
-
 }

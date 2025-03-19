@@ -29,27 +29,27 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found with email: " + email);
-        }
+    // @Override
+    // public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    //     Optional<User> user = userRepository.findByEmail(email);
+    //     if (user.isEmpty()) {
+    //         throw new UsernameNotFoundException("User not found with email: " + email);
+    //     }
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.get().getEmail())
-                .password(user.get().getPassword())
-                .roles(user.get().getRole())
-                .build();
-    }
+    //     return org.springframework.security.core.userdetails.User.builder()
+    //             .username(user.get().getEmail())
+    //             .password(user.get().getPassword())
+    //             .roles(user.get().getRole())
+    //             .build();
+    // }
 
-    public Optional<User> loginUser(String email, String password) {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return user;
-        }
-        return Optional.empty();
-    }
+    // public Optional<User> loginUser(String email, String password) {
+    //     Optional<User> user = userRepository.findByEmail(email);
+    //     if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
+    //         return user;
+    //     }
+    //     return Optional.empty();
+    // }
     
     public void registerNewSchoolAccount(RegisterSchoolDto userDto) {
         School school = new School();
@@ -61,6 +61,12 @@ public class UserService implements UserDetailsService {
         school.setSchoolType(userDto.getSchoolType());
         school.setAddressDetails(userDto.getSchoolAddress());
         schoolRepository.save(school);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
     }
 }
 

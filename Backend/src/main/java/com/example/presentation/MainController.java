@@ -1,5 +1,7 @@
 package com.example.presentation;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.business.service.GuardianService;
 import com.example.business.service.MedicalService;
 import com.example.business.service.SchoolService;
+import com.example.data.repository.BookingRepository;
+import com.example.data.repository.ChildRepository;
+import com.example.dto.BookingDto;
+import com.example.dto.GuardianDTO;
 // import com.example.data.repository.SchoolRepository;
 import com.example.dto.MedicalRegistrationDto;
 import com.example.dto.RegisterSchoolDto;
+import com.example.dto.UserRegistrationDto;
+import com.example.model.Booking;
+import com.example.model.Child;
+import com.example.model.Guardian;
 import com.example.model.MedicalPractitioner;
 import com.example.model.School;
 // import java.util.Optional;
@@ -29,6 +40,9 @@ public class MainController {
 
     @Autowired
     private MedicalService medicalService;
+
+    @Autowired
+    private GuardianService guardianService;
 
     // @Autowired
     // private SchoolRepository schoolRepository;
@@ -44,14 +58,17 @@ public class MainController {
         try {
 
             // Convert the DTO to the School entity
+
+
             School school = new School();
             school.setName(registerSchoolDto.getSchoolName());
             school.setPhoneNumber(registerSchoolDto.getContactNumber());
             school.setEmail(registerSchoolDto.getSchoolEmail());
             school.setRole("School");
             school.setSchoolType(registerSchoolDto.getSchoolType());
+          //  school.setUserType("School"); // Add this line
             school.setPassword(passwordEncoder.encode(registerSchoolDto.getSchoolPassword()));
-            school.setAddressDetails(registerSchoolDto.getSchoolAddress()); // Assuming the DTO has an address
+            school.setAddressDetails(registerSchoolDto.getSchoolAddress());
 
             // Save the school using the service
             schoolService.registerSchool(school);
@@ -83,18 +100,26 @@ public class MainController {
         }
     }
 
-    // @Autowired
-    // private UserService userService;
+    @PostMapping("/guardian")
+    public ResponseEntity<?> registerUser(@RequestBody @Valid GuardianDTO guardianDTO) {
+        try {
+            System.out.println("Registering guardian: " + guardianDTO.getName());  // Debugging log
+            guardianService.registerGuardian(guardianDTO);
+            return ResponseEntity.ok("User successfully registered!");
+        } catch (Exception e) {
+            System.err.println("Error registering user: " + e.getMessage());  // Debugging log
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
 
-    // @PostMapping("/login")
-    // public ResponseEntity<?> loginUser(@RequestBody User user) {
-    // Optional<User> loggedInUser = userService.loginUser(user.getEmail(),
-    // user.getPassword());
-    // if (loggedInUser.isPresent()) {
-    // return ResponseEntity.ok("Login successful!");
-    // }
-    // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid
-    // credentials");
-    // }
+
+
+
+
+    //------------------
+
+    
+ //-------------
+
 
 }

@@ -12,9 +12,47 @@
 // import com.example.dto.RegisterSchoolDto;
 // import com.example.model.School;
 
-// @RestController
-// @RequestMapping("/api/register")
-// public class RegisterController {
+@RestController
+@RequestMapping("/api/bookings")
+public class BookingController {
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private ChildRepository childRepository;
+
+    @Autowired
+    private GuardianService guardianService;
+
+    @PostMapping
+    public ResponseEntity<?> createBooking(@RequestBody @Valid BookingDto bookingDTO, Principal principal) {
+        // Fetch the logged-in guardian using their email
+        Guardian guardian = guardianService.findByEmail(principal.getName());
+
+        // Fetch the child by ID and ensure it exists
+        Child child = childRepository.findById(bookingDTO.getChildId())
+                .orElseThrow(() -> new RuntimeException("Child not found"));
+
+        // Ensure the child belongs to the logged-in guardian
+        if (!child.getGuardian().equals(guardian)) {
+            return ResponseEntity.status(403).body("You do not have permission to book for this child.");
+        }
+
+        // Create and save the booking
+        Booking booking = new Booking();
+        booking.setChild(child);
+        booking.setGuardian(guardian);
+        booking.setBookingDate(bookingDTO.getBookingDate());
+        booking.setBookingTime(bookingDTO.getBookingTime());
+        booking.setPurpose(bookingDTO.getPurpose());
+        booking.setNotes(bookingDTO.getNotes());
+
+        bookingRepository.save(booking);
+
+        return ResponseEntity.ok("Booking created successfully!");
+    }
+}
 
 //     @Autowired
 //     private SchoolService schoolService;
@@ -46,17 +84,7 @@
     
     
     
-//     @PostMapping("/guardian")
-//     public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegistrationDto userDto) {
-//         try {
-//             System.out.println("Registering user: " + userDto.getEmail());  // Debugging log
-//             userService.registerNewUserAccount(userDto);
-//             return ResponseEntity.ok("User successfully registered!");
-//         } catch (Exception e) {
-//             System.err.println("Error registering user: " + e.getMessage());  // Debugging log
-//             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-//         }
-//     }
+
 
 //     @PostMapping("/medical")
 //     public ResponseEntity<?> registerUser(@RequestBody @Valid UserRegistrationDto userDto) {
