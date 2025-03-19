@@ -1,4 +1,4 @@
-.dashboard-overview {
+.dashboard-reviews {
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
@@ -21,24 +21,23 @@
     transform: translateY(-5px);
 }
 
-
-.events-details {
+.reviews-details {
     width: 100%; 
-    margin-top: 30px; 
+    margin-top: 30px;  
     padding: 15px;
     background-color: #e0e0e0; 
     border-radius: 10px;
     box-shadow: 5px 5px 10px #aaaaaa, -5px -5px 10px #ffffff;
 }
 
-.events-details h2 {
+.reviews-details h2 {
     font-size: 1.8rem;
     font-weight: bold;
     margin-bottom: 20px;
     color: #1f3e72;
 }
 
-.event-card {
+.review-card {
     background: #e0e0e0;
     padding: 20px;
     margin-bottom: 15px;
@@ -46,13 +45,13 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
 }
 
-.event-card h3 {
+.review-card h3 {
     font-size: 1.4rem;
     margin-bottom: 10px;
     color: #1f3e72;
 }
 
-.event-card p {
+.review-card p {
     font-size: 1rem;
     margin-bottom: 8px;
 }
