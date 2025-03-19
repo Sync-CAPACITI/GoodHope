@@ -7,7 +7,8 @@ import ParentDashboard from './Parentlanding/ParentDashboard';
 function Home(){
     return (
         // < HealthCare />
-        < Login/>
+        // < Login/>
+        < Register />
         // < Register />
         // <Dashboard/>
         // <ParentDashboard/>

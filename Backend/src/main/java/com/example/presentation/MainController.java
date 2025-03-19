@@ -1,10 +1,7 @@
 package com.example.presentation;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -13,40 +10,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.business.service.ChildService;
 import com.example.business.service.GuardianService;
 import com.example.business.service.MedicalService;
 import com.example.business.service.SchoolService;
-
+import com.example.dto.ChildDTO;
 import com.example.dto.GuardianDTO;
 import com.example.dto.MedicalPractitionerDTO;
 import com.example.dto.SchoolDTO;
-
+import com.example.model.Child;
 import com.example.model.MedicalPractitioner;
-
-// import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/register")
 public class MainController {
 
-    @Autowired
-    private SchoolService schoolService;
-
-    @Autowired
-    private MedicalService medicalService;
-
-    @Autowired
-    private GuardianService guardianService;
-
-    // @Autowired
-    // private SchoolRepository schoolRepository;
-
+    private final SchoolService schoolService;
+    private final MedicalService medicalService;
+    private final GuardianService guardianService;
+    private final ChildService childService;
     private final PasswordEncoder passwordEncoder;
 
-    public MainController(PasswordEncoder passwordEncoder) {
+    @Autowired
+    public MainController(SchoolService schoolService, MedicalService medicalService, 
+                          GuardianService guardianService, ChildService childService,
+                          PasswordEncoder passwordEncoder) {
+        this.schoolService = schoolService;
+        this.medicalService = medicalService;
+        this.guardianService = guardianService;
+        this.childService = childService;
         this.passwordEncoder = passwordEncoder;
     }
 
+    // Register school
     @PostMapping("/school")
     public ResponseEntity<String> registerSchool(@RequestBody SchoolDTO schoolDTO) {
         try {
@@ -57,15 +53,16 @@ public class MainController {
         }
     }
 
+    // Register medical practitioner
     @PostMapping("/medical")
     public ResponseEntity<String> registerMedicalPractitioner(@RequestBody MedicalPractitionerDTO dto) {
         MedicalPractitioner medicalPractitioner = medicalService.registerMedicalPractitioner(dto);
         return ResponseEntity.ok("Medical Practitioner " + medicalPractitioner.getName() + " registered successfully!");
     }
-    
 
+    // Register guardian
     @PostMapping("/guardian")
-    public ResponseEntity<?> registerUser(@RequestBody @Valid GuardianDTO guardianDTO) {
+    public ResponseEntity<?> registerGuardian(@RequestBody @Validated GuardianDTO guardianDTO) {
         try {
             System.out.println("Registering guardian: " + guardianDTO.getName());  // Debugging log
             guardianService.registerGuardian(guardianDTO);
@@ -76,4 +73,14 @@ public class MainController {
         }
     }
 
+    // Register child
+    @PostMapping("/child")
+    public ResponseEntity<Child> addChild(@RequestBody ChildDTO childDTO) {
+        try {
+            Child createdChild = childService.addChild(childDTO);
+            return new ResponseEntity<>(createdChild, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

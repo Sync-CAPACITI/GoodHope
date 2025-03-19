@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/react": "^3.13.0",
     "@coreui/react": "^5.5.0",
+    "@emotion/react": "^11.14.0",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@schedule-x/drag-and-drop": "^2.21.1",

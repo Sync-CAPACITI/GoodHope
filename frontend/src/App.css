@@ -4,27 +4,45 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 body {
+  background: #e0e5ec;
   font-family: "Poppins", sans-serif;
-  background-color: #e8eaec;
+  color: #333;
 }
+
 .container {
-  max-width: 80%;
-  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
+
+.neu-container {
+  background: #e0e5ec;
+  border-radius: 12px;
+  box-shadow: 6px 6px 12px #bebebe, -6px -6px 12px #ffffff;
+  padding: 20px;
+  text-align: center;
+  max-width: 400px;
+}
+
 .flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 a {
   text-decoration: none;
   color: #000;
   text-transform: capitalize;
 }
+
 ul {
   list-style-type: none;
 }
+
 button {
   border-radius: 5px;
   padding: 17px 30px;
@@ -34,29 +52,35 @@ button {
   cursor: pointer;
   font-weight: bold;
 }
+
 button i {
   margin-right: 5px;
 }
+
 .heading {
   text-align: center;
   width: 60%;
   margin: auto;
 }
+
 .heading h1 {
   color: #2d3954;
   font-weight: 600;
   text-transform: capitalize;
   font-size: 35px;
 }
+
 .heading p {
   color: #72809d;
 }
+
 textarea,
 input {
   border: none;
   outline: none;
   background: none;
 }
+
 .background {
   padding: 80px 0;
   position: relative;
@@ -173,8 +197,7 @@ img {
   }
 }
 
-
-@import url('https://cdn.syncfusion.com/ej2/material.css');
+@import url("https://cdn.syncfusion.com/ej2/material.css");
 
 .sidebar {
   box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
@@ -183,41 +206,8 @@ img {
 .navbar {
   z-index: 10000;
 }
-@media  screen and (max-width:800px) {
-  .sidebar{
+@media screen and (max-width: 800px) {
+  .sidebar {
     z-index: 10000000;
   }
-}
-
-.e-dlg-center-center, .e-quick-popup-wrapper.e-device{
-  z-index: 1000000 !important;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: rgb(216, 216, 216);
-  border-radius: 40px;
-}
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-/* color-picker style  */
-
- #preview {
-  background: transparent
-    url('https://ej2.syncfusion.com/react/demos/src/color-picker/images/pen.png')
-    no-repeat;
-  display: inline-block;
-  height: 80px;
-  margin: 10px 0;
-  min-width: 300px;
-  max-width: 600px;
-  background-color: #008000;
-}
-
-.e-input-group:not(.e-float-icon-left), .e-input-group.e-success:not(.e-float-icon-left), .e-input-group.e-warning:not(.e-float-icon-left), .e-input-group.e-error:not(.e-float-icon-left), .e-input-group.e-control-wrapper:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-success:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-warning:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-error:not(.e-float-icon-left){
-  border: none;
 }
