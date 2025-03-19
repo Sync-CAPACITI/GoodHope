@@ -114,7 +114,7 @@ function Register() {
 
     try {
       // Make the POST request to the backend
-      const response = await axios.post('http://localhost:8080/api/register/school', schoolData, {
+      const response = await axios.post('https://goodhope.onrender.com/api/register/school', schoolData, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -147,7 +147,7 @@ function Register() {
 
     try {
 
-      const response = await fetch('http://localhost:8080/api/register/guardian', {
+      const response = await fetch('https://goodhope.onrender.com/api/register/guardian', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, age, contact, relationship, prefferedSchool, numberOfDependents, password }),
@@ -187,7 +187,7 @@ function Register() {
 
     try {
 
-      const response = await axios.post('http://localhost:8080/api/register/medical', medicalData, {
+      const response = await axios.post('https://goodhope.onrender.com/api/register/medical', medicalData, {
         headers: {
           'Content-Type': 'application/json',
         }
