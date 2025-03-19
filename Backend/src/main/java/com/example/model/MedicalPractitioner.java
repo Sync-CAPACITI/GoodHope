@@ -1,29 +1,27 @@
 package com.example.model;
+
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@DiscriminatorValue("MEDICAL")
 @Table(name = "MedicalPractitioners")
-@PrimaryKeyJoinColumn(name = "user_id")
 public class MedicalPractitioner extends User {
 
-    private String specialization; // Therapist, Psychologist, Speech Therapist
-    
- 
-    private String qualification;
-    @Column(nullable = true)
-    private String businessName; // Optional
-    
- 
-    private Integer yearsOfExperience;
-    // private String affiliatedFacility; // Hospital or Independent
+    @Column(nullable = false)
+    private String specialization;
 
+    @Column(nullable = false)
+    private String qualification;
+
+    @Column(nullable = false)
+    private int yearsOfExperience;
 
     @ManyToOne
-    @JoinColumn(name = "school_id") // This establishes the relationship
-    private School school;
-    // Getters and Setters
+    @JoinColumn(name = "school_id")  // Ensure consistency
+    private School school;  // Was `affiliatedSchool`, now changed to `school`
 }

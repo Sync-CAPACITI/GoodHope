@@ -16,19 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.business.service.GuardianService;
 import com.example.business.service.MedicalService;
 import com.example.business.service.SchoolService;
-import com.example.data.repository.BookingRepository;
-import com.example.data.repository.ChildRepository;
-import com.example.dto.BookingDto;
+
 import com.example.dto.GuardianDTO;
-// import com.example.data.repository.SchoolRepository;
-import com.example.dto.MedicalRegistrationDto;
-import com.example.dto.RegisterSchoolDto;
-import com.example.dto.UserRegistrationDto;
-import com.example.model.Booking;
-import com.example.model.Child;
-import com.example.model.Guardian;
+import com.example.dto.MedicalPractitionerDTO;
+import com.example.dto.SchoolDTO;
+
 import com.example.model.MedicalPractitioner;
-import com.example.model.School;
+
 // import java.util.Optional;
 
 @RestController
@@ -54,59 +48,19 @@ public class MainController {
     }
 
     @PostMapping("/school")
-    public ResponseEntity<String> registerSchool(@RequestBody @Validated RegisterSchoolDto registerSchoolDto) {
+    public ResponseEntity<String> registerSchool(@RequestBody SchoolDTO schoolDTO) {
         try {
-
-            // Convert the DTO to the School entity
-
-
-            School school = new School();
-            school.setName(registerSchoolDto.getSchoolName());
-            school.setPhoneNumber(registerSchoolDto.getContactNumber());
-            school.setEmail(registerSchoolDto.getSchoolEmail());
-            school.setRole("School");
-            school.setSchoolType(registerSchoolDto.getSchoolType());
-          //  school.setUserType("School"); // Add this line
-            school.setPassword(passwordEncoder.encode(registerSchoolDto.getSchoolPassword()));
-            school.setAddressDetails(registerSchoolDto.getSchoolAddress());
-
-            // Save the school using the service
-            schoolService.registerSchool(school);
-
-            return ResponseEntity.ok("School registered successfully");
+            schoolService.registerSchool(schoolDTO);
+            return ResponseEntity.ok("School registered successfully!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 
     @PostMapping("/medical")
-    public ResponseEntity<?> registerMedicalPractictioner(@RequestBody @Valid MedicalRegistrationDto medicalDto) {
-        try {
-            // Create a new MedicalPractitioner entity
-            MedicalPractitioner medical = new MedicalPractitioner();
-            
-            // Map DTO fields to entity fields
-            medical.setName(medicalDto.getMedicalName());
-            medical.setEmail(medicalDto.getMedicalEmail());
-            medical.setPhoneNumber(medicalDto.getMedicalContact());
-            medical.setRole("Medical");
-    
-            // Here, map medicalPassword from DTO to password in entity
-            medical.setPassword(passwordEncoder.encode(medicalDto.getMedicalPassword()));  // Encrypt password
-    
-            medical.setSpecialization(medicalDto.getMedicalSpecialization());
-            medical.setQualification(medicalDto.getMedicalQualification());
-            medical.setYearsOfExperience(medicalDto.getMedicalYearsOfEx());
-            medical.setAddressDetails(medicalDto.getMedicalAddress());  // Assuming you have an address object
-            
-            // Save the medical practitioner (assuming you have a service layer)
-            medicalService.registerMedicalPractictioner(medical);
-    
-            return ResponseEntity.ok("Medical Practitioner successfully registered!");
-        } catch (Exception e) {
-            System.err.println("Error registering user: " + e.getMessage());  // Debugging log
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
+    public ResponseEntity<String> registerMedicalPractitioner(@RequestBody MedicalPractitionerDTO dto) {
+        MedicalPractitioner medicalPractitioner = medicalService.registerMedicalPractitioner(dto);
+        return ResponseEntity.ok("Medical Practitioner " + medicalPractitioner.getName() + " registered successfully!");
     }
     
 

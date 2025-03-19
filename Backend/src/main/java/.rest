@@ -17,13 +17,13 @@ POST http://localhost:8080/api/register/school
 Content-Type: application/json
 
 {
-  "schoolName": "ABC School",
-  "contactNumber": "1234567890",
-  "schoolEmail": "contact@abcschool.com",
+  "name": "ABc School",
+  "phoneNumber": "3234567890",
+  "email": "fontact@abcschool.com",
   "schoolType": "Public",
-  "schoolPassword": "securepassword",
+  "password": "securepassword",
   "address": {
-    "street": "123 School St",
+    "street": "125 School St",
     "city": "CityName",
     "state": "StateName",
     "postalCode": "12345",
@@ -110,6 +110,29 @@ Content-Type: application/json
     "country": "CountryName"
   }
 }
+
+
+### Register User
+POST http://localhost:8080/api/register/medical
+Content-Type: application/json
+
+{
+  "medicalName": "Dr. Alice Smith",
+  "medicalEmail": "dr.alice@healthclinic.com",
+  "medicalContact": "0987654321",
+  "medicalPassword": "securepassword",
+  "medicalSpecialization": "Pediatrics",
+  "medicalQualification": "MD, Pediatrics",
+  "medicalYearsOfEx": 10,
+  "medicalAddress": {
+    "street": "456 Clinic Ave",
+    "city": "Health City",
+    "state": "Medical State",
+    "postalCode": "67890",
+    "country": "CountryName"
+  }
+}
+
 
 
 
