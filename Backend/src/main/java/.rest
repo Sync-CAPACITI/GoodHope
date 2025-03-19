@@ -1,0 +1,30 @@
+### Register User
+POST http://localhost:8080/api/register/school
+Content-Type: application/json
+
+{
+  "schoolName": "ABC School",
+  "contactNumber": "1234567890",
+  "schoolEmail": "contact@abcschool.com",
+  "schoolType": "Public",
+  "schoolPassword": "securepassword",
+  "address": {
+    "street": "123 School St",
+    "city": "CityName",
+    "state": "StateName",
+    "postalCode": "12345",
+    "country": "CountryName"
+  }
+}
+
+
+
+
+### Login User
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com",
+  "password": "password123"
+}

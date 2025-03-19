@@ -110,3 +110,59 @@
 .forgot-password a:hover {
   text-decoration: underline;
 }
+
+
+.neu-button {
+  background: #e0e5ec;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 6px 6px 12px #bebebe, -6px -6px 12px #ffffff;
+  transition: 0.3s;
+}
+
+.neu-button:active {
+  box-shadow: inset 4px 4px 8px #bebebe, inset -4px -4px 8px #ffffff;
+}
+
+
+.neu-input {
+  background: #e0e5ec;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+  box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+  transition: 0.3s;
+}
+
+.neu-input:focus {
+  outline: none;
+  box-shadow: inset 3px 3px 6px #bebebe, inset -3px -3px 6px #ffffff;
+}
+
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-card {
+  background: #e0e5ec;
+  border-radius: 20px;
+  box-shadow: 6px 6px 12px #bebebe, -6px -6px 12px #ffffff;
+  padding: 30px;
+  width: 350px;
+  text-align: center;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}

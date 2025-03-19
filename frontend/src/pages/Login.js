@@ -1,17 +1,35 @@
 import React, { useState } from 'react';
 import '../css/login.css'; // Importing the CSS file
+import { useNavigate } from 'react-router-dom';
+
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email && password) {
-      alert('Logged in successfully!');
-    } else {
-      setError('Please fill in both fields');
+    setError(''); // Reset error state
+
+    try {
+      const response = await fetch('http://localhost:8080/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Login failed');
+
+      // Save token to localStorage or sessionStorage
+      localStorage.setItem('token', data.token);
+
+      // Redirect user after login
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -48,17 +66,20 @@ function Login() {
           <button type="submit" className="submit-button">
             Login
           </button>
-                {/* Forgot Password Link */}
-        <div className="forgot-password">
-          <p className="text-sm">
-            <a href="/forgot-password" className="text-blue-500">Forgot Password?</a>
-          </p>
-        </div>
+
+          {/* Forgot Password Link */}
+          <div className="forgot-password">
+            <p className="text-sm">
+              <a href="/forgot-password" className="text-blue-500">Forgot Password?</a>
+            </p>
+          </div>
+
+          {/* Register Link */}
           <div className="mt-4 text-sm">
-          <p className="text-gray-700 dark:text-gray-300">
-            Don't have an account register here  <a href="/register" className="text-blue-500">Register here</a>
-          </p>
-        </div>
+            <p className="text-gray-700 dark:text-gray-300">
+              Don't have an account? <a href="/register" className="text-blue-500">Register here</a>
+            </p>
+          </div>
         </form>
       </div>
     </div>

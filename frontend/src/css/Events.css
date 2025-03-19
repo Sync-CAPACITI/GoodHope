@@ -1,0 +1,54 @@
+.dashboard-overview {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.overview-card {
+    flex: 1;
+    padding: 15px;
+    margin: 5px;
+    border-radius: 34px;
+    background: #e0e0e0;
+    box-shadow: 5px 5px 10px #aaaaaa, -5px -5px 10px #ffffff;
+    text-align: center;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.overview-card:hover {
+    transform: translateY(-5px);
+}
+
+.events-details {
+    margin-top: 30px;  /* Adds space between the overview cards and events section */
+    padding: 15px;
+    background-color: #f9f9f9; /* Background for the event details */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.events-details h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.event-card {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.event-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.event-card p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}

@@ -1,27 +1,61 @@
 import React, { useState } from 'react';
-import '../css/register.css'; // Importing the CSS file
+import '../css/register.css';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const [selectedRole, setSelectedRole] = useState('parent');
-  const [formData, setFormData] = useState({
-    parentName: '',
-    parentAge: '',
-    parentContact: '',
-    parentRelation: '',
-    parentSchoolType: 'public',
-    parentDependents: '',
-    registerEmail: '',
-    registerPassword: '',
-    schoolName: '',
-    schoolContact: '',
-    schoolType: 'public',
-    schoolLocation: '',
-    medicalProvider: '',
-    medicalContact: '',
-    medicalInsurance: ''
-  });
+  const navigate = useNavigate();
 
   const [passwordError, setPasswordError] = useState(false);
+
+  const [schoolName, setSchoolName] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
+  const [schoolType, setSchoolType] = useState('');
+  const [schoolAddress, setSchoolAddress] = useState('');
+  const [schoolEmail, setSchoolEmail] = useState('');
+  const [schoolPassword, setSchoolPassword] = useState('');
+  const [addressPopupVisible, setAddressPopupVisible] = useState(false);
+  const [address, setAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+  });
+
+
+  // Medical
+  const [medicalName, setMedicalName] = useState('');
+  const [medicalContact, setMedicalContact] = useState('');
+  const [medicalEmail, setMedicalEmail] = useState('');
+  const [medicalPassword, setMedicalPassword] = useState('');
+  const [medicalSpecialization, setMedicalSpecialization] = useState('');
+  const [medicalYearsOfEx, setMedicalYearsOfEx] = useState('');
+  const [medicalQualification, setMedicalQualifications] = useState('');
+  const [medicalAddressPopupVisible, setMedicalAddressPopupVisible] = useState(false);
+  const [medicalFormAddress, setMedicalFormAddress] = useState('');
+  const [medicalAddress, setMedicalAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+  });
+
+  // Parent
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [contact, setContact] = useState('');
+  const [relationship, setRelationship] = useState('');
+  const [prefferedSchool, setPrefferedSchool] = useState('');
+  const [numberOfDependents, setNumberOfdependants] = useState('');
+  const [password, setPassword] = useState('');
+  const schoolOptions = ['Private', 'Public'];
+  const [error, setError] = useState('');
+  // const navigate = useNavigate(); // Navigation hook
 
   // Function to validate password
   const validatePassword = (password) => {
@@ -29,60 +63,151 @@ function Register() {
     return regex.test(password);
   };
 
-  // Handle input changes and update the state
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
 
   // Handle role selection
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setAddress((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleAddressSubmit = () => {
+    setSchoolAddress(`${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`);
+    setAddressPopupVisible(false);
+  };
+
+  const handleMedicalAddressChange = (e) => {
+    const { name, value } = e.target;
+    setMedicalAddress((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleMedicalAddressSubmit = () => {
+    setMedicalFormAddress(`${medicalAddress.street}, ${medicalAddress.city}, ${medicalAddress.state}, ${medicalAddress.postalCode}, ${medicalAddress.country}`);
+    setMedicalAddressPopupVisible(false);
+  };
+
+
+  // Handle form submission school
+  const handleSchoolSubmit = async (e) => {
     e.preventDefault();
-    const { registerEmail, registerPassword } = formData;
+    setError(''); // Reset error state
 
-    // Password validation
-    if (!validatePassword(registerPassword)) {
-      setPasswordError(true);
-      return;
-    } else {
-      setPasswordError(false);
-    }
+    const schoolData = {
+      schoolName,
+      contactNumber,
+      schoolEmail,
+      schoolType,
+      schoolPassword,
+      schoolAddress: {
+        street: address.street,
+        city: address.city,
+        state: address.state,
+        postalCode: address.postalCode,
+        country: address.country,
+      },
+    };
 
-    const fields = Object.values(formData);
-    if (fields.includes('') || fields.includes(null)) {
-      alert('Please fill all required fields.');
-      return;
-    }
-
-    const dataToSend = { ...formData };
 
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
+      // Make the POST request to the backend
+      const response = await axios.post('http://localhost:8080/api/register/school', schoolData, {
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
+        }
+
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        alert('Registration Successful! Redirecting to login...');
-        window.location.href = '/login';
-      } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.message || 'Something went wrong'}`);
-      }
+      // If the request is successful, handle the response data
+      console.log("School registered successfully:", response.data);
+      // You can perform any additional actions like redirecting or showing a success message
+      toast.success("School registered successfully!");
+      setTimeout(() => {
+        navigate('/login');
+      }, 6000);
+
     } catch (error) {
-      alert(`Error: ${error.message}`);
+      // Catch any error from the request and set the error state
+      // axios automatically throws an error for non-2xx status codes
+      const errorMessage = error.response ? error.response.data.message || error.message : error.message;
+      setError(errorMessage);
+      console.error("Error registering school:", errorMessage);
+      toast.error(`Error Registering School: ${errorMessage}`);
+    }
+  };
+
+  // Handle form submission
+  const handleGuardianSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); // Reset error state
+
+
+    try {
+
+      const response = await fetch('http://localhost:8080/api/register/guardian', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, age, contact, relationship, prefferedSchool, numberOfDependents, password }),
+
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Register failed');
+
+    } catch (error) {
+      setError(error.message);
+
+    }
+  };
+
+  // Handle form submission
+  const handleMedicalSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); // Reset error state
+
+    const medicalData = {
+      medicalName,
+      medicalContact,
+      medicalEmail,
+      medicalPassword,
+      medicalSpecialization,
+      medicalYearsOfEx,
+      medicalQualification,
+      medicalAddress: {
+        street: medicalAddress.street,
+        city: medicalAddress.city,
+        state: medicalAddress.state,
+        postalCode: medicalAddress.postalCode,
+        country: medicalAddress.country,
+      },
+    }
+
+    try {
+
+      const response = await axios.post('http://localhost:8080/api/register/medical', medicalData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      // If the request is successful, handle the response data
+      console.log("Medical registered successfully:", response.data);
+      // You can perform any additional actions like redirecting or showing a success message
+      toast.success("Medical Practitioner registered successfully!");
+      setTimeout(() => {
+        navigate('/login');
+      }, 6000);
+
+
+    } catch (error) {
+      const errorMessage = error.response ? error.response.data.message || error.message : error.message;
+      setError(errorMessage);
+      console.error("Error registering Medical Practitioner:", errorMessage);
+      toast.error(`Error Registering Medical Practitioner: ${errorMessage}`);
+
     }
   };
 
@@ -90,7 +215,6 @@ function Register() {
     <div className="register-container">
       <div className="register-card">
         <h2 className="register-title">Register</h2>
-
         <div className="role-selection">
           <button
             onClick={() => handleRoleSelection('parent')}
@@ -113,246 +237,532 @@ function Register() {
         </div>
 
         <div className="form-container">
+          {/* --------------------------------------PARENT---------------------------------------------------- */}
+
           {selectedRole === 'parent' && (
-            <form onSubmit={handleSubmit}>
-            <div className="form-row">
-              <div className="form-field">
-                <label className="input-label">Full Name</label>
+            <form onSubmit={handleGuardianSubmit}>
+              <div className="form-row">
+                <div className="form-field">
+                  <label className="input-label">Full Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+
+                <div className="form-field">
+                  <label className="input-label">Child's Age</label>
+                  <input
+                    type="number"
+                    name="age"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    className="input-field"
+                    required
+                    min="1"
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-field">
+                  <label className="input-label">Contact Number</label>
+                  <input
+                    type="tel"
+                    name="parentContact"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                    className="input-field"
+                    required
+                    pattern="^[0-9]{10}$"
+                  />
+                </div>
+
+                <div className="form-field">
+                  <label className="input-label">Relationship to the Child</label>
+                  <input
+                    type="text"
+                    name="parentRelation"
+                    value={relationship}
+                    onChange={(e) => setRelationship(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-field">
+                  <label className="input-label">Preferred Schools (Public/Private)</label>
+                  <select
+                    name="parentSchoolType"
+                    value={prefferedSchool}
+                    onChange={(e) => setPrefferedSchool(e.target.value)}
+                    className="input-field"
+                  >
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                  </select>
+                </div>
+
+                <div className="form-field">
+                  <label className="input-label">Number of Dependents</label>
+                  <input
+                    type="number"
+                    name="parentDependents"
+                    value={numberOfDependents}
+                    onChange={(e) => setNumberOfdependants(e.target.value)}
+                    className="input-field"
+                    required
+                    min="1"
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-field">
+                  <label className="input-label">Password</label>
+                  <input
+                    type="password"
+                    name="registerPassword"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="input-field"
+                    required
+                  />
+                  {passwordError && (
+                    <p className="input-error">
+                      Password must be at least 8 characters, include an uppercase letter, a number, and a special character.
+                    </p>
+                  )}
+
+                </div>
+              </div>
+              {error && <p className="input-error">{error}</p>}
+
+              <button type="submit" className="submit-button">
+                Register
+              </button>
+
+              <div className="mt-4 text-sm">
+                <p className="text-gray-700 dark:text-gray-300">
+                  Already registered? <a href="/login" className="text-blue-500">Login here</a>
+                </p>
+              </div>
+            </form>
+
+          )}
+
+
+          {/* --------------------------------------SCHOOL---------------------------------------------------- */}
+
+          {selectedRole === 'school' && (
+            <form onSubmit={handleSchoolSubmit}>
+            <div className="input-container">
+              <div className="input-group">
+                <label className="input-label">School Name</label>
                 <input
                   type="text"
-                  name="parentName"
-                  value={formData.parentName}
-                  onChange={handleChange}
+                  name="schoolName"
+                  value={schoolName}
+                  onChange={(e) => setSchoolName(e.target.value)}
                   className="input-field"
                   required
                 />
               </div>
-          
-              <div className="form-field">
-                <label className="input-label">Child's Age</label>
-                <input
-                  type="number"
-                  name="parentAge"
-                  value={formData.parentAge}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                  min="1"
-                />
-              </div>
-            </div>
-          
-            <div className="form-row">
-              <div className="form-field">
+
+              <div className="input-group">
                 <label className="input-label">Contact Number</label>
                 <input
                   type="tel"
-                  name="parentContact"
-                  value={formData.parentContact}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                  pattern="^[0-9]{10}$"
-                />
-              </div>
-          
-              <div className="form-field">
-                <label className="input-label">Relationship to the Child</label>
-                <input
-                  type="text"
-                  name="parentRelation"
-                  value={formData.parentRelation}
-                  onChange={handleChange}
+                  name="contactNumber"
+                  value={contactNumber}
+                  onChange={(e) => setContactNumber(e.target.value)}
                   className="input-field"
                   required
                 />
               </div>
             </div>
-          
-            <div className="form-row">
-              <div className="form-field">
-                <label className="input-label">Preferred Schools (Public/Private)</label>
-                <select
-                  name="parentSchoolType"
-                  value={formData.parentSchoolType}
-                  onChange={handleChange}
-                  className="input-field"
-                >
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                </select>
-              </div>
-          
-              <div className="form-field">
-                <label className="input-label">Number of Dependents</label>
-                <input
-                  type="number"
-                  name="parentDependents"
-                  value={formData.parentDependents}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                  min="1"
-                />
-              </div>
-            </div>
-          
-            <div className="form-row">
-              <div className="form-field">
-                <label className="input-label">Email</label>
+
+            <div className="input-container">
+              <div className="input-group">
+                <label className="input-label">School Email</label>
                 <input
                   type="email"
-                  name="registerEmail"
-                  value={formData.registerEmail}
-                  onChange={handleChange}
+                  name="schoolEmail"
+                  value={schoolEmail}
+                  onChange={(e) => setSchoolEmail(e.target.value)}
                   className="input-field"
                   required
                 />
               </div>
-          
-              <div className="form-field">
-                <label className="input-label">Password</label>
-                <input
-                  type="password"
-                  name="registerPassword"
-                  value={formData.registerPassword}
-                  onChange={handleChange}
+
+              <div className="input-group">
+                <label className="input-label">School Type</label>
+                <select
+                  name="schoolType"
+                  value={schoolType}
+                  onChange={(e) => setSchoolType(e.target.value)}
                   className="input-field"
-                  required
-                />
-                {passwordError && (
-                  <p className="input-error">
-                    Password must be at least 8 characters, include an uppercase letter, a number, and a special character.
-                  </p>
-                )}
+                >
+                  <option value="">Select school type</option>
+                  {schoolOptions.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
               </div>
             </div>
-          
+
+            <div className="input-container">
+              <div className="input-group">
+                <label className="input-label">School Password</label>
+                <input
+                  type="password"
+                  name="schoolPassword"
+                  value={schoolPassword}
+                  onChange={(e) => setSchoolPassword(e.target.value)}
+                  className="input-field"
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <label className="input-label">Address</label>
+                <input
+                  type="text"
+                  name="schoolAddress"
+                  value={schoolAddress}
+                  onClick={() => setAddressPopupVisible(true)}
+                  className="input-field"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Address Popup */}
+            {addressPopupVisible && (
+              <div className="popup">
+                <div className="popup-content">
+                  <h3>Enter Address</h3>
+                  <div className="input-container">
+                    <div className="input-group">
+                      <label className="input-label">Street</label>
+                      <input
+                        type="text"
+                        name="street"
+                        value={address.street}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <div className="input-group">
+                      <label className="input-label">City</label>
+                      <input
+                        type="text"
+                        name="city"
+                        value={address.city}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+
+                  </div>
+
+                  <div className="input-container">
+                    <div className="input-group">
+                      <label className="input-label">State</label>
+                      <input
+                        type="text"
+                        name="state"
+                        value={address.state}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <div className="input-group">
+                      <label className="input-label">Postal Code</label>
+                      <input
+                        type="text"
+                        name="postalCode"
+                        value={address.postalCode}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+
+                  </div>
+
+                  <div className="input-container">
+                    <div className="input-group">
+                      <label className="input-label">Country</label>
+                      <input
+                        type="text"
+                        name="country"
+                        value={address.country}
+                        onChange={handleAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="submit-button"
+                    onClick={handleAddressSubmit}
+                  >
+                    Save Address
+                  </button>
+                  <button
+                    type="button"
+                    className="close-button"
+                    onClick={() => setAddressPopupVisible(false)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {error && <p className="input-error">{error}</p>}
+
             <button type="submit" className="submit-button">
               Register
             </button>
-          
             <div className="mt-4 text-sm">
               <p className="text-gray-700 dark:text-gray-300">
                 Already registered? <a href="/login" className="text-blue-500">Login here</a>
               </p>
             </div>
           </form>
-          
+
+
           )}
 
-          {selectedRole === 'school' && (
-            <form onSubmit={handleSubmit}>
-              <div className="text-left mb-3">
-                <label className="input-label">School Name</label>
-                <input
-                  type="text"
-                  name="schoolName"
-                  value={formData.schoolName}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
 
-              <div className="text-left mb-3">
-                <label className="input-label">Contact Number</label>
-                <input
-                  type="tel"
-                  name="schoolContact"
-                  value={formData.schoolContact}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
-
-              <div className="text-left mb-3">
-                <label className="input-label">School Type</label>
-                <select
-                  name="schoolType"
-                  value={formData.schoolType}
-                  onChange={handleChange}
-                  className="input-field"
-                >
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                </select>
-              </div>
-
-              <div className="text-left mb-3">
-                <label className="input-label">Location</label>
-                <input
-                  type="text"
-                  name="schoolLocation"
-                  value={formData.schoolLocation}
-                  onChange={handleChange}
-                  className="input-field"
-                  required
-                />
-              </div>
-
-              <button type="submit" className="submit-button">
-                Register
-              </button>
-              <div className="mt-4 text-sm">
-          <p className="text-gray-700 dark:text-gray-300">
-            Already registered? <a href="/login" className="text-blue-500">Login here</a>
-          </p>
-        </div>
-            </form>
-          )}
-
+          {/* --------------------------------------MEDICAL---------------------------------------------------- */}
           {selectedRole === 'medical' && (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleMedicalSubmit}>
+            <div className="input-container">
               <div className="text-left mb-3">
                 <label className="input-label">Medical Provider Name</label>
                 <input
                   type="text"
-                  name="medicalProvider"
-                  value={formData.medicalProvider}
-                  onChange={handleChange}
+                  name="medicalName"
+                  value={medicalName}
+                  onChange={(e) => setMedicalName(e.target.value)}
                   className="input-field"
                   required
                 />
               </div>
 
+              <div className="text-left mb-3">
+                <label className="input-label">Email</label>
+                <input
+                  type="email"
+                  name="medicalEmail"
+                  value={medicalEmail}
+
+                  onChange={(e) => setMedicalEmail(e.target.value)}
+
+                  // onChange={handleChange}
+                  className="input-field"
+                  required
+                />
+              </div>
+
+            </div>
+
+            <div className="input-container">
               <div className="text-left mb-3">
                 <label className="input-label">Contact Number</label>
                 <input
                   type="tel"
                   name="medicalContact"
-                  value={formData.medicalContact}
-                  onChange={handleChange}
+                  value={medicalContact}
+                  onChange={(e) => setMedicalContact(e.target.value)}
                   className="input-field"
                   required
                 />
               </div>
-
               <div className="text-left mb-3">
-                <label className="input-label">Medical Insurance Number</label>
+                <label className="input-label">Password</label>
+                <input
+                  type="password"
+                  name="medicalPassword"
+                  value={medicalPassword}
+
+                  onChange={(e) => setMedicalPassword(e.target.value)}
+
+                  // onChange={handleChange}
+                  className="input-field"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="input-container">
+              <div className="text-left mb-3">
+                <label className="input-label">Specialization</label>
                 <input
                   type="text"
-                  name="medicalInsurance"
-                  value={formData.medicalInsurance}
-                  onChange={handleChange}
+                  name="medicalSpecialization"
+                  value={medicalSpecialization}
+                  onChange={(e) => setMedicalSpecialization(e.target.value)}
                   className="input-field"
                   required
                 />
               </div>
+              <div className="text-left mb-3">
+                <label className="input-label">Years Of Experience</label>
+                <input
+                  type="number"
+                  name="medicalYearsOfEx"
+                  value={medicalYearsOfEx}
 
-              <button type="submit" className="submit-button">
-                Register
-              </button>
-              <div className="mt-4 text-sm">
-          <p className="text-gray-700 dark:text-gray-300">
-            Already registered? <a href="/login" className="text-blue-500">Login here</a>
-          </p>
-        </div>
-            </form>
+                  onChange={(e) => setMedicalYearsOfEx(e.target.value)}
+                  className="input-field"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="input-container">
+              <div className="text-left mb-3">
+                <label className="input-label">Qualifications</label>
+                <input
+                  type="text"
+                  name="medicalQualification"
+                  value={medicalQualification}
+                  onChange={(e) => setMedicalQualifications(e.target.value)}
+                  className="input-field"
+                  required
+                />
+              </div>
+              <div className="text-left mb-3">
+                <label className="input-label">Address</label>
+                <input
+                  type="text"
+                  name="medicalFormAddress"
+                  value={medicalFormAddress}
+                  onClick={() => setMedicalAddressPopupVisible(true)}
+                  className="input-field"
+                  required
+                />
+              </div>
+            </div>
+
+              {/* Address Popup */}
+              {medicalAddressPopupVisible && (
+              <div className="popup">
+                <div className="popup-content">
+                  <h3>Enter Address</h3>
+                  <div className="input-container">
+                    <div className="input-group">
+                      <label className="input-label">Street</label>
+                      <input
+                        type="text"
+                        name="street"
+                        value={medicalAddress.street}
+                        onChange={handleMedicalAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <div className="input-group">
+                      <label className="input-label">City</label>
+                      <input
+                        type="text"
+                        name="city"
+                        value={medicalAddress.city}
+                        onChange={handleMedicalAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+
+                  </div>
+
+                  <div className="input-container">
+                    <div className="input-group">
+                      <label className="input-label">State</label>
+                      <input
+                        type="text"
+                        name="state"
+                        value={medicalAddress.state}
+                        onChange={handleMedicalAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                    <div className="input-group">
+                      <label className="input-label">Postal Code</label>
+                      <input
+                        type="text"
+                        name="postalCode"
+                        value={medicalAddress.postalCode}
+                        onChange={handleMedicalAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+
+                  </div>
+
+                  <div className="input-container">
+                    <div className="input-group">
+                      <label className="input-label">Country</label>
+                      <input
+                        type="text"
+                        name="country"
+                        value={medicalAddress.country}
+                        onChange={handleMedicalAddressChange}
+                        className="input-field"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="submit-button"
+                    onClick={handleMedicalAddressSubmit}
+                  >
+                    Save Address
+                  </button>
+                  <button
+                    type="button"
+                    className="close-button"
+                    onClick={() => setMedicalAddressPopupVisible(false)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
+
+
+            {error && <p className="input-error">{error}</p>}
+
+            <button type="submit" className="submit-button">
+              Register
+            </button>
+            <div className="mt-4 text-sm">
+              <p className="text-gray-700 dark:text-gray-300">
+                Already registered? <a href="/login" className="text-blue-500">Login here</a>
+              </p>
+            </div>
+          </form>
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

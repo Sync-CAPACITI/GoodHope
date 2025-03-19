@@ -1,41 +1,29 @@
 package com.example.dto;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import lombok.Data;
 
+
+@Data
 public class UserRegistrationDto {
-    @NotEmpty(message = "Username is required")
-    private String username;
 
-    @NotEmpty(message = "Password is required")
-    private String password;
+    @NotEmpty(message = "Name is required")
+    private String name;
 
-    @NotEmpty(message = "Roles are required")
-    private String roles;
+    @Email(message = "Email should be valid")
+    @NotEmpty(message = "Email is required")
+    private String email;
 
-    // Getters and Setters
-    public String getUsername() {
-        return username;
-    }
+    @NotEmpty(message = "Phone number is required")
+    private String phoneNumber;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    @NotEmpty(message = "Address is required")
+    private String address;
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
-    public String getRoles() {
-        return roles;
-    }
+    private String role;  
 
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
 }
- 
- 
