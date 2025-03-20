@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // For redirection
 import '../css/login.css'; // Importing the CSS file
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -8,36 +11,47 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate(); // Navigation hook
 
-  const handleSubmit = async (e) => {
+  const getCsrfToken = () => {
+    return document.cookie
+        .split(';')
+        .find(cookie => cookie.trim().startsWith('XSRF-TOKEN='))
+        ?.split('=')[1];  // Extract the token value
+}
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setError(''); // Reset error state
+    
+    const credentials = { email, password };
 
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      const csrfToken = getCsrfToken();  // Get CSRF token from cookies
+        const response = await axios.post('http://localhost:8080/api/app/login', credentials,{
+          headers: {
+            'X-XSRF-TOKEN': csrfToken,  // Add CSRF token here
+          }
+        });
+        const data = response.data;
+        const role = data.role;
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Login failed');
-
-      // Save token to localStorage or sessionStorage
-      localStorage.setItem('token', data.token);
-
-      // Redirect user after login
-      navigate('/dashboard');
-    } catch (err) {
-      setError(err.message);
+        if (role === 'School') {
+            navigate('/schoolDashboard');
+        } else if (role === 'Medical') {
+            navigate('/healthCareDashboard');
+        } else if (role === 'Guardian') {
+            navigate('/parentDashboard');
+        }
+    } catch (error) {
+      toast.error(`Error Login: ${error}`);
+        setError('Invalid email or password.');
     }
-  };
+};
 
   return (
     <div className="login-container">
       <div className="login-card">
         <h2 className="login-title">Login</h2>
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleLogin} className="login-form">
           <div className="text-left mb-3">
             <label className="input-label">Email</label>
             <input
@@ -81,6 +95,7 @@ function Login() {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }

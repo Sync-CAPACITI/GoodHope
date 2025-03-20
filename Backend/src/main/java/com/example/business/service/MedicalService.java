@@ -21,7 +21,7 @@ public class MedicalService {
     private MedicalRepository medicalRepository;
     
 
-    private final PasswordEncoder passwordEncoder;
+    private  PasswordEncoder passwordEncoder;
 
     public MedicalService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;

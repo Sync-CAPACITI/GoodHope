@@ -114,7 +114,7 @@ function Register() {
 
     try {
       // Make the POST request to the backend
-      const response = await axios.post('https://goodhope.onrender.com/api/register/school', schoolData, {
+      const response = await axios.post('http://localhost:8080/api/register/school', schoolData, {
         headers: {
           'Content-Type': 'application/json',
         }
