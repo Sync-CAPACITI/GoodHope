@@ -1,20 +1,21 @@
-// import HealthCare from './HealthCareAdmin';
-import Login from './Login';
-import Register from './Register'
-import Dashboard from '../components/Dashboard'
-import ParentDashboard from './Parentlanding/ParentDashboard';
-import LandingPage  from './UniversalLanding';
+// // import HealthCare from './HealthCareAdmin';
+// import Login from './Login';
+// import Register from './Register'
+// import Dashboard from '../components/Dashboard'
+// import ParentDashboard from './Parentlanding/ParentDashboard';
 
-function Home(){
-    return (
-        < HealthCare />
-        // < Login/>
-        // < Register />
-        // < Register />
-        // <Dashboard/>
-        // <ParentDashboard/>
-        // <LandingPage />
-    )
-}
+// import HeathcareDasboard from "./HealthCareAdmin";
 
-export default Home
+// function Home(){
+//     return (
+//         // < HeathcareDasboard />
+//         // < Login/>
+//         // < Register />
+//         // < Register />
+//         // <Dashboard/>
+//         // <ParentDashboard/>
+//         <LandingPage />
+//     )
+// }
+
+// export default Home
