@@ -6,7 +6,7 @@
   font-family: "Arial", sans-serif;
   background: #e0e0e0;
   color: #333;
-  margin: 30px 40px 0 40px;
+  margin: 30px 10px 0 40px;
 }
 
 /* Hamburger Menu */
@@ -81,6 +81,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: -25px;
   background-color: #1f3d72bd;
   padding: 15px;
   border-radius: 8px;

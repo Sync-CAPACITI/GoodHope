@@ -7,6 +7,8 @@ import SearchSchool from "./SearchSchool";
 // import ControlledCarousel from "./Reviews";
 import AddChildButton from "../components/ChildComponent";
 import Events from "../components/Events";
+import Reviews from "../../components/Reviews";
+import UpdateSpecialNeedsForm from "./EditChildProfile";
 
 function ParentDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -30,7 +32,9 @@ function ParentDashboard() {
         <nav>
           <ul>
             <li onClick={() => navigate("/")}>🏠 Dashboard</li>
-            <li onClick={() => navigate("/search-schools")}>🔍 Search Schools</li>
+            <li onClick={() => navigate("/search-schools")}>
+              🔍 Search Schools
+            </li>
             <li onClick={() => navigate("/appointments")}>📅 Appointments</li>
             <li onClick={() => navigate("/reviews")}>⭐ Reviews</li>
             <li onClick={() => navigate("/add-child")}>👶 Add Child</li>
@@ -44,20 +48,20 @@ function ParentDashboard() {
       <main className="dashboard-main">
         <header className="dashboard-header">
           <h1>Welcome, Parent!</h1>
-          <div className="user-profile">👤 Profile</div>
+          <div className="user-profile">
+            <li onClick={() => navigate("/update-profiles")}>👤 Profile</li>
+          </div>
         </header>
-
-        
 
         {/* Route-Specific Content */}
         <Routes>
-          <Route path="/" element={<h2>🏠 Parent Dashboard Overview</h2>} />
+          <Route path="/" element={<AddChildButton />} />
           <Route path="/search-schools" element={<SearchSchool />} />
-          <Route path="/appointments" element={<AppointmentForm />} />
-          {/* <Route path="/reviews" element={<ControlledCarousel />} /> */}
           <Route path="/add-child" element={<SpecialNeedsForm />} />
+          <Route path="/appointments" element={<AppointmentForm />} />
+          <Route path="/reviews" element={<Reviews />} />
           <Route path="/events" element={<Events />} />
-
+          <Route path="/update-profiles" element={<UpdateSpecialNeedsForm />} />
         </Routes>
       </main>
     </div>
