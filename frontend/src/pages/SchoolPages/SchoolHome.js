@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/School/Home.css'; // Import the CSS for styles
+import '../../css/School/SchoolHome.css'; // Import the CSS for styles
 import { Bar, Pie, Line } from 'react-chartjs-2'; // For charts
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, LineElement, PointElement } from 'chart.js'; // Added PointElement import
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
-import Home from './Home';  // Import Home Component
+import Home from './SchoolHome';  // Import Home Component
 import StudentInfo from './StudentInfo';
-import Reports from './Reports';
+import Reports from './SchoolReports';
 import ContactDetails from './ContactDetails';
 import EnrollmentRequests from './EnrollmentRequests';
-import ParentDetails from './ParentDetails';
-import Events from './Events';
+import ParentDetails from './ContactDetails';
+import Events from './SchoolEvents';
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState('home'); // Default to home tab

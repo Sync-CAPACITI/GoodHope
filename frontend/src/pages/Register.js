@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom';
 
 import "../css/register.css";
 
-import GuardianForm from "./pages/components/GuardianForm";
-import SchoolForm from "./pages/components/SchoolForm";
-import MedicalPractitionerForm from "./pages/components/MedicalPractitionerForm";
+import GuardianForm from "./components/forms/GuardianForm";
+import SchoolForm from "./components/forms/SchoolForm";
+import MedicalPractitionerForm from "./components/forms/MedicalPractitionerForm";
 
 const Register = () => {
   const [selectedRole, setSelectedRole] = useState("");

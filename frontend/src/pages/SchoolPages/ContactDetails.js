@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../css/School/Contacts.css'; // Importing a CSS file for styling
+import '../../css/School/SchoolContactDetails.css'; // Importing a CSS file for styling
 
 // Sample contact data (this can be replaced with real data)
 const initialContacts = [
