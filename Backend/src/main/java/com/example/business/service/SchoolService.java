@@ -1,44 +1,46 @@
 package com.example.business.service;
 
-import com.example.dto.SchoolDTO;
-import com.example.model.Address;
-import com.example.model.School;
-import com.example.data.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.example.data.repository.SchoolRepository;
+import com.example.model.School;
+
+import java.util.Optional;
 
 @Service
 public class SchoolService {
 
-    @Autowired
-    private SchoolRepository schoolRepository;
+    private final SchoolRepository schoolRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private AddressRepository addressRepository;
+    public SchoolService(SchoolRepository schoolRepository, PasswordEncoder passwordEncoder) {
+        this.schoolRepository = schoolRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-    public School registerSchool(SchoolDTO schoolDTO) {
-        School school = new School();
-        school.setName(schoolDTO.getName());
-        school.setEmail(schoolDTO.getEmail());
-        school.setPhoneNumber(schoolDTO.getPhoneNumber());
-        school.setPassword(schoolDTO.getPassword());
-        school.setSchoolType(schoolDTO.getSchoolType());
-        school.setRole("SCHOOL");
+    public void register(School school) {
+        // Check for duplicate email
+        if (schoolRepository.findByEmail(school.getEmail()).isPresent()) {
+            throw new RuntimeException("Email is already in use.");
+        }
 
-        // Save School first
-        School savedSchool = schoolRepository.save(school);
+        // Hash the password before saving
+        school.setPassword(passwordEncoder.encode(school.getPassword()));
+        schoolRepository.save(school);
+    }
 
-        // Save Address
-        Address address = new Address();
-        address.setStreet(schoolDTO.getAddress().getStreet());
-        address.setCity(schoolDTO.getAddress().getCity());
-        address.setState(schoolDTO.getAddress().getState());
-        address.setPostalCode(schoolDTO.getAddress().getPostalCode());
-        address.setCountry(schoolDTO.getAddress().getCountry());
-        address.setUser(savedSchool);
+    public Optional<School> findById(Long id) {
+        return schoolRepository.findById(id);
+    }
 
-        addressRepository.save(address);
+    public void deleteSchool(Long id) {
+        schoolRepository.deleteById(id);
+    }
 
-        return savedSchool;
+    public Optional<School> findByEmail(String email) {
+        return schoolRepository.findByEmail(email);
     }
 }

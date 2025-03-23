@@ -3,20 +3,26 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
 
-
-@Setter
-@Getter
+@Data
 @Entity
 @Table(name = "Guardian")
-@PrimaryKeyJoinColumn(name = "user_id") // Inherits userId as primary key
-public class Guardian extends User {
+public class Guardian {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String lastName;
+    private String phoneNumber;
+    private String email;
+    private String schoolType;
+    private String password;
 
     
+    @Embedded
+    private Address address;
 
-    private int age;
-    private String relationship;
-    private String schoolType;
-
-    @OneToMany(mappedBy = "guardian", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Child> children;
+    // @OneToMany(mappedBy = "guardian", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Child> children;
 }

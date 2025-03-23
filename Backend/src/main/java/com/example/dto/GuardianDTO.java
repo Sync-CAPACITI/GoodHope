@@ -1,4 +1,5 @@
 package com.example.dto;
+
 import lombok.*;
 
 import java.util.List;
@@ -9,25 +10,16 @@ import java.util.List;
 @AllArgsConstructor
 public class GuardianDTO {
 
-
     private String name;
-
-
-    private String email;
-
-
+    private String lastName;
     private String phoneNumber;
-
-
+    private String email;
     private String password;
-
     private int age;
-
     private String relationship;
-
     private String schoolType;
-
-    private List<Integer> childIds; // IDs of children linked to the guardian
+    private List<Integer> childIds; // IDs of children linked to the guardian private AddressDTO address; }
 
     private AddressDTO address;
+
 }

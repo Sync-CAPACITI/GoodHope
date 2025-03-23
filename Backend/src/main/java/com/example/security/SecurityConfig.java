@@ -45,12 +45,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())  
                         .ignoringRequestMatchers("/h2-console/**")  // Optional: Disable CSRF for H2 console
-                        .ignoringRequestMatchers("/api/register/school", "/api/register/guardian", "/api/register/medical", "/api/auth/login") // Disable CSRF for these endpoints
+                        .ignoringRequestMatchers("/api/register/**", "/api/auth/**") // Disable CSRF for these endpoints
                 )
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/register/school", "/api/register/guardian", "/api/register/medical", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/register/**", "/api/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .headers(headers -> headers
                         .frameOptions(frameOptions -> frameOptions

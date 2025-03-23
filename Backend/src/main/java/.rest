@@ -1,4 +1,4 @@
-### Register a Guardian
+### Register a Guardian working 
 POST http://localhost:8080/api/register/guardian
 Content-Type: application/json
 
@@ -11,8 +11,56 @@ Content-Type: application/json
   "password": "securepassword"
 }
 
+### Register a Guardian  working 
+POST http://localhost:8080/api/register/guardian
+Content-Type: application/json
 
-### Register a School
+{
+  "name": "John",
+  "lastName": "Doe",
+  "phoneNumber": "1234567790",
+  "email": "johndoe@example.com",
+  "schoolType": "Public",
+  "password": "securepassword",
+  "address": {
+    "street": "125 School St",
+    "city": "CityName",
+    "state": "StateName",
+    "postalCode": "12345",
+    "country": "CountryName"
+  }
+}
+
+
+### Guardian Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com",
+  "password": "securepassword"
+}
+
+### School  Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "fontact@abcschool.com",
+  "password": "securepassword"
+}
+
+
+### Medical  Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "dr.alice@healthclinic.com",
+  "password": "securepassword"
+}
+
+### Register a School - working 
 POST http://localhost:8080/api/register/school
 Content-Type: application/json
 
@@ -27,30 +75,6 @@ Content-Type: application/json
     "city": "CityName",
     "state": "StateName",
     "postalCode": "12345",
-    "country": "CountryName"
-  }
-}
-
-
-
-
-### Register a Medical Practitioner
-POST http://localhost:8080/api/register/medical
-Content-Type: application/json
-
-{
-  "medicalName": "Dr. Alice Smith",
-  "medicalEmail": "dr.alice@healthclinic.com",
-  "medicalContact": "0987654321",
-  "medicalPassword": "securepassword",
-  "medicalSpecialization": "Pediatrics",
-  "medicalQualification": "MD, Pediatrics",  // Add a qualification if required
-  "medicalYearsOfEx": 10,  // You need to provide the years of experience
-  "medicalAddress": {
-    "street": "456 Clinic Ave",
-    "city": "Health City",
-    "state": "Medical State",
-    "postalCode": "67890",
     "country": "CountryName"
   }
 }
@@ -75,24 +99,8 @@ Content-Type: application/json
 }
 
 
-### Create a Booking for Special Needs Support
-POST http://localhost:8080/api/bookings
-Content-Type: application/json
 
-
-{
-  "childId": 123,
-  "bookingDate": "2025-03-25",
-  "bookingTime": "14:00",
-  "purpose": "Parent-Teacher Meeting",
-  "notes": "Discuss academic progress."
-}
-
-
-
-
-
-### Register User
+### Register Useschoold user - woriking
 POST http://localhost:8080/api/register/school
 Content-Type: application/json
 
@@ -101,7 +109,7 @@ Content-Type: application/json
   "contactNumber": "1234567890",
   "schoolEmail": "contact@abcschool.com",
   "schoolType": "Public",
-  "schoolPassword": "securepassword",
+  "password": "securepassword",
   "address": {
     "street": "123 School St",
     "city": "CityName",
@@ -112,15 +120,15 @@ Content-Type: application/json
 }
 
 
-### Register User
+### medical User working 
 POST http://localhost:8080/api/register/medical
 Content-Type: application/json
 
 {
-  "medicalName": "Dr. Alice Smith",
-  "medicalEmail": "dr.alice@healthclinic.com",
-  "medicalContact": "0987654321",
-  "medicalPassword": "securepassword",
+  "name": "Dr. Alice Smith",
+  "email": "dr.alice@healthclinic.com",
+  "contactNumber": "0987654321",
+  "password": "securepassword",
   "medicalSpecialization": "Pediatrics",
   "medicalQualification": "MD, Pediatrics",
   "medicalYearsOfEx": 10,
@@ -132,6 +140,7 @@ Content-Type: application/json
     "country": "CountryName"
   }
 }
+
 
 
 
