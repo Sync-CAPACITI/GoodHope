@@ -100,7 +100,8 @@ Content-Type: application/json
 
 
 
-### Register Useschoold user - woriking
+### Register schoold user - woriking
+
 POST http://localhost:8080/api/register/school
 Content-Type: application/json
 
@@ -123,7 +124,6 @@ Content-Type: application/json
 ### medical User working 
 POST http://localhost:8080/api/register/medical
 Content-Type: application/json
-
 {
   "name": "Dr. Alice Smith",
   "email": "dr.alice@healthclinic.com",

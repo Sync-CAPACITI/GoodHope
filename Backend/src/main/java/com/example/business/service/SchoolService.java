@@ -5,6 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.data.repository.SchoolRepository;
+import com.example.dto.RegisterSchoolDto;
+import com.example.model.Address;
 import com.example.model.School;
 
 import java.util.Optional;

@@ -26,6 +26,45 @@ function Register() {
   const [passwordError, setPasswordError] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
 
+
+  // Medical
+  const [medicalName, setMedicalName] = useState('');
+  const [medicalContact, setMedicalContact] = useState('');
+  const [medicalEmail, setMedicalEmail] = useState('');
+  const [medicalPassword, setMedicalPassword] = useState('');
+  const [medicalSpecialization, setMedicalSpecialization] = useState('');
+  const [medicalYearsOfEx, setMedicalYearsOfEx] = useState('');
+  const [medicalQualification, setMedicalQualifications] = useState('');
+  const [medicalAddress, setMedicalAddress] = useState('');
+  const [medicalAddressPopupVisible, setMedicalAddressPopupVisible] = useState(false);
+  const [medAddress, setMedAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+  });
+
+  // Parent
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [contact, setContact] = useState('');
+  const [relationship, setRelationship] = useState('');
+  const [prefferedSchool, setPrefferedSchool] = useState('');
+  const [numberOfDependents, setNumberOfdependants] = useState('');
+  const [password, setPassword] = useState('');
+  const schoolOptions = ['Private', 'Public'];
+  const [error, setError] = useState('');
+  // const navigate = useNavigate(); // Navigation hook
+
+  // Function to validate password
+  const validatePassword = (password) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  };
+
+
+  // Handle role selection
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
     setFormData({
@@ -50,7 +89,24 @@ function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleAddressSubmit = () => {
+    setSchoolAddress(`${address.street}, ${address.city}, ${address.state}, ${address.postalCode}, ${address.country}`);
+    setAddressPopupVisible(false);
+  };
+
+  const handleMedicalAddressChange = (e) => {
+    const { name, value } = e.target;
+    setMedAddress((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleMedicalAddressSubmit = () => {
+    setMedicalAddress(`${medAddress.street}, ${medAddress.city}, ${medAddress.state}, ${medAddress.postalCode}, ${medAddress.country}`);
+    setMedicalAddressPopupVisible(false);
+  };
+
+
+  // Handle form submission school
+  const handleSchoolSubmit = async (e) => {
     e.preventDefault();
     setPasswordError("");
     setResponseMessage("");
@@ -59,6 +115,20 @@ function Register() {
       setPasswordError("Passwords do not match!");
       return;
     }
+    const schoolData = {
+      schoolName,
+      contactNumber,
+      schoolEmail,
+      schoolType,
+      schoolPassword,
+      address: {
+        street: address.street,
+        city: address.city,
+        state: address.state,
+        postalCode: address.postalCode,
+        country: address.country,
+      },
+    };
 
     let apiUrl = "";
     let payload = {};
@@ -118,7 +188,84 @@ function Register() {
 
       setResponseMessage("Registration successful! You can now log in.");
     } catch (error) {
-      setResponseMessage(`Error: ${error.message}`);
+      // Catch any error from the request and set the error state
+      // axios automatically throws an error for non-2xx status codes
+      const errorMessage = error.response ? error.response.data.message || error.message : error.message;
+      setError(errorMessage);
+      console.error("Error registering school:", errorMessage);
+      toast.error(`Error Registering School: ${errorMessage}`);
+    }
+  };
+
+  // Handle form submission
+  const handleGuardianSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); // Reset error state
+
+
+    try {
+
+      const response = await fetch('https://goodhope.onrender.com/api/register/guardian', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, age, contact, relationship, prefferedSchool, numberOfDependents, password }),
+
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Register failed');
+
+    } catch (error) {
+      setError(error.message);
+
+    }
+  };
+
+  // Handle form submission
+  const handleMedicalSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); // Reset error state
+
+    const medicalData = {
+      medicalName,
+      medicalContact,
+      medicalEmail,
+      medicalPassword,
+      medicalSpecialization,
+      medicalYearsOfEx,
+      medicalQualification,
+      medAddress: {
+        street: medAddress.street,
+        city: medAddress.city,
+        state: medAddress.state,
+        postalCode: medAddress.postalCode,
+        country: medAddress.country,
+      },
+    }
+
+    try {
+
+      const response = await axios.post('https://goodhope.onrender.com/api/register/medical', medicalData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      // If the request is successful, handle the response data
+      console.log("Medical registered successfully:", response.data);
+      // You can perform any additional actions like redirecting or showing a success message
+      toast.success("Medical Practitioner registered successfully!");
+      setTimeout(() => {
+        navigate('/login');
+      }, 6000);
+
+
+    } catch (error) {
+      const errorMessage = error.response ? error.response.data.message || error.message : error.message;
+      setError(errorMessage);
+      console.error("Error registering Medical Practitioner:", errorMessage);
+      toast.error(`Error Registering Medical Practitioner: ${errorMessage}`);
+
     }
   };
 
