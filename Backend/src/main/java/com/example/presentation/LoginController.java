@@ -9,6 +9,8 @@ import com.example.business.service.*;
 import com.example.dto.LoginRequest;
 import com.example.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,28 +32,36 @@ public class LoginController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest loginRequest) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
+        Map<String, String> response = new HashMap<>();
 
         // First check Guardian
         Optional<Guardian> guardian = guardianService.findByEmail(email);
         if (guardian.isPresent() && passwordEncoder.matches(password, guardian.get().getPassword())) {
-            return ResponseEntity.ok("Guardian login successful!");
+            response.put("role", "Guardian");
+            response.put("message", "Guardian login successful!");
+            return ResponseEntity.ok(response);
         }
 
         // Then check School
         Optional<School> school = schoolService.findByEmail(email);
         if (school.isPresent() && passwordEncoder.matches(password, school.get().getPassword())) {
-            return ResponseEntity.ok("School login successful!");
+            response.put("role", "School");
+            response.put("message", "School login successful!");
+            return ResponseEntity.ok(response);
         }
 
         // Finally check Medical Practitioner
         Optional<MedicalPractitioner> practitioner = medicalPractitionerService.findByEmail(email);
         if (practitioner.isPresent() && passwordEncoder.matches(password, practitioner.get().getPassword())) {
-            return ResponseEntity.ok("Medical Practitioner login successful!");
+            response.put("role", "Medical");
+            response.put("message", "Medical Practitioner login successful!");
+            return ResponseEntity.ok(response);
         }
 
-        return ResponseEntity.status(401).body("Invalid email or password");
+    response.put("message", "Invalid email or password");
+    return ResponseEntity.status(401).body(response);
     }
 }
