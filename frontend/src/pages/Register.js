@@ -11,6 +11,8 @@ import SchoolForm from "./components/forms/SchoolForm";
 import MedicalPractitionerForm from "./components/forms/MedicalPractitionerForm";
 import Footer from '../components/common/footer/footer';
 
+  const navigate = useNavigate();
+
 const Register = () => {
   const [selectedRole, setSelectedRole] = useState("");
 
@@ -41,6 +43,9 @@ const Register = () => {
     
       if (response.data) {
         toast.success("Registration successful!");
+        setTimeout(() => {
+          navigate('/login');
+        }, 6000); // 6000 milliseconds = 6 seconds
       }
     } catch (error) {
       // Check if the error response contains the specific message

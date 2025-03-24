@@ -41,17 +41,11 @@ function Login() {
         setLoading(false);
     
         if (role === 'Guardian') {
-          setTimeout(() => {
-            navigate('/ParentDashboard');
-          }, 6000); // 6000 milliseconds = 6 seconds
+          navigate('/ParentDashboard');
         } else if (role === 'School') {
-          setTimeout(() => {
-            navigate('/SchoolDashboard');;
-          }, 6000);
+          navigate('/SchoolDashboard');
         } else if (role === 'Medical') {
-          setTimeout(() => {
-            navigate('/HealthCareAdmin');
-          }, 6000);
+          navigate('/HealthCareAdmin');
         } else {
           throw new Error('Unknown user role');
         }
