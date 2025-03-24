@@ -82,7 +82,6 @@ const GuardianForm = ({ handleSubmit }) => {
             className="neu-input"
             onChange={handleChange}
           />
-
           <button type="submit" className="submit-button">Register</button>
         </form>
         </div>
@@ -90,4 +89,4 @@ const GuardianForm = ({ handleSubmit }) => {
         );
 };
 
-        export default GuardianForm;
+export default GuardianForm;

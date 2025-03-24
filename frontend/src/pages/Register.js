@@ -11,10 +11,10 @@ import SchoolForm from "./components/forms/SchoolForm";
 import MedicalPractitionerForm from "./components/forms/MedicalPractitionerForm";
 import Footer from '../components/common/footer/footer';
 
-  const navigate = useNavigate();
-
 const Register = () => {
-  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState("guardian"); // Initialize with "guardian"
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e, role, formData) => {
     e.preventDefault();
