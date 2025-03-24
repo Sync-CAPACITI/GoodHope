@@ -10,8 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table( name = "Users")
 public abstract class User {
 
@@ -20,7 +19,7 @@ public abstract class User {
     private Integer userId;
 
     @Setter
-    @Column(nullable = false, unique = true)
+    
     private String name;
 
     @Column(nullable = false)
@@ -30,20 +29,14 @@ public abstract class User {
     private String phoneNumber;
 
     @Column(nullable = true)
-    private String username; 
+    private String username;
 
     @Column(nullable = false)
-    private  String password;
+    private String password;
 
     @Column(nullable = false)
-    private String role;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Address addressDetails;
+    private String role; // Could be "School", "Teacher", "Student", etc.
 
     @OneToMany(mappedBy = "user")
     private List<Payment> payments;
-
-
-
 }

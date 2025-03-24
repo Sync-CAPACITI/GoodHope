@@ -35,9 +35,9 @@ function Register() {
   const [medicalSpecialization, setMedicalSpecialization] = useState('');
   const [medicalYearsOfEx, setMedicalYearsOfEx] = useState('');
   const [medicalQualification, setMedicalQualifications] = useState('');
+  const [medicalAddress, setMedicalAddress] = useState('');
   const [medicalAddressPopupVisible, setMedicalAddressPopupVisible] = useState(false);
-  const [medicalFormAddress, setMedicalFormAddress] = useState('');
-  const [medicalAddress, setMedicalAddress] = useState({
+  const [medAddress, setMedAddress] = useState({
     street: '',
     city: '',
     state: '',
@@ -82,11 +82,11 @@ function Register() {
 
   const handleMedicalAddressChange = (e) => {
     const { name, value } = e.target;
-    setMedicalAddress((prevState) => ({ ...prevState, [name]: value }));
+    setMedAddress((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleMedicalAddressSubmit = () => {
-    setMedicalFormAddress(`${medicalAddress.street}, ${medicalAddress.city}, ${medicalAddress.state}, ${medicalAddress.postalCode}, ${medicalAddress.country}`);
+    setMedicalAddress(`${medAddress.street}, ${medAddress.city}, ${medAddress.state}, ${medAddress.postalCode}, ${medAddress.country}`);
     setMedicalAddressPopupVisible(false);
   };
 
@@ -102,7 +102,7 @@ function Register() {
       schoolEmail,
       schoolType,
       schoolPassword,
-      schoolAddress: {
+      address: {
         street: address.street,
         city: address.city,
         state: address.state,
@@ -147,7 +147,7 @@ function Register() {
 
     try {
 
-      const response = await fetch('http://localhost:8080/api/register/guardian', {
+      const response = await fetch('https://goodhope.onrender.com/api/register/guardian', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, age, contact, relationship, prefferedSchool, numberOfDependents, password }),
@@ -176,18 +176,18 @@ function Register() {
       medicalSpecialization,
       medicalYearsOfEx,
       medicalQualification,
-      medicalAddress: {
-        street: medicalAddress.street,
-        city: medicalAddress.city,
-        state: medicalAddress.state,
-        postalCode: medicalAddress.postalCode,
-        country: medicalAddress.country,
+      medAddress: {
+        street: medAddress.street,
+        city: medAddress.city,
+        state: medAddress.state,
+        postalCode: medAddress.postalCode,
+        country: medAddress.country,
       },
     }
 
     try {
 
-      const response = await axios.post('http://localhost:8080/api/register/medical', medicalData, {
+      const response = await axios.post('https://goodhope.onrender.com/api/register/medical', medicalData, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -651,7 +651,7 @@ function Register() {
                 <input
                   type="text"
                   name="medicalFormAddress"
-                  value={medicalFormAddress}
+                  value={medicalAddress}
                   onClick={() => setMedicalAddressPopupVisible(true)}
                   className="input-field"
                   required
@@ -670,7 +670,7 @@ function Register() {
                       <input
                         type="text"
                         name="street"
-                        value={medicalAddress.street}
+                        value={medAddress.street}
                         onChange={handleMedicalAddressChange}
                         className="input-field"
                         required
@@ -681,7 +681,7 @@ function Register() {
                       <input
                         type="text"
                         name="city"
-                        value={medicalAddress.city}
+                        value={medAddress.city}
                         onChange={handleMedicalAddressChange}
                         className="input-field"
                         required
@@ -696,7 +696,7 @@ function Register() {
                       <input
                         type="text"
                         name="state"
-                        value={medicalAddress.state}
+                        value={medAddress.state}
                         onChange={handleMedicalAddressChange}
                         className="input-field"
                         required
@@ -707,7 +707,7 @@ function Register() {
                       <input
                         type="text"
                         name="postalCode"
-                        value={medicalAddress.postalCode}
+                        value={medAddress.postalCode}
                         onChange={handleMedicalAddressChange}
                         className="input-field"
                         required
@@ -722,7 +722,7 @@ function Register() {
                       <input
                         type="text"
                         name="country"
-                        value={medicalAddress.country}
+                        value={medAddress.country}
                         onChange={handleMedicalAddressChange}
                         className="input-field"
                         required

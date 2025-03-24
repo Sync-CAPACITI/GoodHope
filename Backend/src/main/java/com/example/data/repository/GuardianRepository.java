@@ -7,4 +7,5 @@ import com.example.model.Guardian;
 
 @Repository
 public interface GuardianRepository extends JpaRepository<Guardian, Integer> {
+    Guardian findByEmail(String email);
 }
