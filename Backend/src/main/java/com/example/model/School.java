@@ -1,42 +1,32 @@
 package com.example.model;
 
-import jakarta.persistence.*;
 import java.util.List;
+
+import jakarta.persistence.*;
 import lombok.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
-@DiscriminatorValue("SCHOOL")
-public class School{
+@Table(name = "Schools")
+public class School {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer schoolId;
+    private Long id;
 
-    @Column(nullable = false)
-    private String schoolName;
+    private String name;
+    private String phoneNumber;
+    private String email;
+    private String schoolType; // e.g., Public, Private, etc.
 
-    @Column(nullable = false)
-    private String schoolEmail;
+    private String password; // Make sure this is hashed for security purposes
 
-    @Column(nullable = false)
-    private String schoolPassword;
-
-    @Column(nullable = false)
-    private String schoolContact;
-
-    @Column(nullable = false)
-    private String schoolType;
-
-    @OneToOne(cascade = CascadeType.ALL)  // Cascade the save operation
-    @JoinColumn(name = "address_id")
+    @Embedded
     private Address address;
 
-    @Column(nullable = false)
-    private String role; // Could be "School", "Teacher", "Student", etc.
-
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MedicalPractitioner> affiliatedMedicalPractitioners;
-    
-
+    private List<MedicalPractitioner> medicalPractitioners; // Relationship with medical practitioners
 }

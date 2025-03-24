@@ -115,14 +115,6 @@
     transition: background-color 0.3s;
   }
   
-  .submit-button:hover {
-    background-color: #2b6cb0; /* Darker blue */
-  }
-  
-  .submit-button:active {
-    background-color: #2c5282; /* Darker blue */
-  }
-
   .form-row {
     display: flex;
     gap: 20px; /* Add space between fields */
@@ -170,19 +162,6 @@
   border-radius: 5px;
 }
 
-/* Other form button styles (if needed) */
-.submit-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.submit-button:hover {
-  background-color: #45a049;
-}
 
 
 .input-container {

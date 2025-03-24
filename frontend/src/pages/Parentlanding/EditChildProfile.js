@@ -1,145 +1,114 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
-// Styled components as defined above...
 
-// Form component that allows editing the child's profile
-const SpecialNeedsForm = ({ initialData }) => {
-  const [formData, setFormData] = useState(initialData);
-  const [isEditable, setIsEditable] = useState(false);
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e8eaec;
+  font-family: "Arial", sans-serif;
+`;
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
-  };
+const Form = styled.form`
+  background: #e8eaec;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 10px 10px 20px #c8cbcd, -10px -10px 20px #ffffff;
+  max-width: 600px; /* Increased max-width to accommodate two columns */
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Create a two-column grid */
+  gap: 1rem; /* Space between grid items */
+`;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form Data Submitted:', formData);
-    // Add your form submission logic here
-    setIsEditable(false); // Exit edit mode after submitting if needed
-  };
+const Input = styled.input`
+  width: 100%;
+  padding: 1rem;
+  margin: 0;
+  border: none;
+  border-radius: 15px;
+  background: #e8eaec;
+  box-shadow: inset 5px 5px 10px #c8cbcd, inset -5px -5px 10px #ffffff;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
 
-  const handleReset = () => {
-    setFormData(initialData); // Reset to initial data
-  };
+  &::placeholder {
+    color: #888;
+  }
+`;
 
-  const toggleEditMode = () => {
-    setIsEditable(!isEditable);
-  };
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 1rem;
+  margin: 0;
+  border: none;
+  border-radius: 15px;
+  background: #e8eaec;
+  box-shadow: inset 5px 5px 10px #c8cbcd, inset -5px -5px 10px #ffffff;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  grid-column: span 2; /* Make text area span both columns */
+`;
 
-  return (
-    <Container>
-      <Form onSubmit={handleSubmit}>
-        <Label htmlFor="childName">Child's Full Name</Label>
-        <Input
-          type="text"
-          id="childName"
-          name="childName"
-          placeholder="Enter child's full name"
-          value={formData.childName}
-          onChange={handleChange}
-          required
-          readOnly={!isEditable} // Make input read-only if not in edit mode
-        />
+const Select = styled.select`
+  width: 100%;
+  padding: 1rem;
+  margin: 0;
+  border: none;
+  border-radius: 15px;
+  background: #e8eaec;
+  box-shadow: inset 5px 5px 10px #c8cbcd, inset -5px -5px 10px #ffffff;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+`;
 
-        <Label htmlFor="childAge">Child's Age</Label>
-        <Input
-          type="number"
-          id="childAge"
-          name="childAge"
-          placeholder="Enter child's age"
-          value={formData.childAge}
-          onChange={handleChange}
-          required
-          readOnly={!isEditable}
-        />
+const Button = styled.button`
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 15px;
+  background: rgba(255, 174, 0, 0.9);
+  box-shadow: 5px 5px 10px #c8cbcd, -5px -5px 10px #ffffff;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
 
-        <Label htmlFor="specialNeedsCategory">Special Needs Category</Label>
-        <Select
-          id="specialNeedsCategory"
-          name="specialNeedsCategory"
-          value={formData.specialNeedsCategory}
-          onChange={handleChange}
-          required
-          disabled={!isEditable} // Disable selection if not editable
-        >
-          <option value="">Select a category</option>
-          <option value="Autism">Autism</option>
-          <option value="Dyslexia">Dyslexia</option>
-          <option value="Down Syndrome">Down Syndrome</option>
-          <option value="Other">Other</option>
-        </Select>
+  &:hover {
+    box-shadow: 5px 5px 15px #c8cbcd, -5px -5px 15px #ffffff;
+    transform: scale(1.1);
+  }
 
-        {formData.specialNeedsCategory === 'Other' && (
-          <>
-            <Label htmlFor="otherNeeds">Specify Other Needs</Label>
-            <Input
-              type="text"
-              id="otherNeeds"
-              name="otherNeeds"
-              placeholder="Enter other special needs"
-              value={formData.otherNeeds}
-              onChange={handleChange}
-              required={formData.specialNeedsCategory === 'Other'}
-              readOnly={!isEditable}
-            />
-          </>
-        )}
+  &:active {
+    box-shadow: inset 5px 5px 10px #c8cbcd, inset -5px -5px 10px #ffffff;
+    transform: scale(0.98);
+  }
+`;
 
-        <Label htmlFor="medicalHistory">Medical History</Label>
-        <TextArea
-          id="medicalHistory"
-          name="medicalHistory"
-          placeholder="Describe medical history"
-          value={formData.medicalHistory}
-          onChange={handleChange}
-          required
-          readOnly={!isEditable}
-        />
+const ResetButton = styled(Button)`
+  background: #ff6b6b;
+  color: #fff;
+  box-shadow: 5px 5px 10px #c8cbcd, -5px -5px 10px #ffffff;
 
-        <Label htmlFor="medicalDocuments">Upload Medical Documents</Label>
-        <FileInput
-          type="file"
-          id="medicalDocuments"
-          name="medicalDocuments"
-          onChange={handleChange}
-          disabled={!isEditable}
-        />
+  &:hover {
+    box-shadow: 5px 5px 15px #c8cbcd, -5px -5px 15px #ffffff;
+  }
 
-        {isEditable ? (
-          <>
-            <Button type="submit">Save</Button>
-            <ResetButton type="button" onClick={handleReset}>
-              Reset
-            </ResetButton>
-          </>
-        ) : (
-          <Button type="button" onClick={toggleEditMode}>
-            Edit
-          </Button>
-        )}
-      </Form>
-    </Container>
-  );
+  &:active {
+    box-shadow: inset 5px 5px 10px #c8cbcd, inset -5px -5px 10px #ffffff;
+  }
+`;
+
+const UpdateSpecialNeedsForm = ({ initialData }) => {
+
 };
 
-// Default initial data (you can change or pass props based on parent component)
-const initialData = {
-  childName: 'John Doe',
-  childAge: 10,
-  specialNeedsCategory: 'Autism',
-  otherNeeds: '',
-  medicalHistory: 'No significant medical history.',
-  medicalDocuments: null,
-};
-
-// Usage of SpecialNeedsForm component
-const App = () => {
-  return <SpecialNeedsForm initialData={initialData} />;
-};
-
-export default App;
+export default UpdateSpecialNeedsForm;

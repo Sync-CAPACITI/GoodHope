@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SchoolRepository extends JpaRepository<School, Integer> {
-    // School findBySchoolEmail(String email);
-    Optional<School> findBySchoolEmail(String email);
+public interface SchoolRepository extends JpaRepository<School, Long> {
+
+    Optional<School> findByEmail(String email);
+    
 }

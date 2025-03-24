@@ -12,9 +12,6 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer paymentId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     private Float amount;
     private Date paymentDate;

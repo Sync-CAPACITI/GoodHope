@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/School/Reports.css';
+import '../../css/School/SchoolReports.css';
 
 function Reports() {
   // Sample data for the reports

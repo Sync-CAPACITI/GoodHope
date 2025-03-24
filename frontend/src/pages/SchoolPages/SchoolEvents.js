@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/School/Events.css';
+import '../../css/School/SchoolEvents.css';
 
 function Events() {
   // Sample data for Upcoming Events and Announcements

@@ -1,102 +1,116 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // For redirection
-import '../css/login.css'; // Importing the CSS file
+import { useNavigate, Link } from "react-router-dom";
+import axios from 'axios'; // Import Axios
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import '../css/login.css'; // Importing the CSS file
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Navigation hook
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
 
   const getCsrfToken = () => {
-    return document.cookie
+    const csrfCookie = document.cookie
         .split(';')
-        .find(cookie => cookie.trim().startsWith('XSRF-TOKEN='))
-        ?.split('=')[1];  // Extract the token value
-}
+        .find(cookie => cookie.trim().startsWith('XSRF-TOKEN='));
+    if (!csrfCookie) {
+        throw new Error("CSRF token not found in cookies");
+    }
+    return csrfCookie.split('=')[1];
+};
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+    setLoading(true);
     const credentials = { email, password };
-
     try {
-      const csrfToken = getCsrfToken();  // Get CSRF token from cookies
-        const response = await axios.post('http://localhost:8080/api/app/login', credentials,{
-          headers: {
-            'X-XSRF-TOKEN': csrfToken,  // Add CSRF token here
-          }
-        });
-        const { role } = response.data; // Extract 'role' directly from response.data
-
-        if (role === 'School') {
-            navigate('/schoolDashboard');
+      // const csrfToken = getCsrfToken();  // Get CSRF token from cookies
+        const response = await axios.post('https://goodhope.onrender.com/api/auth/login', credentials);
+        // ,{
+        //   headers: {
+        //     'X-XSRF-TOKEN': csrfToken,  // Add CSRF token here
+        //   }
+        // });
+        const { role } = response.data; // Extract role from response
+        setLoading(false);
+    
+        if (role === 'Guardian') {
+          setTimeout(() => {
+            navigate('/ParentDashboard');
+          }, 6000); // 6000 milliseconds = 6 seconds
+        } else if (role === 'School') {
+          setTimeout(() => {
+            navigate('/SchoolDashboard');;
+          }, 6000);
         } else if (role === 'Medical') {
-            navigate('/healthCareDashboard');
-        } else if (role === 'Guardian') {
-            navigate('/parentDashboard');
+          setTimeout(() => {
+            navigate('/HealthCareAdmin');
+          }, 6000);
+        } else {
+          throw new Error('Unknown user role');
         }
     } catch (error) {
-      toast.error(`Error Login: ${error}`);
-        setError('Invalid email or password.');
+      toast.error("Invalid email or password");
+        setError('Do you have an acoount?');
     }
 };
 
-  return (
-    <div className="login-container">
-      <div className="login-card">
-        <h2 className="login-title">Login</h2>
+return (
+  <div className="login-container">
+    <div className="login-card">
+      <h2 className="login-title">Login</h2>
 
-        <form onSubmit={handleLogin} className="login-form">
-          <div className="text-left mb-3">
-            <label className="input-label">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input-field"
-              required
-            />
-          </div>
+      <form onSubmit={handleLogin} className="login-form">
+        <div className="text-left mb-3">
+          <label className="input-label">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="input-field"
+            required
+          />
+        </div>
 
-          <div className="text-left mb-3">
-            <label className="input-label">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
-              required
-            />
-          </div>
+        <div className="text-left mb-3">
+          <label className="input-label">Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input-field"
+            required
+          />
+        </div>
 
-          {error && <p className="input-error">{error}</p>}
+        {error && <p className="input-error">{error}</p>}
 
-          <button type="submit" className="submit-button">
-            Login
-          </button>
+        <button type="submit" className="submit-button" > {/*disabled={loading} */}
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
 
-          {/* Forgot Password Link */}
-          <div className="forgot-password">
-            <p className="text-sm">
-              <a href="/forgot-password" className="text-blue-500">Forgot Password?</a>
-            </p>
-          </div>
+        <div className="forgot-password">
+          <p>
+            <Link to="/forgot-password" className="text-blue-500">Forgot Password?</Link>
+          </p>
+        </div>
 
-          {/* Register Link */}
-          <div className="mt-4 text-sm">
-            <p className="text-gray-700 dark:text-gray-300">
-              Don't have an account? <a href="/register" className="text-blue-500">Register here</a>
-            </p>
-          </div>
-        </form>
-      </div>
-      <ToastContainer />
+        <div className="mt-4">
+          <p>
+            Don't have an account? <Link to="/register" className="text-blue-500">Register here</Link>
+          </p>
+        </div>
+      </form>
     </div>
-  );
+    <ToastContainer />
+  </div>
+);
 }
 
 export default Login;
