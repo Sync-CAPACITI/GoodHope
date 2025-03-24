@@ -30,8 +30,7 @@ function Login() {
             'X-XSRF-TOKEN': csrfToken,  // Add CSRF token here
           }
         });
-        const data = response.data;
-        const role = data.role;
+        const { role } = response.data; // Extract 'role' directly from response.data
 
         if (role === 'School') {
             navigate('/schoolDashboard');
