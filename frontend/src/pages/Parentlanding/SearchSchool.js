@@ -98,6 +98,8 @@ const SearchSchool = () => {
   const [userLocation, setUserLocation] = useState(null); // Store user's current location
   const [filteredResults, setFilteredResults] = useState([]); // Filtered results based on distance
 
+  const [institutions, setInstitutions] = useState([]); // Store API results
+
   useEffect(() => {
     initMap();
     getUserLocation(); // Get user's geolocation
@@ -191,6 +193,25 @@ const SearchSchool = () => {
     }
   };
 
+  const searchInstitutions = async () => {
+    if (!location) {
+      alert("Please enter a search term.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/institutions/search?query=${location}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch institutions.");
+      }
+      const data = await response.json();
+      setInstitutions(data); // Update state with API results
+    } catch (error) {
+      console.error("Error fetching institutions:", error);
+    }
+  };
+
+
   return (
     <div className="container">
       <div className="search-bar">
@@ -200,9 +221,31 @@ const SearchSchool = () => {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
-        <button onClick={searchLocation}>Search</button>
+        <button onClick={searchInstitutions}>Search</button>
         <button onClick={toggleFullScreen}>Full Screen</button>
       </div>
+
+      <div className="results">
+        {institutions.length > 0 ? (
+          <div>
+            <h3>Search Results:</h3>
+            <ul>
+              {institutions.map((institution, index) => (
+                <li key={index}>
+                  <strong>{institution.name}</strong> - {institution.location}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p>No institutions found.</p>
+        )}
+      </div>
+
+      <div>
+
+      </div>
+      <br></br>
       <div id="map" className="map"></div>
       <div className="address-display">
         {filteredResults.length > 0 && (
